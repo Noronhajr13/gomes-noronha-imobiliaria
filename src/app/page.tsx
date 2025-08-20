@@ -10,6 +10,7 @@ import {
   ContactSection 
 } from '@/components/sections';
 import HomeSection from '@/components/sections/HeroSection';
+import BuscarImoveisSection from '@/components/sections/BuscarImoveisSection';
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState('inicio');
@@ -22,6 +23,8 @@ export default function Home() {
         return <HomeSection />;
       case 'quem-somos':
         return <AboutSection />;
+      case 'buscar':
+        return <BuscarImoveisSection />;
       case 'servicos':
         return <ServicesSection />;
       case 'contato':

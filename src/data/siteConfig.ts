@@ -57,8 +57,8 @@ export const siteConfig: SiteConfig = {
 
   // Cores do tema
   theme: {
-    primary: "#1e40af", // blue-800 (mais sério para imobiliária)
-    secondary: "#64748b", // slate-500
-    accent: "#059669" // emerald-600 (destaque)
+    primary: "#000000",       // Preto
+    secondary: "#6B7280",     // Cinza médio  
+    accent: "#059669"         // Verde de apoio
   }
 };

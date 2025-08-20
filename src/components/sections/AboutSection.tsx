@@ -262,6 +262,8 @@ const AboutSection: React.FC = () => {
                   <Image 
                     src={member.image} 
                     alt={member.name}
+                    width={600}
+                    height={400}
                     className="object-cover w-full h-64"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
