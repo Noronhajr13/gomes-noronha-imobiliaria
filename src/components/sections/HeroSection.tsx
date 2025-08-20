@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Icon } from '@/utils/iconMapper';
+import { Icon, type IconName } from '@/utils/iconMapper';
 import { MapPin } from 'lucide-react';
+import Image from 'next/image';
 
 const HomeSection: React.FC = () => {
   const [searchData, setSearchData] = useState({
@@ -229,7 +230,7 @@ const HomeSection: React.FC = () => {
             {stats.map((stat, index) => (
               <div key={index} className="text-center group">
                 <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 transition-colors duration-300 bg-blue-100 rounded-2xl group-hover:bg-blue-200">
-                  <Icon name={stat.icon as any} className="w-8 h-8 text-blue-600" />
+                  <Icon name={stat.icon as IconName} className="w-8 h-8 text-blue-600" />
                 </div>
                 <div className="mb-2 text-3xl font-bold text-gray-900 md:text-4xl">{stat.number}</div>
                 <div className="font-medium text-gray-600">{stat.label}</div>
@@ -259,7 +260,7 @@ const HomeSection: React.FC = () => {
                 
                 {/* Image */}
                 <div className="relative">
-                  <img 
+                  <Image 
                     src={property.image} 
                     alt={property.title}
                     className="object-cover w-full h-64"

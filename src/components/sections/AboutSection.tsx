@@ -1,7 +1,8 @@
 "use client";
 
 import React from 'react';
-import { Icon } from '@/utils/iconMapper';
+import { Icon, type IconName } from '@/utils/iconMapper';
+import Image from 'next/image';
 
 const AboutSection: React.FC = () => {
   const values = [
@@ -236,7 +237,7 @@ const AboutSection: React.FC = () => {
             {values.map((value, index) => (
               <div key={index} className="p-8 text-center transition-all duration-300 transform bg-white border border-gray-100 shadow-lg group rounded-2xl hover:shadow-xl hover:-translate-y-2">
                 <div className={`w-16 h-16 ${getColorClasses(value.color)} rounded-2xl flex items-center justify-center mx-auto mb-6 transition-all duration-300`}>
-                  <Icon name={value.icon as any} className="w-8 h-8 transition-colors duration-300" />
+                  <Icon name={value.icon as IconName} className="w-8 h-8 transition-colors duration-300" />
                 </div>
                 
                 <h4 className="mb-4 text-xl font-bold text-gray-900">{value.title}</h4>
@@ -258,7 +259,7 @@ const AboutSection: React.FC = () => {
                 
                 {/* Photo */}
                 <div className="relative">
-                  <img 
+                  <Image 
                     src={member.image} 
                     alt={member.name}
                     className="object-cover w-full h-64"

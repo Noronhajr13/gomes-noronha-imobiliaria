@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Icon } from '@/utils/iconMapper';
+import { Icon, type IconName } from '@/utils/iconMapper';
 
 const ServicesSection: React.FC = () => {
   const services = [
@@ -104,50 +104,50 @@ const ServicesSection: React.FC = () => {
   };
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-24 mt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="min-h-screen py-24 mt-20 bg-gradient-to-br from-gray-50 to-blue-50">
+      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         
         {/* Header */}
-        <div className="text-center mb-20">
-          <div className="inline-block bg-blue-100 text-blue-600 px-6 py-3 rounded-full text-sm font-bold mb-6 border border-blue-200">
-            <Icon name="Briefcase" className="w-4 h-4 inline mr-2" />
+        <div className="mb-20 text-center">
+          <div className="inline-block px-6 py-3 mb-6 text-sm font-bold text-blue-600 bg-blue-100 border border-blue-200 rounded-full">
+            <Icon name="Briefcase" className="inline w-4 h-4 mr-2" />
             Nossos Serviços
           </div>
           
-          <h2 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-8 leading-tight">
+          <h2 className="mb-8 text-5xl font-extrabold leading-tight text-gray-900 md:text-6xl">
             Soluções <span className="text-blue-600">Completas</span>
             <span className="block">para seu <span className="text-purple-600">Negócio</span></span>
           </h2>
           
-          <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+          <p className="max-w-4xl mx-auto text-xl leading-relaxed text-gray-600">
             Oferecemos uma gama completa de serviços de desenvolvimento e consultoria 
             para levar sua empresa ao próximo nível digital.
           </p>
         </div>
 
         {/* Services Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid gap-8 mb-16 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => {
             const colors = getColorClasses(service.color);
             
             return (
-              <div key={index} className="group relative">
+              <div key={index} className="relative group">
                 {/* Card Principal */}
-                <div className="bg-white rounded-3xl p-8 shadow-strong border-2 border-gray-100 hover:border-gray-200 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-xl h-full flex flex-col">
+                <div className="flex flex-col h-full p-8 transition-all duration-500 transform bg-white border-2 border-gray-100 rounded-3xl shadow-strong hover:border-gray-200 hover:-translate-y-2 hover:shadow-xl">
                   
                   {/* Header do Card */}
                   <div className="relative mb-6">
                     <div className={`w-16 h-16 ${colors.icon} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                      <Icon name={service.icon as any} className="w-8 h-8" />
+                      <Icon name={service.icon as IconName} className="w-8 h-8" />
                     </div>
                     
-                    <h3 className="text-2xl font-bold text-gray-900 mb-3">{service.title}</h3>
-                    <p className="text-gray-600 leading-relaxed">{service.description}</p>
+                    <h3 className="mb-3 text-2xl font-bold text-gray-900">{service.title}</h3>
+                    <p className="leading-relaxed text-gray-600">{service.description}</p>
                   </div>
 
                   {/* Features */}
                   <div className="flex-grow mb-6">
-                    <h4 className="font-semibold text-gray-900 mb-3">Incluído:</h4>
+                    <h4 className="mb-3 font-semibold text-gray-900">Incluído:</h4>
                     <ul className="space-y-2">
                       {service.features.map((feature, idx) => (
                         <li key={idx} className="flex items-center gap-2 text-sm text-gray-600">
@@ -183,20 +183,20 @@ const ServicesSection: React.FC = () => {
         </div>
 
         {/* CTA Section */}
-        <div className="text-center bg-white rounded-3xl p-12 shadow-strong border border-gray-100">
-          <h3 className="text-3xl font-bold text-gray-900 mb-4">
+        <div className="p-12 text-center bg-white border border-gray-100 rounded-3xl shadow-strong">
+          <h3 className="mb-4 text-3xl font-bold text-gray-900">
             Não encontrou o que precisa?
           </h3>
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p className="max-w-2xl mx-auto mb-8 text-lg text-gray-600">
             Desenvolvemos soluções personalizadas para atender exatamente às suas necessidades. 
             Entre em contato e vamos conversar sobre seu projeto.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2">
+          <div className="flex flex-col justify-center gap-4 sm:flex-row">
+            <button className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-white transition-all duration-300 transform shadow-lg bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl hover:from-blue-700 hover:to-purple-700 hover:scale-105">
               <Icon name="Phone" className="w-5 h-5" />
               Solicitar Orçamento
             </button>
-            <button className="bg-gray-100 text-gray-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2">
+            <button className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-gray-700 transition-all duration-300 bg-gray-100 rounded-xl hover:bg-gray-200">
               <Icon name="ExternalLink" className="w-5 h-5" />
               Ver Portfolio
             </button>
