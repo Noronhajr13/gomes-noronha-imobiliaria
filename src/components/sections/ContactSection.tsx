@@ -79,8 +79,8 @@ const ContactSection: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900">Endereço</h4>
-                  <p className="text-gray-600">{siteConfig.contact.address}</p>
-                  <p className="text-gray-600">{siteConfig.contact.city}</p>
+                  <p className="text-gray-600">{siteConfig.contact.address.fullAddress}</p>
+                  <p className="text-gray-600">{siteConfig.contact.address.city}</p>
                 </div>
               </div>
 
@@ -91,7 +91,7 @@ const ContactSection: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900">Horário</h4>
-                  <p className="text-gray-600">{siteConfig.contact.workingHours}</p>
+                  <p className="text-gray-600">{siteConfig.contact.businessHours.weekdays}</p>
                 </div>
               </div>
             </div>

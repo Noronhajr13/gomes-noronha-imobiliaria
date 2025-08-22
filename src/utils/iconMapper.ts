@@ -17,7 +17,14 @@ import {
   ChevronDown,
   ExternalLink,
   Building,
-  FileText
+  FileText,
+  SlidersHorizontal,
+  RotateCcw,
+  Grid3X3,
+  List,
+  Bed,
+  Bath,
+  Car
 } from 'lucide-react';
 
 // Mapa de strings para componentes de ícones
@@ -40,6 +47,13 @@ export const iconMap = {
   ExternalLink,
   Building,
   FileText,
+  SlidersHorizontal,
+  RotateCcw,
+  Grid3X3,
+  List,
+  Bed,
+  Bath,
+  Car,
 };
 
 // Tipo para as chaves dos ícones

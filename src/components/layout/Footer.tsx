@@ -103,10 +103,10 @@ const Footer: React.FC = () => {
             <div className="lg:col-span-2">
               <div className="mb-8">
                 <div className="inline-block px-6 py-3 mb-6 text-2xl font-bold text-white shadow-lg bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl">
-                  {siteConfig.siteName}
+                  {siteConfig.company.fullName}
                 </div>
                 <p className="max-w-md mb-6 text-lg leading-relaxed text-gray-300">
-                  {siteConfig.siteDescription}
+                  {siteConfig.company.description}
                 </p>
                 <p className="leading-relaxed text-gray-400">
                   Transformando ideias em soluções digitais extraordinárias. 
@@ -180,7 +180,7 @@ const Footer: React.FC = () => {
           <div className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
               <div className="flex flex-col items-center gap-4 text-sm text-gray-400 md:flex-row">
-                <p>&copy; {currentYear} {siteConfig.siteName}. Todos os direitos reservados.</p>
+                <p>&copy; {currentYear} {siteConfig.company.name}. Todos os direitos reservados.</p>
                 <div className="hidden w-1 h-1 bg-gray-600 rounded-full md:block"></div>
                 <p>Desenvolvido com ❤️ e ☕</p>
               </div>

@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Icon, IconName } from '@/utils/iconMapper';
+import { Icon } from '@/utils/iconMapper';
+import { Property, properties } from '@/data/MockData';
 
 const BuscarImoveisSection: React.FC = () => {
   const [filters, setFilters] = useState({
@@ -19,12 +20,12 @@ const BuscarImoveisSection: React.FC = () => {
   });
 
   const [view, setView] = useState<'grid' | 'list'>('grid');
-  const [sortBy, setSortBy] = useState('recent');
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  const handleFilterChange = (field: string, value: string) => {
+  const handleFilterChange = (key: string, value: string) => {
     setFilters(prev => ({
       ...prev,
-      [field]: value
+      [key]: value
     }));
   };
 
@@ -44,428 +45,288 @@ const BuscarImoveisSection: React.FC = () => {
     });
   };
 
-  // Mock data - em produção virá da API
-  const properties = [
-    {
-      id: 1,
-      title: "Apartamento no Centro",
-      type: "Apartamento",
-      business: "Venda",
-      price: "R$ 450.000",
-      priceValue: 450000,
-      area: "85m²",
-      areaValue: 85,
-      bedrooms: 3,
-      bathrooms: 2,
-      parking: 1,
-      location: "Centro",
-      neighborhood: "Centro",
-      city: "Juiz de Fora",
-      address: "Rua Halfeld, 123",
-      images: [
-        "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&h=400&fit=crop",
-        "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&h=400&fit=crop"
-      ],
-      featured: true,
-      code: "JF001",
-      description: "Apartamento moderno no coração da cidade, próximo a comércios e serviços.",
-      features: ["Portaria 24h", "Elevador", "Academia", "Salão de festas"]
-    },
-    {
-      id: 2,
-      title: "Casa no Granbery",
-      type: "Casa",
-      business: "Venda",
-      price: "R$ 680.000",
-      priceValue: 680000,
-      area: "150m²",
-      areaValue: 150,
-      bedrooms: 4,
-      bathrooms: 3,
-      parking: 2,
-      location: "Granbery",
-      neighborhood: "Granbery",
-      city: "Juiz de Fora",
-      address: "Rua dos Granbery, 456",
-      images: [
-        "https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=600&h=400&fit=crop",
-        "https://images.unsplash.com/photo-1572120360610-d971b9d7767c?w=600&h=400&fit=crop"
-      ],
-      featured: false,
-      code: "JF002",
-      description: "Casa espaçosa em bairro nobre, ideal para famílias.",
-      features: ["Quintal", "Garagem coberta", "Churrasqueira", "Área de serviço"]
-    },
-    {
-      id: 3,
-      title: "Terreno Comercial Zona Norte",
-      type: "Terreno",
-      business: "Venda",
-      price: "R$ 280.000",
-      priceValue: 280000,
-      area: "400m²",
-      areaValue: 400,
-      bedrooms: 0,
-      bathrooms: 0,
-      parking: 0,
-      location: "Zona Norte",
-      neighborhood: "São Pedro",
-      city: "Juiz de Fora",
-      address: "Avenida dos Andradas, 789",
-      images: [
-        "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&h=400&fit=crop"
-      ],
-      featured: false,
-      code: "JF003",
-      description: "Terreno plano em área comercial de alto movimento.",
-      features: ["Esquina", "Zona comercial", "Documentação ok"]
-    },
-    {
-      id: 4,
-      title: "Apartamento para Locação",
-      type: "Apartamento",
-      business: "Locação",
-      price: "R$ 1.200/mês",
-      priceValue: 1200,
-      area: "65m²",
-      areaValue: 65,
-      bedrooms: 2,
-      bathrooms: 1,
-      parking: 1,
-      location: "São Mateus",
-      neighborhood: "São Mateus",
-      city: "Juiz de Fora",
-      address: "Rua São Mateus, 321",
-      images: [
-        "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&h=400&fit=crop"
-      ],
-      featured: false,
-      code: "JF004",
-      description: "Apartamento pronto para morar, mobiliado.",
-      features: ["Mobiliado", "Condomínio baixo", "Próximo ao centro"]
-    },
-    {
-      id: 5,
-      title: "Casa São Mateus",
-      type: "Casa",
-      business: "Venda",
-      price: "R$ 520.000",
-      priceValue: 520000,
-      area: "120m²",
-      areaValue: 120,
-      bedrooms: 3,
-      bathrooms: 2,
-      parking: 2,
-      location: "São Mateus",
-      neighborhood: "São Mateus",
-      city: "Juiz de Fora",
-      address: "Rua das Flores, 654",
-      images: [
-        "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&h=400&fit=crop"
-      ],
-      featured: true,
-      code: "JF005",
-      description: "Casa térrea com ótimo acabamento.",
-      features: ["Quintal grande", "Área gourmet", "Portão eletrônico"]
-    }
-  ];
+  // Usando dados do MockData
 
   // Filtrar imóveis baseado nos filtros
   const filteredProperties = properties.filter(property => {
-    if (filters.tipo !== 'todos' && property.type.toLowerCase() !== filters.tipo) return false;
-    if (filters.negocio !== 'todos' && property.business.toLowerCase() !== filters.negocio) return false;
+    if (filters.tipo !== 'todos' && property.type !== filters.tipo) return false;
+    if (filters.negocio !== 'todos' && property.transactionType !== filters.negocio) return false;
     if (filters.cidade && !property.city.toLowerCase().includes(filters.cidade.toLowerCase())) return false;
     if (filters.bairro && !property.neighborhood.toLowerCase().includes(filters.bairro.toLowerCase())) return false;
-    if (filters.quartos !== 'todos' && property.bedrooms.toString() !== filters.quartos) return false;
-    if (filters.banheiros !== 'todos' && property.bathrooms.toString() !== filters.banheiros) return false;
-    if (filters.vagas !== 'todos' && property.parking.toString() !== filters.vagas) return false;
-    
-    // Filtros de preço
-    if (filters.precoMin && property.priceValue < parseInt(filters.precoMin.replace(/\D/g, ''))) return false;
-    if (filters.precoMax && property.priceValue > parseInt(filters.precoMax.replace(/\D/g, ''))) return false;
-    
-    // Filtros de área
-    if (filters.areaMin && property.areaValue < parseInt(filters.areaMin)) return false;
-    if (filters.areaMax && property.areaValue > parseInt(filters.areaMax)) return false;
-    
+    if (filters.precoMin && property.price < parseInt(filters.precoMin)) return false;
+    if (filters.precoMax && property.price > parseInt(filters.precoMax)) return false;
+    if (filters.quartos !== 'todos' && property.bedrooms !== parseInt(filters.quartos)) return false;
+    if (filters.banheiros !== 'todos' && property.bathrooms !== parseInt(filters.banheiros)) return false;
+    if (filters.vagas !== 'todos' && property.parking !== parseInt(filters.vagas)) return false;
+    if (filters.areaMin && property.area < parseInt(filters.areaMin)) return false;
+    if (filters.areaMax && property.area > parseInt(filters.areaMax)) return false;
     return true;
   });
 
-  // Ordenar imóveis
-  const sortedProperties = [...filteredProperties].sort((a, b) => {
-    switch (sortBy) {
-      case 'price-asc':
-        return a.priceValue - b.priceValue;
-      case 'price-desc':
-        return b.priceValue - a.priceValue;
-      case 'area-asc':
-        return a.areaValue - b.areaValue;
-      case 'area-desc':
-        return b.areaValue - a.areaValue;
-      default:
-        return 0;
-    }
-  });
-
   return (
-    <section className="min-h-screen py-24 mt-20 bg-gray-50">
-      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-        
-        {/* Header */}
-        <div className="mb-12 text-center">
-          <h2 className="mb-6 text-4xl font-bold text-gray-900 md:text-5xl">
-            Buscar <span className="text-blue-600">Imóveis</span>
+    <section id="buscar-imoveis" className="py-16 bg-gray-50">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Encontre seu Imóvel Ideal
           </h2>
-          <p className="max-w-3xl mx-auto text-xl text-gray-600">
-            Encontre o imóvel perfeito com nossos filtros avançados. 
-            Temos opções para todos os perfis e necessidades.
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Use nossos filtros avançados para encontrar o imóvel perfeito para você
           </p>
         </div>
 
-        {/* Filtros */}
-        <div className="p-8 mb-8 bg-white shadow-lg rounded-2xl">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-900">Filtros de Busca</h3>
-            <button
-              onClick={clearFilters}
-              className="flex items-center gap-2 font-medium text-blue-600 hover:text-blue-700"
-            >
-              <Icon name="X" className="w-4 h-4" />
-              Limpar Filtros
-            </button>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 mb-6 md:grid-cols-4 lg:grid-cols-6">
-            
-            {/* Tipo de Negócio */}
-            <div>
-              <label className="block mb-2 text-sm font-medium text-gray-700">Negócio</label>
-              <select
-                value={filters.negocio}
-                onChange={(e) => handleFilterChange('negocio', e.target.value)}
-                className="w-full p-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="todos">Todos</option>
-                <option value="venda">Venda</option>
-                <option value="locação">Locação</option>
-              </select>
-            </div>
-
+        {/* Formulário de Filtros */}
+        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
             {/* Tipo de Imóvel */}
             <div>
-              <label className="block mb-2 text-sm font-medium text-gray-700">Tipo</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Tipo de Imóvel
+              </label>
               <select
                 value={filters.tipo}
                 onChange={(e) => handleFilterChange('tipo', e.target.value)}
-                className="w-full p-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="todos">Todos</option>
-                <option value="apartamento">Apartamento</option>
-                <option value="casa">Casa</option>
-                <option value="terreno">Terreno</option>
+                <option value="todos">Todos os tipos</option>
+                <option value="Casa">Casa</option>
+                <option value="Apartamento">Apartamento</option>
+                <option value="Terreno">Terreno</option>
+                <option value="Sala Comercial">Sala Comercial</option>
+                <option value="Loja">Loja</option>
+                <option value="Galpão">Galpão</option>
+                <option value="Sítio">Sítio</option>
               </select>
             </div>
 
-            {/* Quartos */}
+            {/* Tipo de Negócio */}
             <div>
-              <label className="block mb-2 text-sm font-medium text-gray-700">Quartos</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Tipo de Negócio
+              </label>
               <select
-                value={filters.quartos}
-                onChange={(e) => handleFilterChange('quartos', e.target.value)}
-                className="w-full p-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                value={filters.negocio}
+                onChange={(e) => handleFilterChange('negocio', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="todos">Todos</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4+</option>
-              </select>
-            </div>
-
-            {/* Banheiros */}
-            <div>
-              <label className="block mb-2 text-sm font-medium text-gray-700">Banheiros</label>
-              <select
-                value={filters.banheiros}
-                onChange={(e) => handleFilterChange('banheiros', e.target.value)}
-                className="w-full p-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="todos">Todos</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3+</option>
-              </select>
-            </div>
-
-            {/* Vagas */}
-            <div>
-              <label className="block mb-2 text-sm font-medium text-gray-700">Vagas</label>
-              <select
-                value={filters.vagas}
-                onChange={(e) => handleFilterChange('vagas', e.target.value)}
-                className="w-full p-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="todos">Todos</option>
-                <option value="0">Sem vaga</option>
-                <option value="1">1</option>
-                <option value="2">2+</option>
+                <option value="Venda">Venda</option>
+                <option value="Aluguel">Aluguel</option>
+                <option value="Venda/Aluguel">Venda/Aluguel</option>
               </select>
             </div>
 
             {/* Cidade */}
             <div>
-              <label className="block mb-2 text-sm font-medium text-gray-700">Cidade</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Cidade
+              </label>
               <input
                 type="text"
-                placeholder="Ex: Juiz de Fora"
+                placeholder="Digite a cidade"
                 value={filters.cidade}
                 onChange={(e) => handleFilterChange('cidade', e.target.value)}
-                className="w-full p-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-          </div>
 
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            
-            {/* Preço Mínimo */}
+            {/* Bairro */}
             <div>
-              <label className="block mb-2 text-sm font-medium text-gray-700">Preço Mín.</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Bairro
+              </label>
               <input
                 type="text"
-                placeholder="R$ 100.000"
-                value={filters.precoMin}
-                onChange={(e) => handleFilterChange('precoMin', e.target.value)}
-                className="w-full p-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            {/* Preço Máximo */}
-            <div>
-              <label className="block mb-2 text-sm font-medium text-gray-700">Preço Máx.</label>
-              <input
-                type="text"
-                placeholder="R$ 500.000"
-                value={filters.precoMax}
-                onChange={(e) => handleFilterChange('precoMax', e.target.value)}
-                className="w-full p-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            {/* Área Mínima */}
-            <div>
-              <label className="block mb-2 text-sm font-medium text-gray-700">Área Mín. (m²)</label>
-              <input
-                type="number"
-                placeholder="50"
-                value={filters.areaMin}
-                onChange={(e) => handleFilterChange('areaMin', e.target.value)}
-                className="w-full p-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            {/* Área Máxima */}
-            <div>
-              <label className="block mb-2 text-sm font-medium text-gray-700">Área Máx. (m²)</label>
-              <input
-                type="number"
-                placeholder="200"
-                value={filters.areaMax}
-                onChange={(e) => handleFilterChange('areaMax', e.target.value)}
-                className="w-full p-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                placeholder="Digite o bairro"
+                value={filters.bairro}
+                onChange={(e) => handleFilterChange('bairro', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
-        </div>
 
-        {/* Toolbar */}
-        <div className="flex flex-col items-center justify-between gap-4 mb-8 md:flex-row">
-          
-          {/* Resultados */}
-          <div className="text-gray-600">
-            <span className="font-semibold text-gray-900">{sortedProperties.length}</span> imóveis encontrados
-          </div>
+          {/* Filtros Expandidos */}
+          {isExpanded && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4 pt-4 border-t border-gray-200">
+              {/* Preço Mínimo */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Preço Mínimo
+                </label>
+                <input
+                  type="number"
+                  placeholder="R$ 0"
+                  value={filters.precoMin}
+                  onChange={(e) => handleFilterChange('precoMin', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
 
-          <div className="flex items-center gap-4">
-            
-            {/* Ordenação */}
+              {/* Preço Máximo */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Preço Máximo
+                </label>
+                <input
+                  type="number"
+                  placeholder="R$ 999.999"
+                  value={filters.precoMax}
+                  onChange={(e) => handleFilterChange('precoMax', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              {/* Quartos */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Quartos
+                </label>
+                <select
+                  value={filters.quartos}
+                  onChange={(e) => handleFilterChange('quartos', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="todos">Qualquer</option>
+                  <option value="1">1 quarto</option>
+                  <option value="2">2 quartos</option>
+                  <option value="3">3 quartos</option>
+                  <option value="4">4+ quartos</option>
+                </select>
+              </div>
+
+              {/* Banheiros */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Banheiros
+                </label>
+                <select
+                  value={filters.banheiros}
+                  onChange={(e) => handleFilterChange('banheiros', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="todos">Qualquer</option>
+                  <option value="1">1 banheiro</option>
+                  <option value="2">2 banheiros</option>
+                  <option value="3">3 banheiros</option>
+                  <option value="4">4+ banheiros</option>
+                </select>
+              </div>
+
+              {/* Vagas de Garagem */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Vagas
+                </label>
+                <select
+                  value={filters.vagas}
+                  onChange={(e) => handleFilterChange('vagas', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="todos">Qualquer</option>
+                  <option value="0">Sem vaga</option>
+                  <option value="1">1 vaga</option>
+                  <option value="2">2 vagas</option>
+                  <option value="3">3+ vagas</option>
+                </select>
+              </div>
+
+              {/* Área Mínima */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Área Mínima (m²)
+                </label>
+                <input
+                  type="number"
+                  placeholder="0"
+                  value={filters.areaMin}
+                  onChange={(e) => handleFilterChange('areaMin', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              {/* Área Máxima */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Área Máxima (m²)
+                </label>
+                <input
+                  type="number"
+                  placeholder="999"
+                  value={filters.areaMax}
+                  onChange={(e) => handleFilterChange('areaMax', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Botões de Ação */}
+          <div className="flex flex-wrap gap-3 justify-between items-center">
+            <div className="flex gap-3">
+              <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="flex items-center px-4 py-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-50 transition-colors"
+              >
+                <Icon name="SlidersHorizontal" className="w-4 h-4 mr-2" />
+                {isExpanded ? 'Menos filtros' : 'Mais filtros'}
+              </button>
+              <button
+                onClick={clearFilters}
+                className="flex items-center px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+              >
+                <Icon name="RotateCcw" className="w-4 h-4 mr-2" />
+                Limpar
+              </button>
+            </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">Ordenar por:</span>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="p-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="recent">Mais recentes</option>
-                <option value="price-asc">Menor preço</option>
-                <option value="price-desc">Maior preço</option>
-                <option value="area-asc">Menor área</option>
-                <option value="area-desc">Maior área</option>
-              </select>
-            </div>
-
-            {/* View Toggle */}
-            <div className="flex items-center p-1 bg-gray-100 rounded-lg">
-              <button
-                onClick={() => setView('grid')}
-                className={`p-2 rounded-md transition-colors ${
-                  view === 'grid' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-600'
-                }`}
-              >
-                <Icon name="Building" className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setView('list')}
-                className={`p-2 rounded-md transition-colors ${
-                  view === 'list' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-600'
-                }`}
-              >
-                <Icon name="Menu" className="w-4 h-4" />
-              </button>
+              <span className="text-sm text-gray-600">
+                {filteredProperties.length} imóveis encontrados
+              </span>
+              <div className="flex border border-gray-300 rounded-md overflow-hidden">
+                <button
+                  onClick={() => setView('grid')}
+                  className={`p-2 ${view === 'grid' ? 'bg-blue-500 text-white' : 'bg-white text-gray-600'}`}
+                >
+                  <Icon name="Grid3X3" className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setView('list')}
+                  className={`p-2 ${view === 'list' ? 'bg-blue-500 text-white' : 'bg-white text-gray-600'}`}
+                >
+                  <Icon name="List" className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Resultados */}
-        {sortedProperties.length === 0 ? (
-          <div className="py-16 text-center">
-            <div className="flex items-center justify-center w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full">
-              <Icon name="Building" className="w-12 h-12 text-gray-400" />
-            </div>
-            <h3 className="mb-2 text-xl font-semibold text-gray-900">Nenhum imóvel encontrado</h3>
-            <p className="mb-6 text-gray-600">Tente ajustar os filtros para encontrar mais opções.</p>
+        <div className={`grid gap-6 ${view === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
+          {filteredProperties.map(property => (
+            <PropertyCard
+              key={property.id}
+              property={property}
+              view={view}
+            />
+          ))}
+        </div>
+
+        {/* Mensagem quando não há resultados */}
+        {filteredProperties.length === 0 && (
+          <div className="text-center py-12">
+            <Icon name="Home" className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-gray-700 mb-2">
+              Nenhum imóvel encontrado
+            </h3>
+            <p className="text-gray-500 mb-4">
+              Tente ajustar os filtros para encontrar mais opções
+            </p>
             <button
               onClick={clearFilters}
-              className="px-6 py-3 text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
+              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
             >
-              Limpar Filtros
+              Limpar todos os filtros
             </button>
-          </div>
-        ) : (
-          <div className={view === 'grid' ? 'grid md:grid-cols-2 lg:grid-cols-3 gap-8' : 'space-y-6'}>
-            {sortedProperties.map((property) => (
-              <PropertyCard
-                key={property.id}
-                property={property}
-                view={view}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* Paginação placeholder */}
-        {sortedProperties.length > 0 && (
-          <div className="flex justify-center mt-12">
-            <div className="flex items-center gap-2">
-              <button className="px-3 py-2 transition-colors border border-gray-300 rounded-lg hover:bg-gray-50">
-                <Icon name="ArrowRight" className="w-4 h-4 rotate-180" />
-              </button>
-              <button className="px-4 py-2 text-white bg-blue-600 rounded-lg">1</button>
-              <button className="px-4 py-2 transition-colors border border-gray-300 rounded-lg hover:bg-gray-50">2</button>
-              <button className="px-4 py-2 transition-colors border border-gray-300 rounded-lg hover:bg-gray-50">3</button>
-              <button className="px-3 py-2 transition-colors border border-gray-300 rounded-lg hover:bg-gray-50">
-                <Icon name="ArrowRight" className="w-4 h-4" />
-              </button>
-            </div>
           </div>
         )}
       </div>
@@ -475,75 +336,87 @@ const BuscarImoveisSection: React.FC = () => {
 
 // Componente do Card de Propriedade
 interface PropertyCardProps {
-  property: any;
+  property: Property;
   view: 'grid' | 'list';
 }
 
 const PropertyCard: React.FC<PropertyCardProps> = ({ property, view }) => {
+  // Função para formatar preço
+  const formatPrice = (price: number, transactionType: string) => {
+    const formatted = new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(price);
+    
+    return transactionType === 'Aluguel' ? `${formatted}/mês` : formatted;
+  };
+
+  // Função para formatar área
+  const formatArea = (area: number) => {
+    return `${area}m²`;
+  };
+
   if (view === 'list') {
     return (
-      <div className="overflow-hidden transition-all duration-300 bg-white shadow-lg rounded-xl hover:shadow-xl">
-        <div className="md:flex">
+      <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+        <div className="flex flex-col md:flex-row">
           <div className="md:w-1/3">
             <img
               src={property.images[0]}
               alt={property.title}
-              className="object-cover w-full h-64 md:h-full"
+              className="w-full h-48 md:h-full object-cover"
             />
           </div>
-          <div className="p-6 md:w-2/3">
-            <div className="flex items-start justify-between mb-4">
+          <div className="md:w-2/3 p-6">
+            <div className="flex justify-between items-start mb-4">
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="px-2 py-1 text-xs font-medium text-blue-600 bg-blue-100 rounded-full">
-                    {property.type}
-                  </span>
                   <span className="px-2 py-1 text-xs font-medium text-green-600 bg-green-100 rounded-full">
-                    {property.business}
+                    {property.transactionType}
                   </span>
                   <span className="text-xs text-gray-500">#{property.code}</span>
                 </div>
                 <h3 className="mb-2 text-xl font-bold text-gray-900">{property.title}</h3>
                 <div className="flex items-center mb-4 text-gray-600">
                   <Icon name="MapPin" className="w-4 h-4 mr-2" />
-                  <span className="text-sm">{property.address}</span>
+                  <span className="text-sm">{property.location}</span>
                 </div>
               </div>
               <div className="text-right">
-                <div className="mb-2 text-2xl font-bold text-blue-600">{property.price}</div>
-                <div className="text-sm text-gray-500">{property.area}</div>
+                <div className="mb-2 text-2xl font-bold text-blue-600">
+                  {formatPrice(property.price, property.transactionType)}
+                </div>
+                <div className="text-sm text-gray-500">{formatArea(property.area)}</div>
               </div>
             </div>
 
-            <p className="mb-4 text-gray-600 line-clamp-2">{property.description}</p>
+            <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
+              <div className="flex items-center">
+                <Icon name="Bed" className="w-4 h-4 mr-1" />
+                <span>{property.bedrooms} quartos</span>
+              </div>
+              <div className="flex items-center">
+                <Icon name="Bath" className="w-4 h-4 mr-1" />
+                <span>{property.bathrooms} banheiros</span>
+              </div>
+              <div className="flex items-center">
+                <Icon name="Car" className="w-4 h-4 mr-1" />
+                <span>{property.parking} vagas</span>
+              </div>
+            </div>
 
-            <div className="flex items-center justify-between">
-              <div className="flex gap-4 text-sm text-gray-600">
-                {property.bedrooms > 0 && (
-                  <span className="flex items-center gap-1">
-                    <Icon name="Home" className="w-4 h-4" />
-                    {property.bedrooms}
-                  </span>
-                )}
-                {property.bathrooms > 0 && (
-                  <span className="flex items-center gap-1">
-                    🚿 {property.bathrooms}
-                  </span>
-                )}
-                {property.parking > 0 && (
-                  <span className="flex items-center gap-1">
-                    🚗 {property.parking}
-                  </span>
-                )}
-              </div>
-              <div className="flex gap-2">
-                <button className="px-4 py-2 text-sm text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700">
-                  Ver Detalhes
-                </button>
-                <button className="px-4 py-2 text-sm text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700">
-                  WhatsApp
-                </button>
-              </div>
+            <p className="text-gray-600 mb-4 line-clamp-2">{property.description}</p>
+
+            <div className="flex justify-between items-center">
+              <button className="px-4 py-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-50 transition-colors">
+                Ver detalhes
+              </button>
+              <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                <Icon name="Phone" className="w-4 h-4 mr-2 inline" />
+                Contato
+              </button>
             </div>
           </div>
         </div>
@@ -552,75 +425,67 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, view }) => {
   }
 
   return (
-    <div className="overflow-hidden transition-all duration-300 transform bg-white shadow-lg rounded-xl hover:shadow-xl hover:-translate-y-2">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
       <div className="relative">
         <img
           src={property.images[0]}
           alt={property.title}
-          className="object-cover w-full h-64"
+          className="w-full h-48 object-cover"
         />
-        <div className="absolute flex gap-2 top-4 left-4">
-          <span className="px-3 py-1 text-xs font-medium text-white bg-blue-600 rounded-full">
-            {property.type}
-          </span>
-          <span className="px-3 py-1 text-xs font-medium text-white bg-green-600 rounded-full">
-            {property.business}
-          </span>
-        </div>
-        <div className="absolute px-3 py-1 text-xs font-medium text-white rounded-full top-4 right-4 bg-black/50">
-          #{property.code}
-        </div>
         {property.featured && (
-          <div className="absolute px-3 py-1 text-xs font-medium text-white bg-yellow-500 rounded-full bottom-4 left-4">
-            ⭐ Destaque
+          <div className="absolute top-2 left-2">
+            <span className="px-2 py-1 text-xs font-medium text-white bg-orange-500 rounded-full">
+              Destaque
+            </span>
+          </div>
+        )}
+        {property.new && (
+          <div className="absolute top-2 right-2">
+            <span className="px-2 py-1 text-xs font-medium text-white bg-green-500 rounded-full">
+              Novo
+            </span>
           </div>
         )}
       </div>
-
-      <div className="p-6">
-        <h3 className="mb-2 text-xl font-bold text-gray-900">{property.title}</h3>
-        
-        <div className="flex items-center mb-4 text-gray-600">
+      <div className="p-4">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="px-2 py-1 text-xs font-medium text-green-600 bg-green-100 rounded-full">
+            {property.transactionType}
+          </span>
+          <span className="text-xs text-gray-500">#{property.code}</span>
+        </div>
+        <h3 className="mb-2 text-lg font-bold text-gray-900">{property.title}</h3>
+        <div className="flex items-center mb-3 text-gray-600">
           <Icon name="MapPin" className="w-4 h-4 mr-2" />
-          <span className="text-sm">{property.address}</span>
+          <span className="text-sm">{property.location}</span>
         </div>
-
-        <p className="mb-4 text-sm text-gray-600 line-clamp-2">{property.description}</p>
-
+        <div className="mb-3 text-2xl font-bold text-blue-600">
+          {formatPrice(property.price, property.transactionType)}
+        </div>
         <div className="flex items-center justify-between mb-4 text-sm text-gray-600">
-          <span className="font-medium">{property.area}</span>
-          <div className="flex gap-3">
-            {property.bedrooms > 0 && (
-              <span className="flex items-center gap-1">
-                <Icon name="Home" className="w-4 h-4" />
-                {property.bedrooms}
-              </span>
-            )}
-            {property.bathrooms > 0 && (
-              <span className="flex items-center gap-1">
-                🚿 {property.bathrooms}
-              </span>
-            )}
-            {property.parking > 0 && (
-              <span className="flex items-center gap-1">
-                🚗 {property.parking}
-              </span>
-            )}
+          <div className="flex items-center">
+            <Icon name="Home" className="w-4 h-4 mr-1" />
+            <span>{formatArea(property.area)}</span>
+          </div>
+          <div className="flex items-center">
+            <Icon name="Bed" className="w-4 h-4 mr-1" />
+            <span>{property.bedrooms}</span>
+          </div>
+          <div className="flex items-center">
+            <Icon name="Bath" className="w-4 h-4 mr-1" />
+            <span>{property.bathrooms}</span>
+          </div>
+          <div className="flex items-center">
+            <Icon name="Car" className="w-4 h-4 mr-1" />
+            <span>{property.parking}</span>
           </div>
         </div>
-
-        <div className="pt-4 border-t">
-          <div className="flex items-center justify-between">
-            <div className="text-2xl font-bold text-blue-600">{property.price}</div>
-            <div className="flex gap-2">
-              <button className="flex items-center gap-2 px-4 py-2 text-sm text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700">
-                Ver mais
-                <Icon name="ArrowRight" className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-          <button className="w-full py-2 mt-3 text-sm font-medium text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700">
-            Falar via WhatsApp
+        <div className="flex gap-2">
+          <button className="flex-1 px-3 py-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-50 transition-colors text-sm">
+            Ver detalhes
+          </button>
+          <button className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm">
+            Contato
           </button>
         </div>
       </div>
