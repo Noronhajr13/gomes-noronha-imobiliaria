@@ -23,22 +23,14 @@ const NavigationItem: React.FC<NavigationItemProps> = ({
 }) => {
   const handleClick = () => onClick(id);
 
-  const colorClasses = variant === 'light' 
-    ? {
-        active: 'text-black bg-white shadow-lg transform scale-105',
-        inactive: 'text-gray-700 hover:text-black hover:bg-gray-100'
-      }
-    : {
-        active: 'text-white bg-gray-700 shadow-lg transform scale-105',
-        inactive: 'text-gray-300 hover:text-white hover:bg-gray-800'
-      };
-
   return (
     <button
       onClick={handleClick}
       className={cn(
-        "relative flex items-center gap-2 font-medium transition-all duration-300 px-4 py-3 rounded-xl group",
-        isActive ? colorClasses.active : colorClasses.inactive
+        "relative flex items-center gap-2 text-sm font-medium transition-all duration-300 px-4 py-3 rounded-xl group",
+        isActive 
+          ? 'text-white bg-black shadow-lg transform scale-105'
+          : 'text-gray-200 hover:text-black hover:bg-gray-100'
       )}
       style={{
         animationDelay: `${index * 100}ms`
@@ -57,10 +49,7 @@ const NavigationItem: React.FC<NavigationItemProps> = ({
         
         {/* Underline animado */}
         <div className={cn(
-          "absolute bottom-0 left-0 h-0.5 transition-all duration-300",
-          variant === 'light' 
-            ? "bg-gradient-to-r from-black to-gray-700" 
-            : "bg-gradient-to-r from-white to-gray-300",
+          "absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-black to-gray-700 transition-all duration-300",
           isActive 
             ? "w-full opacity-100" 
             : "w-0 group-hover:w-full opacity-0 group-hover:opacity-100"
@@ -69,7 +58,7 @@ const NavigationItem: React.FC<NavigationItemProps> = ({
 
       {/* Badge para seção ativa */}
       {isActive && (
-        <div className="absolute w-2 h-2 bg-green-400 rounded-full -top-1 -right-1 animate-pulse"></div>
+        <div className="absolute w-2 h-2 bg-white rounded-full -top-1 -right-1 animate-pulse"></div>
       )}
     </button>
   );

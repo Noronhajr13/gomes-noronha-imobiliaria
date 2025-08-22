@@ -2,65 +2,46 @@
 
 import React from 'react';
 import { Section } from '@/components/ui';
+import CTAButton from '../ui/CTAButton';
 import HeroContent from '@/components/hero/HeroContent';
 import PropertySearch, { SearchFilters } from '@/components/property/PropertySearch';
 import PropertyGrid from '@/components/property/PropertyGrid';
 import StatsGrid from '@/components/stats/StatsGrid';
 import { Property } from '@/components/property/PropertyCard';
+import { 
+  companyInfo, 
+  companyStats, 
+  getFeaturedProperties,
+  formatPrice,
+  getPropertyWhatsAppMessage 
+} from '@/data/MockData';
+import { Property as MockProperty } from '@/data/MockData';
 
-const HomeSection: React.FC = () => {
-  // Mock data
-  const featuredProperties: Property[] = [
-    {
-      id: 1,
-      title: "Apartamento Centro",
-      type: "Apartamento",
-      price: "R$ 450.000",
-      area: "85m²",
-      bedrooms: 3,
-      bathrooms: 2,
-      parking: 1,
-      location: "Centro, Juiz de Fora",
-      images: ["https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&h=400&fit=crop"],
-      featured: true,
-      code: "JF001"
-    },
-    {
-      id: 2,
-      title: "Casa Granbery",
-      type: "Casa", 
-      price: "R$ 680.000",
-      area: "150m²",
-      bedrooms: 4,
-      bathrooms: 3,
-      parking: 2,
-      location: "Bairro Granbery",
-      images: ["https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=600&h=400&fit=crop"],
-      featured: true,
-      code: "JF002"
-    },
-    {
-      id: 3,
-      title: "Terreno Comercial",
-      type: "Terreno",
-      price: "R$ 280.000", 
-      area: "400m²",
-      bedrooms: 0,
-      bathrooms: 0,
-      parking: 0,
-      location: "Zona Norte",
-      images: ["https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&h=400&fit=crop"],
-      featured: true,
-      code: "JF003"
-    }
-  ];
+const HeroSection: React.FC = () => {
+  // Função para converter MockProperty para Property (interface do PropertyCard)
+  const convertToPropertyCard = (mockProperty: MockProperty): Property => {
+    return {
+      id: mockProperty.id,
+      title: mockProperty.title,
+      type: mockProperty.type,
+      price: formatPrice(mockProperty.price, mockProperty.priceLabel),
+      area: `${mockProperty.area}m²`,
+      bedrooms: mockProperty.bedrooms,
+      bathrooms: mockProperty.bathrooms,
+      parking: mockProperty.parking,
+      location: `${mockProperty.neighborhood}, ${mockProperty.city}`,
+      images: mockProperty.images,
+      featured: mockProperty.featured,
+      code: mockProperty.code
+    };
+  };
 
-  const stats = [
-    { number: '20+', label: 'Anos de Experiência', icon: 'Clock' },
-    { number: '1.500+', label: 'Imóveis Vendidos', icon: 'Home' },
-    { number: '95%', label: 'Clientes Satisfeitos', icon: 'Star' },
-    { number: '50+', label: 'Imóveis Disponíveis', icon: 'Building' }
-  ];
+  // Busca imóveis em destaque do MockData
+  const mockFeaturedProperties = getFeaturedProperties(3);
+  const featuredProperties: Property[] = mockFeaturedProperties.map(convertToPropertyCard);
+
+  // Stats do MockData
+  const stats = companyStats;
 
   // Handlers
   const handleSearch = (filters: SearchFilters) => {
@@ -72,18 +53,25 @@ const HomeSection: React.FC = () => {
   };
 
   const handleWhatsApp = (property: Property) => {
-    console.log('WhatsApp:', property);
+    // Encontra o imóvel original no MockData para gerar mensagem completa
+    const originalProperty = mockFeaturedProperties.find(p => p.code === property.code);
+    if (originalProperty) {
+      const message = getPropertyWhatsAppMessage(originalProperty);
+      const phone = companyInfo.contact.whatsapp;
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+    }
   };
 
   const handleViewAll = () => {
     console.log('Ver todos os imóveis');
+    // Navegar para página de imóveis
   };
 
   return (
     <div className="min-h-screen mt-20 bg-white">
       
-      {/* Hero Section */}
-      <Section variant="dark" className="relative overflow-hidden">
+      {/* Hero Section - Fundo Preto */}
+      <Section variant="dark" className="relative overflow-hidden bg-black">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute bg-white rounded-full top-20 left-10 w-72 h-72 blur-3xl"></div>
@@ -91,28 +79,65 @@ const HomeSection: React.FC = () => {
         </div>
 
         <div className="relative z-10 px-4 py-20 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          {/* Hero Content usando dados do MockData */}
           <HeroContent
-            title="Encontre seu Imóvel Ideal"
-            subtitle="A Gomes & Noronha é especialista em vendas e locações em Juiz de Fora. Transformamos sonhos em endereços."
-            highlightWord="Imóvel Ideal"
+            title={companyInfo.tagline}
+            subtitle={companyInfo.description}
+            description={companyInfo.experience}
+            showCreci={true}
           />
+
+          {/* CTAs */}
+          <div className="flex flex-col justify-center gap-4 mb-12 sm:flex-row">
+            <CTAButton
+              text="Ver Imóveis Disponíveis"
+              icon="Search"
+              variant="secondary"
+              size="lg"
+              href="#imoveis"
+            />
+            <CTAButton
+              text="Falar com Corretor"
+              icon="MessageCircle"
+              variant="outline"
+              size="lg"
+              href={`https://wa.me/${companyInfo.contact.whatsapp}?text=${encodeURIComponent('Olá! Gostaria de falar com um corretor.')}`}
+              className="text-white border-white hover:bg-white hover:text-black"
+            />
+          </div>
           
+          {/* Search Box */}
           <PropertySearch onSearch={handleSearch} />
         </div>
       </Section>
 
-      {/* Stats */}
+      {/* Stats Section */}
       <StatsGrid stats={stats} />
 
       {/* Featured Properties */}
-      <PropertyGrid
-        properties={featuredProperties}
-        onViewDetails={handleViewDetails}
-        onWhatsApp={handleWhatsApp}
-        onViewAll={handleViewAll}
-      />
+      <Section className="py-16 bg-gray-50">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-3xl font-bold text-black md:text-4xl">
+              Imóveis em Destaque
+            </h2>
+            <p className="max-w-2xl mx-auto text-lg text-gray-600">
+              Seleção especial dos melhores imóveis disponíveis em Juiz de Fora
+            </p>
+          </div>
+
+          {/* Properties Grid */}
+          <PropertyGrid
+            properties={featuredProperties}
+            onViewDetails={handleViewDetails}
+            onWhatsApp={handleWhatsApp}
+            onViewAll={handleViewAll}
+          />
+        </div>
+      </Section>
     </div>
   );
 };
 
-export default HomeSection;
+export default HeroSection;
