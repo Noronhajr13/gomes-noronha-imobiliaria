@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(npm run lint)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(del \"H:\\Projetos Oficiais\\gomes-noronha-imobiliaria\\src\\components\\sections\\AboutSection.tsx\")"
     ],
     "deny": [],
     "ask": []

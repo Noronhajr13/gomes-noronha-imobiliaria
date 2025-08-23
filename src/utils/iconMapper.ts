@@ -25,7 +25,11 @@ import {
   List,
   Bed,
   Bath,
-  Car
+  Car,
+  Shield,
+  TrendingUp,
+  Camera,
+  Globe
 } from 'lucide-react';
 
 // Mapa de strings para componentes de ícones
@@ -56,6 +60,10 @@ export const iconMap = {
   Bed,
   Bath,
   Car,
+  Shield,
+  TrendingUp,
+  Camera,
+  Globe,
 };
 
 // Tipo para as chaves dos ícones

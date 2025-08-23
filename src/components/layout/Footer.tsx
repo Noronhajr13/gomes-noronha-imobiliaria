@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative overflow-hidden text-white bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+    <footer className="relative overflow-hidden text-white bg-gradient-to-br from-black via-gray-900 to-black">
       
       {/* Background decorativo */}
       <div className="absolute inset-0 opacity-5">
@@ -32,12 +32,6 @@ const Footer: React.FC = () => {
                   size="lg"
                   className="mb-6"
                 />
-                <p className="max-w-md mb-6 text-lg leading-relaxed text-gray-300">
-                  {companyInfo.fullName} - {companyInfo.creci}
-                </p>
-                <p className="mb-4 leading-relaxed text-gray-400">
-                  {companyInfo.tagline}. {companyInfo.description}
-                </p>
                 <div className="space-y-2 text-sm text-gray-400">
                   <p><strong>Endereço:</strong> {companyInfo.address.street}, {companyInfo.address.number}, {companyInfo.address.neighborhood}, {companyInfo.address.city}/{companyInfo.address.state}</p>
                   <p><strong>Telefone:</strong> {formatPhone(companyInfo.contact.phone)}</p>
