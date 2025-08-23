@@ -1,9 +1,8 @@
 "use client";
 
 import React from 'react';
-import { Section } from '@/components/ui';
+import { Section, Badge, Text } from '@/components/ui';
 import CTAButton from '../ui/CTAButton';
-import HeroContent from '@/components/hero/HeroContent';
 import PropertySearch, { SearchFilters } from '@/components/property/PropertySearch';
 import PropertyGrid from '@/components/property/PropertyGrid';
 import StatsGrid from '@/components/stats/StatsGrid';
@@ -79,13 +78,26 @@ const HeroSection: React.FC = () => {
         </div>
 
         <div className="relative z-10 px-4 py-20 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          {/* Hero Content usando dados do MockData */}
-          <HeroContent
-            title={companyInfo.tagline}
-            subtitle={companyInfo.description}
-            description={companyInfo.experience}
-            showCreci={true}
-          />
+          {/* Hero Content */}
+          <div className="mb-12 text-center">
+            <Badge variant="primary" className="inline-flex items-center gap-2 mb-8">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+              Venha conhecer nossos imóveis
+            </Badge>
+
+            <h1 className="mb-6 text-4xl font-bold leading-tight text-white md:text-5xl lg:text-6xl">
+              {companyInfo.tagline}
+            </h1>
+
+            <p className="mb-4 text-xl text-gray-300 md:text-2xl">
+              A <strong className="text-white">{companyInfo.name}</strong> é especialista em vendas em{' '}
+              <strong className="text-white">{companyInfo.address.city}</strong>.
+            </p>
+
+            <p className="max-w-3xl mx-auto text-lg text-gray-400">
+              {companyInfo.experience} e conectando pessoas aos imóveis perfeitos para suas necessidades.
+            </p>
+          </div>
 
           {/* CTAs */}
           <div className="flex flex-col justify-center gap-4 mb-12 sm:flex-row">
@@ -102,7 +114,7 @@ const HeroSection: React.FC = () => {
               variant="outline"
               size="lg"
               href={`https://wa.me/${companyInfo.contact.whatsapp}?text=${encodeURIComponent('Olá! Gostaria de falar com um corretor.')}`}
-              className="text-white border-white hover:bg-white hover:text-black"
+              className="text-white border-white hover:bg-white hover:text-gray-800"
             />
           </div>
           
@@ -114,28 +126,14 @@ const HeroSection: React.FC = () => {
       {/* Stats Section */}
       <StatsGrid stats={stats} />
 
-      {/* Featured Properties */}
-      <Section className="py-16 bg-gray-50">
-        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          {/* Section Header */}
-          <div className="mb-12 text-center">
-            <h2 className="mb-4 text-3xl font-bold text-black md:text-4xl">
-              Imóveis em Destaque
-            </h2>
-            <p className="max-w-2xl mx-auto text-lg text-gray-600">
-              Seleção especial dos melhores imóveis disponíveis em Juiz de Fora
-            </p>
-          </div>
+      {/* Properties Grid */}
+      <PropertyGrid
+        properties={featuredProperties}
+        onViewDetails={handleViewDetails}
+        onWhatsApp={handleWhatsApp}
+        onViewAll={handleViewAll}
+      />
 
-          {/* Properties Grid */}
-          <PropertyGrid
-            properties={featuredProperties}
-            onViewDetails={handleViewDetails}
-            onWhatsApp={handleWhatsApp}
-            onViewAll={handleViewAll}
-          />
-        </div>
-      </Section>
     </div>
   );
 };

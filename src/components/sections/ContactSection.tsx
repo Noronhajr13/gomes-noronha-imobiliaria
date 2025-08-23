@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { siteConfig } from '@/data/siteConfig';
+import { companyInfo } from '@/data/MockData';
 import { Icon } from '@/utils/iconMapper';
 
 const ContactSection: React.FC = () => {
@@ -55,7 +55,7 @@ const ContactSection: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900">Telefone</h4>
-                  <p className="font-medium text-blue-600">{siteConfig.contact.phone}</p>
+                  <p className="font-medium text-blue-600">{companyInfo.contact.phone}</p>
                   <p className="text-sm text-gray-500">Seg à Sex, 8h às 18h</p>
                 </div>
               </div>
@@ -67,7 +67,7 @@ const ContactSection: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900">Email</h4>
-                  <p className="font-medium text-green-600">{siteConfig.contact.email}</p>
+                  <p className="font-medium text-green-600">{companyInfo.contact.email}</p>
                   <p className="text-sm text-gray-500">Resposta em até 24h</p>
                 </div>
               </div>
@@ -79,8 +79,8 @@ const ContactSection: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900">Endereço</h4>
-                  <p className="text-gray-600">{siteConfig.contact.address.fullAddress}</p>
-                  <p className="text-gray-600">{siteConfig.contact.address.city}</p>
+                  <p className="text-gray-600">{companyInfo.address.street}, {companyInfo.address.number}</p>
+                  <p className="text-gray-600">{companyInfo.address.neighborhood}, {companyInfo.address.city} - {companyInfo.address.state}</p>
                 </div>
               </div>
 
@@ -91,7 +91,7 @@ const ContactSection: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900">Horário</h4>
-                  <p className="text-gray-600">{siteConfig.contact.businessHours.weekdays}</p>
+                  <p className="text-gray-600">{companyInfo.businessHours.weekdays}</p>
                 </div>
               </div>
             </div>

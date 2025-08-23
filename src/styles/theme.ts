@@ -69,11 +69,12 @@ export const theme = {
     },
     // Badges/Tags
     badge: {
-      primary: 'bg-black text-white px-3 py-1 rounded-full text-sm font-medium',
+      primary: 'bg-black text-gray-200 px-3 py-1 rounded-full text-sm font-medium',
       secondary: 'bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium',
       success: 'bg-green-600 text-white px-3 py-1 rounded-full text-sm font-medium',
       warning: 'bg-yellow-500 text-black px-3 py-1 rounded-full text-sm font-medium',
       danger: 'bg-red-600 text-white px-3 py-1 rounded-full text-sm font-medium',
+      photo: 'bg-gray-800 text-white px-3 py-1 rounded-full text-sm font-medium',
     }
   }
 } as const;

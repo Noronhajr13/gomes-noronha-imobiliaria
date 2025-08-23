@@ -2,12 +2,13 @@
 
 import { useState, useCallback } from 'react';
 
-export const useActiveSection = (initialSection: string = 'inicio') => {
+export const useActiveSection = (initialSection: string = 'home') => {
   const [activeSection, setActiveSection] = useState(initialSection);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const changeSection = useCallback((section: string) => {
-    setActiveSection(section);
+  // Função principal para mudar seção
+  const changeSection = useCallback((sectionId: string) => {
+    setActiveSection(sectionId);
     setMobileMenuOpen(false); // Fecha menu mobile ao navegar
   }, []);
 

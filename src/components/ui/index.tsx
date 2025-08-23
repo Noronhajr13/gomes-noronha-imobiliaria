@@ -70,7 +70,7 @@ export const Text: React.FC<TextProps> = ({
 
 // Badge reutilizável
 interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
+  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'photo';
   children: React.ReactNode;
 }
 
@@ -117,3 +117,8 @@ export const Section: React.FC<SectionProps> = ({
     </section>
   );
 };
+
+// Export outros componentes
+export { default as SocialLinks } from './SocialLinks';
+export { default as Logo } from './Logo';
+export { default as LogoPreloader } from './LogoPreloader';

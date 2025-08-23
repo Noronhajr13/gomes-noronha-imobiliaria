@@ -1,4 +1,6 @@
 import React from 'react';
+import Link from 'next/link';
+import { companyInfo } from '@/data/MockData';
 import { Icon, IconName } from '@/utils/iconMapper';
 import { Button } from '@/components/ui';
 import { cn } from '@/utils/helpers';
@@ -9,6 +11,7 @@ interface MobileMenuProps {
     id: string;
     name: string;
     icon: string;
+    href?: string;
   }>;
   activeSection: string;
   phone: string;
@@ -44,16 +47,16 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
           <div className="flex justify-center mb-4">
             <div className="flex items-center px-4 py-2 text-black bg-white rounded-full">
               <Icon name="Award" className="w-4 h-4 mr-2" />
-              <span className="text-sm font-semibold">CRECI PJ 9297</span>
+              <span className="text-sm font-semibold">{companyInfo.creci}</span>
             </div>
           </div>
         )}
 
         <nav className="flex flex-col space-y-2">
           {navigation.map((item, index) => (
-            <button
+            <Link
               key={item.id}
-              onClick={() => onNavigate(item.id)}
+              href={item.href || '/'}
               className={cn(
                 "flex items-center gap-4 font-medium transition-all duration-300 text-left p-4 rounded-xl",
                 activeSection === item.id 
@@ -77,7 +80,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               {activeSection === item.id && (
                 <div className="w-2 h-2 ml-auto bg-white rounded-full animate-pulse"></div>
               )}
-            </button>
+            </Link>
           ))}
           
           {/* Contact info mobile */}

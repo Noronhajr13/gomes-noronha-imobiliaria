@@ -1,4 +1,5 @@
 import React from 'react';
+import { companyInfo } from '@/data/MockData';
 import { Icon } from '@/utils/iconMapper';
 import { Button, Text } from '@/components/ui';
 import PhoneButton from '@/components/ui/PhoneButton';
@@ -21,11 +22,10 @@ const ContactInfo: React.FC<ContactInfoProps> = ({
   return (
     <div className="items-center hidden space-x-6 lg:flex">
       <PhoneButton
-        phone=""
+        phone={companyInfo.contact.whatsapp}
         showLabel={true}
-        className="flex items-center gap-2 bg-green-400 border-0 rounded-lg hover:bg-gray-800"
-      >
-      </PhoneButton>
+        className="flex items-center gap-2 bg-green-600 border-0 text-white rounded-lg hover:bg-green-700"
+      />
     </div>
   );
 };

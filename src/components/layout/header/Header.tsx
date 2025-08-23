@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { siteConfig } from '@/data/siteConfig';
+import { companyInfo, navigationItems } from '@/data/MockData';
 import { Icon } from '@/utils/iconMapper';
 import { cn } from '@/utils/helpers';
+import { Logo } from '@/components/ui';
 import NavigationItem from '@/components/layout/header/NavigationItem';
 import ContactInfo from '@/components/layout/header/ContactInfo';
 import MobileMenu from '@/components/layout/header/MobileMenu';
-import Image from 'next/image';
 
 interface HeaderProps {
   activeSection: string;
@@ -59,44 +59,28 @@ const Header: React.FC<HeaderProps> = ({
             {/* CRECI Badge - Desktop */}
             <div className="hidden lg:flex items-center bg-white text-black px-3 py-1.5 rounded-full">
               <Icon name="Award" className="w-4 h-4 mr-2" />
-              <span className="text-xs font-semibold">CRECI PJ 9297</span>
+              <span className="text-xs font-semibold">{companyInfo.creci}</span>
             </div>
             
-            {/* Logo - Quando você tiver a imagem, substitua por: */}
-            {/* <Image 
-              src="/logo.png"
-              alt="Gomes & Noronha Imobiliária" 
-              width={160}
-              height={50}
-              className="w-auto h-12 cursor-pointer"
+            {/* Logo */}
+            <Logo 
+              variant="header"
+              theme="dark"
+              size="md"
+              priority={true}
               onClick={() => handleSectionChange('home')}
-              priority
-            /> */}
-            
-            {/* Placeholder da Logo enquanto não tem a imagem */}
-            <div 
-              onClick={() => handleSectionChange('home')}
-              className="flex items-center cursor-pointer"
-            >
-              <div className="p-2 mr-3 bg-black rounded-lg">
-                <Icon name="Home" className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-sm font-bold text-white">Gomes & Noronha</h1>
-                <p className="text-xs text-gray-300">Negócios Imobiliários</p>
-              </div>
-            </div>
+            />
           </div>
           {/* Desktop Navigation */}
           <nav className="hidden space-x-2 md:flex">
-            {siteConfig.navigation.map((item, index) => (
+            {navigationItems.map((item, index) => (
               <NavigationItem
                 key={item.id}
                 id={item.id}
                 name={item.name}
                 icon={item.icon}
+                href={item.href}
                 isActive={activeSection === item.id}
-                onClick={handleSectionChange}
                 variant="light" // Mudamos para light já que o fundo é branco
                 index={index}
               />
@@ -105,7 +89,7 @@ const Header: React.FC<HeaderProps> = ({
 
           {/* Contact Info */}
           <ContactInfo 
-            phone={siteConfig.contact.phone}
+            phone={companyInfo.contact.phone}
             onContactClick={handleContactClick}
             variant="light" // Mudamos para light já que o fundo é branco
           />
@@ -136,9 +120,9 @@ const Header: React.FC<HeaderProps> = ({
         {/* Mobile Navigation */}
         <MobileMenu 
           isOpen={mobileMenuOpen}
-          navigation={siteConfig.navigation}
+          navigation={navigationItems}
           activeSection={activeSection}
-          phone={siteConfig.contact.phone}
+          phone={companyInfo.contact.phone}
           onNavigate={handleSectionChange}
           onContactClick={handleContactClick}
           variant="light"

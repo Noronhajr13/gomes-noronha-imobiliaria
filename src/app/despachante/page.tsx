@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import Header from '@/components/layout/header/Header';
 import Footer from '@/components/layout/Footer';
-import { HeroSection } from '@/components/sections';
+import { DespachanteSection } from '@/components/sections';
 
-export default function Home() {
+export default function DespachantePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Função placeholder para setActiveSection (não usado nesta página)
@@ -17,14 +17,14 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       <Header 
-        activeSection="home"
+        activeSection="despachante"
         setActiveSection={handleSectionChange}
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
       />
       
       <main>
-        <HeroSection />
+        <DespachanteSection />
       </main>
       
       <Footer />

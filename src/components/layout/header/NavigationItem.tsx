@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { Icon, IconName } from '@/utils/iconMapper';
 import { cn } from '@/utils/helpers';
 
@@ -6,8 +7,8 @@ interface NavigationItemProps {
   id: string;
   name: string;
   icon: string;
+  href: string;
   isActive: boolean;
-  onClick: (id: string) => void;
   variant?: 'light' | 'dark';
   index?: number;
 }
@@ -16,16 +17,15 @@ const NavigationItem: React.FC<NavigationItemProps> = ({
   id,
   name,
   icon,
+  href,
   isActive,
-  onClick,
   variant = 'light',
   index = 0
 }) => {
-  const handleClick = () => onClick(id);
 
   return (
-    <button
-      onClick={handleClick}
+    <Link
+      href={href}
       className={cn(
         "relative flex items-center gap-2 text-sm font-medium transition-all duration-300 px-4 py-3 rounded-xl group",
         isActive 
@@ -60,7 +60,7 @@ const NavigationItem: React.FC<NavigationItemProps> = ({
       {isActive && (
         <div className="absolute w-2 h-2 bg-white rounded-full -top-1 -right-1 animate-pulse"></div>
       )}
-    </button>
+    </Link>
   );
 };
 

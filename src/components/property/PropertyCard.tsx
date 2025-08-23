@@ -50,14 +50,14 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           className="object-cover w-full h-64"
         />
         <div className="absolute top-4 left-4">
-          <Badge variant="primary">{property.type}</Badge>
+          <Badge variant="photo">{property.type}</Badge>
         </div>
         <div className="absolute top-4 right-4">
           <Badge variant="secondary">#{property.code}</Badge>
         </div>
         {property.featured && (
           <div className="absolute bottom-4 left-4">
-            <Badge variant="warning">⭐ Destaque</Badge>
+            <Badge variant="photo">⭐ Destaque</Badge>
           </div>
         )}
       </div>

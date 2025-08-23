@@ -98,71 +98,67 @@ export const companyInfo = {
   description: "A Gomes & Noronha é especialista em vendas em Juiz de Fora.",
   experience: "Há alguns anos realizando sonhos",
   creci: "CRECI PJ 9297",
-  logo: "/logo.png",
-  logoWhite: "/logo-white.png",
+  logo: "/logo.png", // Logo principal (fundo claro)
+  logoWhite: "/logo-white.png", // Logo branca (fundo escuro)
+  logoCompact: "/logo-compact.png", // Logo compacta/quadrada
   favicon: "/favicon.ico",
   
   // Contato
   contact: {
-    phone: "(32) 3215-0000",
-    mobile: "(32) 98888-0000",
-    whatsapp: "5532988880000",
-    email: "contato@gomesnoronha.com.br",
-    emailVendas: "vendas@gomesnoronha.com.br",
-    emailLocacao: "locacao@gomesnoronha.com.br",
+    phone: "(32) 98708-4750",
+    mobile: "(32) 98708-4750",
+    whatsapp: "5532987084750",
+    email: "gomesenoronha@gmail.com",
+    emailVendas: "corretorwesleygomes@gmail.com",
   },
   
   // Endereço
   address: {
-    street: "Av. Barão do Rio Branco",
-    number: "2000",
-    complement: "Sala 301",
+    street: "Rua Halfeld",
+    number: "828",
+    complement: "Sala 504",
     neighborhood: "Centro",
     city: "Juiz de Fora",
     state: "MG",
-    zipCode: "36010-011",
+    zipCode: "36010-003",
     country: "Brasil",
-    googleMapsUrl: "https://maps.google.com/?q=Av.+Barão+do+Rio+Branco,+2000,+Juiz+de+Fora",
+    googleMapsUrl: "https://maps.google.com/?q=Rua.+Halfeld,+828,+Juiz+de+Fora",
   },
   
   // Horário de Funcionamento
   businessHours: {
-    weekdays: "Segunda a Sexta: 8h às 18h",
-    saturday: "Sábado: 8h às 12h",
+    weekdays: "Segunda a Sexta: 9h às 18h",
+    saturday: "Sábado: Fechado",
     sunday: "Domingo: Fechado",
     holidays: "Feriados: Fechado",
   },
   
   // Redes Sociais
   social: {
-    instagram: "https://instagram.com/gomesnoronhaimoveis",
-    facebook: "https://facebook.com/gomesnoronhaimoveis",
-    linkedin: "https://linkedin.com/company/gomes-noronha-imoveis",
-    youtube: "https://youtube.com/@gomesnoronhaimoveis",
-    twitter: "https://twitter.com/gomesnoronha",
+    instagram: "https://instagram.com/gomesenoronha",
   },
 };
 
 // Estatísticas
 export const companyStats = [
   { 
-    number: 'Há alguns anos', 
-    label: 'Realizando Sonhos', 
-    icon: 'Clock',
+    number: '10+', 
+    label: 'Imóveis exclusivos', 
+    icon: 'Crown',
     highlight: true 
   },
   { 
-    number: '500+', 
+    number: '100+', 
     label: 'Imóveis Vendidos', 
     icon: 'Home' 
   },
   { 
-    number: '98%', 
+    number: '95%', 
     label: 'Clientes Satisfeitos', 
     icon: 'Star' 
   },
   { 
-    number: '150+', 
+    number: '50+', 
     label: 'Imóveis Disponíveis', 
     icon: 'Building' 
   }
@@ -390,8 +386,8 @@ export const testimonials: Testimonial[] = [
 export const teamMembers: TeamMember[] = [
   {
     id: 1,
-    name: "Carlos Gomes",
-    role: "Diretor Comercial",
+    name: "Wesley Gomes",
+    role: "Corretor",
     creci: "CRECI F-12345",
     image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop",
     phone: "(32) 98888-0001",
@@ -439,49 +435,6 @@ export const teamMembers: TeamMember[] = [
     whatsapp: "5532988880004",
     specialties: ["Casas", "Condomínios", "Imóveis Novos"],
     bio: "Focada em encontrar o lar perfeito para cada cliente."
-  }
-];
-
-// Blog Posts
-export const blogPosts: BlogPost[] = [
-  {
-    id: 1,
-    title: "Como Preparar seu Imóvel para Venda em Juiz de Fora",
-    slug: "como-preparar-imovel-venda-juiz-de-fora",
-    excerpt: "Dicas essenciais para valorizar seu imóvel e vender mais rápido no mercado de Juiz de Fora.",
-    content: "Conteúdo completo do artigo...",
-    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=400&fit=crop",
-    category: "Vendas",
-    author: "Carlos Gomes",
-    date: "15 de Fevereiro de 2024",
-    readTime: 5,
-    tags: ["vendas", "dicas", "valorização"]
-  },
-  {
-    id: 2,
-    title: "Melhores Bairros para Investir em Juiz de Fora em 2024",
-    slug: "melhores-bairros-investir-juiz-de-fora-2024",
-    excerpt: "Análise completa dos bairros com maior potencial de valorização em Juiz de Fora.",
-    content: "Conteúdo completo do artigo...",
-    image: "https://images.unsplash.com/photo-1448630360428-65456885c650?w=800&h=400&fit=crop",
-    category: "Investimentos",
-    author: "Patricia Noronha",
-    date: "10 de Fevereiro de 2024",
-    readTime: 8,
-    tags: ["investimentos", "mercado", "análise"]
-  },
-  {
-    id: 3,
-    title: "Guia de Financiamento Imobiliário: Caixa vs Outros Bancos",
-    slug: "guia-financiamento-imobiliario-comparacao",
-    excerpt: "Compare as melhores opções de financiamento imobiliário disponíveis no mercado.",
-    content: "Conteúdo completo do artigo...",
-    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&h=400&fit=crop",
-    category: "Financiamento",
-    author: "Rafael Santos",
-    date: "5 de Fevereiro de 2024",
-    readTime: 10,
-    tags: ["financiamento", "bancos", "crédito"]
   }
 ];
 
@@ -550,61 +503,6 @@ export const partners: Partner[] = [
   }
 ];
 
-// Serviços
-export const services = [
-  {
-    id: 'venda',
-    title: 'Venda de Imóveis',
-    description: 'Assessoria completa para venda do seu imóvel com a melhor avaliação do mercado.',
-    icon: 'TrendingUp',
-    features: [
-      'Avaliação gratuita',
-      'Fotos profissionais',
-      'Tour virtual 360°',
-      'Divulgação em múltiplos canais',
-      'Negociação especializada'
-    ]
-  },
-  {
-    id: 'compra',
-    title: 'Compra de Imóveis',
-    description: 'Encontramos o imóvel ideal para você com segurança e transparência.',
-    icon: 'ShoppingCart',
-    features: [
-      'Busca personalizada',
-      'Visitas acompanhadas',
-      'Análise de documentação',
-      'Assessoria em financiamento',
-      'Suporte até as chaves'
-    ]
-  },
-  {
-    id: 'aluguel',
-    title: 'Administração de Aluguel',
-    description: 'Gestão completa de locação com garantia e segurança jurídica.',
-    icon: 'Key',
-    features: [
-      'Análise de crédito',
-      'Contrato seguro',
-      'Vistoria detalhada',
-      'Cobrança automatizada',
-      'Suporte jurídico'
-    ]
-  },
-  {
-    id: 'avaliacao',
-    title: 'Avaliação de Imóveis',
-    description: 'Avaliação profissional e precisa do valor de mercado do seu imóvel.',
-    icon: 'Calculator',
-    features: [
-      'Análise comparativa de mercado',
-      'Relatório detalhado',
-      'Laudo técnico',
-      'Consultoria de valorização'
-    ]
-  }
-];
-
 // Bairros de Juiz de Fora
 export const neighborhoods = [
   { value: 'centro', label: 'Centro', zone: 'Central' },
@@ -666,9 +564,9 @@ export const rentPriceRanges = [
 export const navigationItems = [
   { id: 'home', name: 'Início', icon: 'Home', href: '/' },
   { id: 'imoveis', name: 'Imóveis', icon: 'Building', href: '/imoveis' },
-  { id: 'servicos', name: 'Serviços', icon: 'Briefcase', href: '/servicos' },
-  { id: 'sobre', name: 'Sobre', icon: 'Users', href: '/sobre' },
-  { id: 'contato', name: 'Contato', icon: 'Phone', href: '/contato' },
+  { id: 'quemsomos', name: 'Quem Somos', icon: 'Users', href: '/quemsomos' },
+  { id: 'despachante', name: 'Despachante', icon: 'Briefcase', href: '/despachante' },
+  { id: 'anunciar', name: 'Anunciar', icon: 'Star', href: '/anunciar' },
 ];
 
 // Footer Links
@@ -864,15 +762,6 @@ export const getTeamBySpecialty = (specialty: string): TeamMember[] => {
 };
 
 /**
- * Busca posts do blog por categoria
- */
-export const getBlogPostsByCategory = (category: string): BlogPost[] => {
-  return blogPosts.filter(post => 
-    post.category.toLowerCase() === category.toLowerCase()
-  );
-};
-
-/**
  * Busca FAQs por categoria
  */
 export const getFAQsByCategory = (category: FAQ['category']): FAQ[] => {
@@ -893,10 +782,8 @@ export default {
   properties,
   testimonials,
   teamMembers,
-  blogPosts,
   faqs,
   partners,
-  services,
   neighborhoods,
   propertyTypes,
   priceRanges,

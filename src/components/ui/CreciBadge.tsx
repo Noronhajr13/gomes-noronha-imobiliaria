@@ -2,7 +2,7 @@
 import React from 'react';
 import { Icon } from '@/utils/iconMapper';
 import { cn } from '@/utils/helpers';
-import { siteConfig } from '@/data/siteConfig';
+import { companyInfo } from '@/data/MockData';
 
 interface CreciBadgeProps {
   creci?: string;
@@ -11,7 +11,7 @@ interface CreciBadgeProps {
 }
 
 const CreciBadge: React.FC<CreciBadgeProps> = ({ 
-  creci = siteConfig.company.creci,
+  creci = companyInfo.creci,
   variant = 'default',
   className 
 }) => {

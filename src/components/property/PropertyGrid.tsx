@@ -22,7 +22,7 @@ const PropertyGrid: React.FC<PropertyGridProps> = ({
   onWhatsApp
 }) => {
   return (
-    <Section variant="DEFAULT" className="py-20">
+    <Section variant="DEFAULT" className="py-12 bg-gray-50">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         
         {/* Header */}
