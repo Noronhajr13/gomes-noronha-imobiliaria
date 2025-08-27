@@ -27,29 +27,21 @@ const AboutSection: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen mt-20 bg-white">
+    <div className="min-h-screen mt-8 bg-white">
       <Section variant="DEFAULT" className="py-24">
         <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          
-          {/* Header */}
-          <div className="mb-20 text-center">
-            <div className="inline-block px-6 py-3 mb-6 text-sm font-bold text-green-600 bg-green-100 border border-green-200 rounded-full">
-              <Icon name="Users" className="inline w-4 h-4 mr-2" />
-              Nossa História
-            </div>
-            
+
+          <div className="mb-24 text-center">
             <Text as="h2" variant="primary" className="mb-8 text-5xl font-extrabold leading-tight md:text-6xl">
-              Quem <span className="text-green-600">Somos</span>
+              Quem Somos
             </Text>
             
             <Text variant="secondary" className="max-w-4xl mx-auto text-xl leading-relaxed">
               {companyInfo.description} {companyInfo.tagline}. 
-              Desde {companyInfo.foundedYear}, {companyInfo.experience}.
             </Text>
           </div>
 
-          {/* Statistics Grid */}
-          <div className="mb-24">
+          <div className="mt-24 mb-24">
             <StatsGrid stats={companyStats} />
           </div>
 
@@ -138,8 +130,8 @@ const AboutSection: React.FC = () => {
 
           {/* Team Section */}
           <div>
-            <Text as="h3" variant="primary" className="mb-16 text-4xl font-bold text-center">
-              Conheça Nossa <span className="text-green-600">Equipe</span>
+            <Text as="h3" variant="primary" className="mb-16 text-4xl text-center">
+              Conheça Nossa <span className="font-bold">EQUIPE</span>
             </Text>
             
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">

@@ -1,7 +1,11 @@
 import React from 'react';
 import Image from 'next/image';
 import { Icon } from '@/utils/iconMapper';
-import { Button, Card, Text, Badge } from '@/components/ui';
+import Button from '../ui/Button';
+import { Card, Text, Badge } from '@/components/ui';
+import { 
+  companyInfo
+} from '@/data/MockData';
 
 export interface Property {
   id: number;
@@ -24,7 +28,7 @@ interface PropertyCardProps {
   onWhatsApp?: (property: Property) => void;
 }
 
-const PropertyCard: React.FC<PropertyCardProps> = ({ 
+const PropertyCard: React.FC<PropertyCardProps> = React.memo(({ 
   property, 
   onViewDetails, 
   onWhatsApp 
@@ -39,8 +43,6 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 
   return (
     <Card variant="DEFAULT" className="overflow-hidden transform hover:-translate-y-2">
-      
-      {/* Image */}
       <div className="relative">
         <Image 
           src={property.images[0]}
@@ -61,8 +63,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           </div>
         )}
       </div>
-      
-      {/* Content */}
+
       <div className="p-6">
         <Text as="h3" variant="primary" className="mb-2 text-xl font-bold">
           {property.title}
@@ -73,7 +74,6 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           <Text variant="secondary" className="text-sm">{property.location}</Text>
         </div>
         
-        {/* Details */}
         <div className="flex items-center justify-between mb-6 text-sm">
           <Text variant="secondary" className="font-medium">{property.area}</Text>
           <div className="flex gap-3">
@@ -95,32 +95,33 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
             )}
           </div>
         </div>
-        
-        {/* Price and CTA */}
+
         <div className="flex items-center justify-between mb-4">
           <Text variant="accent" className="text-2xl font-bold">{property.price}</Text>
           <Button 
-            variant="primary" 
+            text="Ver mais"
+            icon="ArrowRight"
+            variant="standard" 
             size="sm" 
-            onClick={handleViewDetails}
-            className="flex items-center gap-2"
-          >
-            Ver mais
-            <Icon name="ArrowRight" className="w-4 h-4" />
-          </Button>
+            href=""
+            base="smallBottom"
+          />
         </div>
         
-        <Button 
-          variant="success" 
-          size="sm" 
-          onClick={handleWhatsApp}
+        <Button
+          text="Falar via WhatsApp"
+          icon="Search"
+          variant="contact"
+          size="sm"
+          base="card"
           className="w-full"
-        >
-          Falar via WhatsApp
-        </Button>
+          href={`https://wa.me/${companyInfo.contact.whatsapp}?text=${encodeURIComponent('Olá! Gostaria de falar com um corretor.')}`}
+        />
       </div>
     </Card>
   );
-};
+});
+
+PropertyCard.displayName = 'PropertyCard';
 
 export default PropertyCard;

@@ -47,7 +47,7 @@ src/
 │   │   └── Footer.tsx      # Footer com links funcionais
 │   ├── property/           # Sistema de imóveis
 │   ├── sections/           # Seções das páginas
-│   │   ├── HeroSection.tsx         # Seção principal (home)
+│   │   ├── HomeSection.tsx         # Seção principal (home)
 │   │   ├── AboutSection.tsx        # Quem somos
 │   │   ├── BuscarImoveisSection.tsx # Busca de imóveis
 │   │   ├── DespachanteSection.tsx  # Serviços de despachante
@@ -102,7 +102,7 @@ Todas centralizadas em `src/data/MockData.ts`:
 
 #### **Sistema de Rotas** 
 Estrutura de páginas individuais (Next.js App Router):
-- **`/`** - Página inicial (HeroSection) 
+- **`/`** - Página inicial (HomeSection) 
 - **`/imoveis`** - Busca e listagem de imóveis
 - **`/quemsomos`** - Sobre a empresa (AboutSection)
 - **`/despachante`** - Serviços de documentação
@@ -149,9 +149,33 @@ Estrutura de páginas individuais (Next.js App Router):
 #### **📋 Seções Funcionais Completas**
 - **DespachanteSection**: Serviços de documentação com CTA para WhatsApp
 - **AnunciarSection**: Formulário completo integrado ao WhatsApp
-- **BuscarImoveisSection**: Sistema de busca de imóveis
+- **BuscarImoveisSection**: Sistema de busca avançada com filtros e paginação
 - **AboutSection**: Página institucional da empresa
-- **HeroSection**: Landing page principal
+- **HomeSection**: Landing page principal
+
+#### **🔍 Sistema de Busca Avançada (v3.0)**
+- **Busca por texto**: Query em múltiplos campos (título, bairro, código, etc.)
+- **Filtros avançados**: Tipo, transação, preço, quartos, banheiros, área, bairro
+- **Paginação inteligente**: 12 itens por página com navegação otimizada
+- **Visualização dupla**: Grade e lista com toggle de visualização
+- **Performance**: Hook customizado com useMemo e useCallback
+- **Estado de loading**: Feedback visual durante buscas
+- **Resultados vazios**: UX amigável quando não encontra imóveis
+
+#### **⚡ Otimização de Performance (v2.0)**
+- **React.memo**: Todos os componentes de lista otimizados
+- **useCallback/useMemo**: Hooks otimizados para evitar re-renders
+- **Lazy loading**: Preparado para imagens e componentes pesados
+- **Build otimizado**: 130kB first load JS, compilação sem warnings
+
+#### **🎯 SEO Avançado (v2.0)**
+- **metadataBase**: Configurado para produção
+- **Open Graph**: Metadados completos para redes sociais
+- **Twitter Cards**: Otimizado para compartilhamento
+- **Structured Data**: JSON-LD para imobiliárias (Schema.org)
+- **Sitemap dinâmico**: Geração automática com páginas de imóveis
+- **Robots.txt**: Configuração SEO-friendly
+- **Metadados por página**: Títulos e descrições únicas
 
 ### MELHORIAS FUTURAS
 
@@ -178,3 +202,15 @@ Ao analisar exemplos de código, se forem identificados potenciais gargalos de d
 ❗**Regra recomendada**: Todas as seções devem ser criadas como componentes separados em `/components/sections/` e exportadas através do `index.ts`. Cada seção deve ser reutilizável e não conter wrapper `<section>` próprio (será adicionado pelas páginas quando necessário).
 
 ❗**Regra recomendada**: Para formulários que integram com WhatsApp, usar sempre a função `getWhatsAppUrl()` do MockData para gerar links padronizados, incluindo número formatado e mensagem pré-definida.
+
+❗**Regra recomendada**: Sempre executar `npm run lint` antes de finalizar qualquer alteração e corrigir todos os warnings de variáveis não utilizadas e imports desnecessários.
+
+❗**Regra recomendada**: Para novos componentes, sempre implementar todas as props definidas na interface TypeScript. Props opcionais devem ter valores padrão explícitos ou tratamento condicional.
+
+❗**Regra recomendada**: Usar `React.memo` para componentes que recebem props complexas ou que são renderizados frequentemente, especialmente em listas de imóveis. Incluir `displayName` para debug.
+
+❗**Regra recomendada**: Implementar loading states e error boundaries para todas as operações assíncronas, seguindo o padrão de UX estabelecido.
+
+❗**Regra recomendada**: Configurar sempre metadataBase e structured data (JSON-LD) para todas as páginas que contenham informações de imóveis para melhor SEO.
+
+❗**Regra recomendada**: Para formulários de contato e busca, sempre usar `useCallback` e `useMemo` para otimizar re-renders e performance em componentes pesados.

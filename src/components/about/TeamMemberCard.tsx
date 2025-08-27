@@ -41,11 +41,6 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
           className="object-cover w-full h-64"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-        {member.creci && (
-          <div className="absolute text-white bottom-4 left-4">
-            <div className="text-sm opacity-90">{member.creci}</div>
-          </div>
-        )}
       </div>
       
       {/* Content */}
@@ -57,9 +52,9 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
           {member.role}
         </Text>
         
-        {member.bio && (
+        {member.objectives && (
           <Text variant="secondary" className="mb-4 leading-relaxed">
-            {member.bio}
+            {member.objectives}
           </Text>
         )}
 

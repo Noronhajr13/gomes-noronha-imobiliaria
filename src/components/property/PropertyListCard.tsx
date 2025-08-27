@@ -12,7 +12,7 @@ interface PropertyListCardProps {
   className?: string;
 }
 
-const PropertyListCard: React.FC<PropertyListCardProps> = ({ 
+const PropertyListCard: React.FC<PropertyListCardProps> = React.memo(({ 
   property, 
   view, 
   onViewDetails,
@@ -186,6 +186,8 @@ const PropertyListCard: React.FC<PropertyListCardProps> = ({
       </div>
     </Card>
   );
-};
+});
+
+PropertyListCard.displayName = 'PropertyListCard';
 
 export default PropertyListCard;

@@ -11,14 +11,10 @@ interface SocialLink {
 
 interface SocialLinksProps {
   className?: string;
-  size?: 'sm' | 'md' | 'lg';
-  showTitle?: boolean;
 }
 
 const SocialLinks: React.FC<SocialLinksProps> = ({ 
-  className = '', 
-  size = 'md',
-  showTitle = true 
+  className = ''
 }) => {
   const socialLinks: SocialLink[] = [
     { 
@@ -51,32 +47,8 @@ const SocialLinks: React.FC<SocialLinksProps> = ({
     return colors[color as keyof typeof colors] || colors.blue;
   };
 
-  const getSizeClasses = () => {
-    const sizes = {
-      sm: 'w-8 h-8',
-      md: 'w-12 h-12',
-      lg: 'w-16 h-16'
-    };
-    return sizes[size];
-  };
-
-  const getIconSize = () => {
-    const iconSizes = {
-      sm: 'w-3 h-3',
-      md: 'w-5 h-5',
-      lg: 'w-7 h-7'
-    };
-    return iconSizes[size];
-  };
-
   return (
     <div className={className}>
-      {showTitle && (
-        <h4 className="flex items-center mb-6 text-lg font-bold">
-          <Icon name="ExternalLink" className="w-5 h-5 mr-2 text-green-400" />
-          Conecte-se Conosco
-        </h4>
-      )}
       <div className="flex flex-wrap gap-4">
         {socialLinks.map((social, index) => (
           <a
@@ -84,10 +56,10 @@ const SocialLinks: React.FC<SocialLinksProps> = ({
             href={social.url}
             target="_blank"
             rel="noopener noreferrer"
-            className={`group ${getSizeClasses()} rounded-xl flex items-center justify-center transition-all duration-300 transform hover:scale-110 ${getSocialColor(social.color)}`}
+            className={`group w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 transform hover:scale-110 ${getSocialColor(social.color)}`}
             title={social.name}
           >
-            <Icon name={social.icon} className={`${getIconSize()} transition-transform duration-300 group-hover:scale-110`} />
+            <Icon name={social.icon} className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
           </a>
         ))}
       </div>

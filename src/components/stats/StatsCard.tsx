@@ -10,10 +10,9 @@ export interface Stat {
 
 interface StatsCardProps {
   stat: Stat;
-  index?: number;
 }
 
-const StatsCard: React.FC<StatsCardProps> = ({ stat, index = 0 }) => {
+const StatsCard: React.FC<StatsCardProps> = React.memo(({ stat }) => {
   return (
     <div className="text-center group">
       <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 transition-colors duration-300 bg-white shadow-lg rounded-2xl group-hover:bg-gray-100">
@@ -27,6 +26,8 @@ const StatsCard: React.FC<StatsCardProps> = ({ stat, index = 0 }) => {
       </Text>
     </div>
   );
-};
+});
+
+StatsCard.displayName = 'StatsCard';
 
 export default StatsCard;

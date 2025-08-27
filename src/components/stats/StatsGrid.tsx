@@ -16,9 +16,8 @@ interface StatsGridProps {
   className?: string;
 }
 
-const StatsGrid: React.FC<StatsGridProps> = ({ 
+const StatsGrid: React.FC<StatsGridProps> = React.memo(({ 
   stats, 
-  variant = 'default',
   className 
 }) => {
   return (
@@ -65,6 +64,8 @@ const StatsGrid: React.FC<StatsGridProps> = ({
       </div>
     </section>
   );
-};
+});
+
+StatsGrid.displayName = 'StatsGrid';
 
 export default StatsGrid;

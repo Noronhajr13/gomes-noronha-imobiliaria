@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import Header from '@/components/layout/header/Header';
-import Footer from '@/components/layout/Footer';
-import { HeroSection } from '@/components/sections';
+import Footer from '@/components/layout/footer/Footer';
+import { HomeSection } from '@/components/sections';
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -24,7 +24,7 @@ export default function Home() {
       />
       
       <main>
-        <HeroSection />
+        <HomeSection />
       </main>
       
       <Footer />

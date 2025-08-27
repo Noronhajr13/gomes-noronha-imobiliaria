@@ -1,8 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { companyInfo } from '@/data/MockData';
 import { Icon, IconName } from '@/utils/iconMapper';
-import { Button } from '@/components/ui';
 import { cn } from '@/utils/helpers';
 
 interface MobileMenuProps {
@@ -15,10 +13,8 @@ interface MobileMenuProps {
   }>;
   activeSection: string;
   phone: string;
-  onNavigate: (id: string) => void;
   onContactClick?: () => void;
-  variant?: 'light' | 'dark';
-  showCreci?: boolean; // Nova prop
+  variant?: 'light' | 'dark'
 }
 
 const MobileMenu: React.FC<MobileMenuProps> = ({
@@ -26,12 +22,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   navigation,
   activeSection,
   phone,
-  onNavigate,
-  onContactClick,
-  variant = 'light',
-  showCreci = false
+  variant = 'light'
 }) => {
-  const bgColor = variant === 'light' ? 'bg-white' : 'bg-black';
   const borderColor = variant === 'light' ? 'border-gray-100' : 'border-gray-800';
 
   return (
@@ -42,15 +34,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
         : "max-h-0 opacity-0"
     )}>
       <div className={`${borderColor} pt-6 border-t`}>
-        {/* CRECI Badge Mobile */}
-        {showCreci && (
-          <div className="flex justify-center mb-4">
-            <div className="flex items-center px-4 py-2 text-black bg-white rounded-full">
-              <Icon name="Award" className="w-4 h-4 mr-2" />
-              <span className="text-sm font-semibold">{companyInfo.creci}</span>
-            </div>
-          </div>
-        )}
 
         <nav className="flex flex-col space-y-2">
           {navigation.map((item, index) => (
@@ -82,33 +65,19 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               )}
             </Link>
           ))}
-          
-          {/* Contact info mobile */}
+
           <div className={`pt-6 ${borderColor} mt-4 space-y-4 border-t`}>
             <a 
               href={`tel:${phone}`}
-              className="flex items-center gap-4 p-4 text-gray-600 transition-colors rounded-xl hover:bg-gray-50"
+              className="flex items-center gap-4 p-4 bg-green-600 border-white shadow-lg rounded-xl border-1"
             >
-              <div className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-xl">
-                <Icon name="Phone" className="w-5 h-5 text-black" />
+              <div className="flex items-center justify-center w-10 h-10 text-black transition-all duration-300 bg-white rounded-xl">
+                <Icon name="Phone" className="w-5 h-5" />
               </div>
               <div>
-                <div className="font-medium text-black">{phone}</div>
-                <div className="text-sm text-gray-500">
-                  Ligue agora
-                </div>
+                <span className="text-lg text-black">Ligue agora</span>
               </div>
             </a>
-            
-            <Button 
-              variant="primary" 
-              size="md"
-              onClick={onContactClick}
-              className="flex items-center justify-center w-full gap-2 text-white bg-black border-0 hover:bg-gray-800"
-            >
-              <Icon name="Mail" className="w-5 h-5" />
-              Solicitar Orçamento
-            </Button>
           </div>
         </nav>
       </div>

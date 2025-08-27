@@ -45,17 +45,15 @@ export interface TeamMember {
   id: number;
   name: string;
   role: string;
-  creci?: string;
   image: string;
   phone: string;
   email: string;
   whatsapp: string;
   specialties: string[];
-  bio?: string;
+  objectives?: string;
   social?: {
     instagram?: string;
-    linkedin?: string;
-    facebook?: string;
+    tiktok?: string;
   };
 }
 
@@ -96,12 +94,11 @@ export const companyInfo = {
   fullName: "Gomes & Noronha Negócios Imobiliários",
   tagline: "Transformamos Sonhos em Endereços",
   description: "A Gomes & Noronha é especialista em vendas em Juiz de Fora.",
-  experience: "Há alguns anos realizando sonhos",
-  foundedYear: 2004,
+  foundedYear: 2024,
   creci: "CRECI PJ 9297",
-  logo: "/logo.png", // Logo principal (fundo claro)
-  logoWhite: "/logo-white.png", // Logo branca (fundo escuro)
-  logoCompact: "/logo-compact.png", // Logo compacta/quadrada
+  logo: "/images/logo-principal.png", // Logo principal (fundo claro)
+  logoWhite: "/images/logo-teste.png", // Logo branca (fundo escuro)
+  logoCompact: "/images/logo-alternativa.png", // Logo compacta/quadrada
   favicon: "/favicon.ico",
   
   // Missão e Visão
@@ -117,7 +114,7 @@ export const companyInfo = {
   
   // Contato
   contact: {
-    phone: "(32) 98708-4750",
+    despachante: "5532988451817",
     mobile: "(32) 98708-4750",
     whatsapp: "5532987084750",
     email: "gomesenoronha@gmail.com",
@@ -406,103 +403,44 @@ export const properties: Property[] = [
   }
 ];
 
-// Depoimentos
-export const testimonials: Testimonial[] = [
-  {
-    id: 1,
-    name: "Maria Silva Santos",
-    role: "Compradora",
-    content: "Excelente atendimento! A equipe da Gomes & Noronha foi fundamental para encontrarmos nosso apartamento dos sonhos. Profissionais dedicados e atenciosos.",
-    rating: 5,
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop",
-    propertyType: "Apartamento",
-    date: "Janeiro 2024"
-  },
-  {
-    id: 2,
-    name: "João Pedro Oliveira",
-    role: "Vendedor",
-    content: "Venderam minha casa em tempo recorde e pelo melhor preço. A expertise em negociação fez toda a diferença. Recomendo!",
-    rating: 5,
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop",
-    propertyType: "Casa",
-    date: "Dezembro 2023"
-  },
-  {
-    id: 3,
-    name: "Ana Carolina Costa",
-    role: "Investidora",
-    content: "A consultoria da Gomes & Noronha foi essencial para meus investimentos imobiliários em Juiz de Fora. Conhecimento de mercado incomparável.",
-    rating: 5,
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
-    propertyType: "Múltiplos",
-    date: "Fevereiro 2024"
-  },
-  {
-    id: 4,
-    name: "Roberto Almeida",
-    role: "Locatário",
-    content: "Processo de locação rápido e transparente. A administração do aluguel é impecável, sempre prontos para ajudar.",
-    rating: 5,
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
-    propertyType: "Apartamento",
-    date: "Janeiro 2024"
-  }
-];
-
 // Equipe
 export const teamMembers: TeamMember[] = [
   {
     id: 1,
     name: "Wesley Gomes",
-    role: "Corretor",
-    creci: "CRECI F-12345",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop",
-    phone: "(32) 98888-0001",
-    email: "carlos@gomesnoronha.com.br",
-    whatsapp: "5532988880001",
-    specialties: ["Imóveis de Alto Padrão", "Investimentos", "Negociação"],
-    bio: "Com mais de 15 anos de experiência no mercado imobiliário de Juiz de Fora.",
+    role: "Sócio/Corretor",
+    image: "/images/WesleyGomes.png",
+    phone: "(32) 98708-4750",
+    email: "corretorwesleygomes@gmail.com",
+    whatsapp: "5532987084750",
+    specialties: ["Imóveis perfeitos", "Investimentos", "Negociação"],
+    objectives: "Wesley Gomes é um corretor dedicado a encontrar o imóvel ideal para cada cliente, com foco em investimentos inteligentes e negociações vantajosas.",
     social: {
-      instagram: "@carlosgomes.corretor",
-      linkedin: "carlos-gomes-corretor"
+      instagram: "@wesleygomes.corretor",
+      tiktok: "@gomess_wesley"
     }
   },
   {
     id: 2,
-    name: "Patricia Noronha",
-    role: "Diretora Administrativa",
-    creci: "CRECI F-23456",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop",
-    phone: "(32) 98888-0002",
-    email: "patricia@gomesnoronha.com.br",
-    whatsapp: "5532988880002",
-    specialties: ["Administração de Imóveis", "Locação", "Documentação"],
-    bio: "Especialista em gestão imobiliária e processos administrativos."
+    name: "Claudio Noronha",
+    role: "Sócio/Despachante Imobiliário",
+    image: "/images/ClaudioNoronha.png",
+    phone: "(32) 98845-1817",
+    email: "noronhadespachante@gmail.com",
+    whatsapp: "5532988451817",
+    specialties: ["Regularização", "Assessoria", "Consultoria"],
+    objectives: "Claudio Noronha é um especialista em regularização de imóveis, oferecendo assessoria e consultoria para facilitar a vida dos clientes."
   },
   {
     id: 3,
-    name: "Rafael Santos",
-    role: "Corretor",
-    creci: "CRECI F-34567",
-    image: "https://images.unsplash.com/photo-1556157382-97eda2d62296?w=400&h=400&fit=crop",
-    phone: "(32) 98888-0003",
-    email: "rafael@gomesnoronha.com.br",
-    whatsapp: "5532988880003",
-    specialties: ["Apartamentos", "Primeira Compra", "Financiamento"],
-    bio: "Especialista em ajudar famílias a encontrar seu primeiro imóvel."
-  },
-  {
-    id: 4,
-    name: "Juliana Ferreira",
-    role: "Corretora",
-    creci: "CRECI F-45678",
-    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop",
-    phone: "(32) 98888-0004",
-    email: "juliana@gomesnoronha.com.br",
-    whatsapp: "5532988880004",
-    specialties: ["Casas", "Condomínios", "Imóveis Novos"],
-    bio: "Focada em encontrar o lar perfeito para cada cliente."
+    name: "Mariana Noronha",
+    role: "Sócia/Social Mídia",
+    image: "/images/MarianaNoronha.png",
+    phone: "(32) 99119-0192",
+    email: "marianarodriguesnoronha@gmail.com",
+    whatsapp: "5532991190192",
+    specialties: ["Inovação", "Atendimento", "Relacionamento"],
+    objectives: "Apaixonada por conectar pessoas e criar experiências memoráveis, Mariana Noronha é a mente criativa por trás das estratégias de marketing digital da Gomes & Noronha."
   }
 ];
 
@@ -573,40 +511,53 @@ export const partners: Partner[] = [
 
 // Bairros de Juiz de Fora
 export const neighborhoods = [
-  { value: 'centro', label: 'Centro', zone: 'Central' },
-  { value: 'sao-mateus', label: 'São Mateus', zone: 'Zona Sul' },
-  { value: 'alto-dos-passos', label: 'Alto dos Passos', zone: 'Zona Oeste' },
-  { value: 'bom-pastor', label: 'Bom Pastor', zone: 'Zona Sul' },
-  { value: 'santa-helena', label: 'Santa Helena', zone: 'Zona Norte' },
-  { value: 'cascatinha', label: 'Cascatinha', zone: 'Zona Sul' },
-  { value: 'jardim-gloria', label: 'Jardim Glória', zone: 'Zona Leste' },
-  { value: 'sao-pedro', label: 'São Pedro', zone: 'Zona Norte' },
-  { value: 'teixeiras', label: 'Teixeiras', zone: 'Zona Sul' },
-  { value: 'benfica', label: 'Benfica', zone: 'Zona Norte' },
-  { value: 'granbery', label: 'Granbery', zone: 'Zona Sul' },
-  { value: 'paineiras', label: 'Paineiras', zone: 'Zona Sul' },
-  { value: 'manoel-honorio', label: 'Manoel Honório', zone: 'Zona Leste' },
-  { value: 'santa-terezinha', label: 'Santa Terezinha', zone: 'Zona Oeste' },
-  { value: 'morro-da-gloria', label: 'Morro da Glória', zone: 'Zona Sul' },
-  { value: 'bairu', label: 'Bairú', zone: 'Zona Oeste' },
-  { value: 'mariano-procopio', label: 'Mariano Procópio', zone: 'Zona Leste' },
-  { value: 'dom-bosco', label: 'Dom Bosco', zone: 'Zona Sul' },
-  { value: 'santa-luzia', label: 'Santa Luzia', zone: 'Zona Sul' },
-  { value: 'botanagua', label: 'Botanágua', zone: 'Zona Sul' }
+  { value: 'todos', label: 'Todos os bairros' },
+  { value: 'alto-dos-passos', label: 'Alto dos Passos' },
+  { value: 'bairu', label: 'Bairú' },
+  { value: 'benfica', label: 'Benfica' },
+  { value: 'bom-pastor', label: 'Bom Pastor' },
+  { value: 'cascatinha', label: 'Cascatinha' },
+  { value: 'centro', label: 'Centro' },
+  { value: 'dom-bosco', label: 'Dom Bosco' },
+  { value: 'granbery', label: 'Granbery' },
+  { value: 'jardim-gloria', label: 'Jardim Glória' },
+  { value: 'manoel-honorio', label: 'Manoel Honório' },
+  { value: 'mariano-procopio', label: 'Mariano Procópio' },
+  { value: 'morro-da-gloria', label: 'Morro da Glória' },
+  { value: 'paineiras', label: 'Paineiras' },
+  { value: 'santa-helena', label: 'Santa Helena' },
+  { value: 'santa-luzia', label: 'Santa Luzia' },
+  { value: 'santa-terezinha', label: 'Santa Terezinha' },
+  { value: 'sao-mateus', label: 'São Mateus' },
+  { value: 'sao-pedro', label: 'São Pedro' },
+  { value: 'teixeiras', label: 'Teixeiras' },
+];
+
+export const negociableTypes = [
+  { value: 'todos', label: 'Todos' },
+  { value: 'venda', label: 'Venda' },
+  { value: 'aluguel', label: 'Aluguel' }
 ];
 
 // Tipos de Imóveis
 export const propertyTypes = [
-  { value: 'casa', label: 'Casa', icon: 'Home' },
-  { value: 'apartamento', label: 'Apartamento', icon: 'Building' },
-  { value: 'terreno', label: 'Terreno', icon: 'MapPin' },
-  { value: 'sala-comercial', label: 'Sala Comercial', icon: 'Briefcase' },
-  { value: 'loja', label: 'Loja', icon: 'ShoppingBag' },
-  { value: 'galpao', label: 'Galpão', icon: 'Warehouse' },
-  { value: 'sitio', label: 'Sítio/Chácara', icon: 'Trees' },
-  { value: 'cobertura', label: 'Cobertura', icon: 'Building2' },
-  { value: 'flat', label: 'Flat', icon: 'Hotel' },
-  { value: 'kitnet', label: 'Kitnet/Studio', icon: 'Home' }
+  { value: 'todos', label: 'Todos os tipos' },
+  { value: 'apartamento', label: 'Apartamento'},
+  { value: 'casa', label: 'Casa' },
+  { value: 'cobertura', label: 'Cobertura' },
+  { value: 'flat', label: 'Flat' },
+  { value: 'galpao', label: 'Galpão' },
+  { value: 'kitnet', label: 'Kitnet/Studio' },
+  { value: 'loja', label: 'Loja' },
+  { value: 'sala-comercial', label: 'Sala Comercial' },
+  { value: 'sitio', label: 'Sítio/Chácara' },
+  { value: 'terreno', label: 'Terreno' }
+];
+
+export const comboSelects = [
+  { id: "negocio", label: "Tipos de Negócio", options: negociableTypes},
+  { id: "imovel", label: "Tipos de Imóvel", options: propertyTypes},
+  { id: "bairro", label: "Bairros", options: neighborhoods},
 ];
 
 // Faixas de Preço
@@ -646,26 +597,12 @@ export const footerLinks = {
     { label: 'Lançamentos', href: '/lancamentos' },
     { label: 'Imóveis em Destaque', href: '/destaques' }
   ],
-  servicos: [
-    { label: 'Venda de Imóveis', href: '/servicos/venda' },
-    { label: 'Compra de Imóveis', href: '/servicos/compra' },
-    { label: 'Administração de Aluguel', href: '/servicos/aluguel' },
-    { label: 'Avaliação Gratuita', href: '/avaliacao' },
-    { label: 'Consultoria', href: '/servicos/consultoria' }
-  ],
   empresa: [
     { label: 'Sobre Nós', href: '/sobre' },
     { label: 'Nossa Equipe', href: '/equipe' },
     { label: 'Depoimentos', href: '/depoimentos' },
     { label: 'Parceiros', href: '/parceiros' },
     { label: 'Trabalhe Conosco', href: '/trabalhe-conosco' }
-  ],
-  suporte: [
-    { label: 'Central de Ajuda', href: '/ajuda' },
-    { label: 'Perguntas Frequentes', href: '/faq' },
-    { label: 'Fale Conosco', href: '/contato' },
-    { label: 'Política de Privacidade', href: '/privacidade' },
-    { label: 'Termos de Uso', href: '/termos' }
   ]
 };
 
@@ -850,7 +787,6 @@ const MockData = {
   companyValues,
   companyFeatures,
   properties,
-  testimonials,
   teamMembers,
   faqs,
   partners,

@@ -4,7 +4,9 @@ import React, { useState } from 'react';
 import { Icon } from '@/utils/iconMapper';
 import { Button, Card } from '@/components/ui';
 import { cn } from '@/utils/helpers';
-import { propertyTypes, neighborhoods } from '@/data/MockData';
+import { comboSelects } from '@/data/MockData';
+import ComboFilter from '../ui/ComboFilter';
+import InputFilterProps from '../ui/InputFilter';
 
 export interface PropertyFiltersData {
   tipo: string;
@@ -38,76 +40,23 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <Card variant="DEFAULT" className={cn("p-6 mb-8", className)}>
+    <Card variant="DEFAULT" className={cn("p-6 mb-8")}>
       <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-2 lg:grid-cols-4">
-        {/* Tipo de Imóvel */}
-        <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700">
-            Tipo de Imóvel
-          </label>
-          <select
-            value={filters.tipo}
-            onChange={(e) => onFilterChange('tipo', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-          >
-            <option value="todos">Todos os tipos</option>
-            {propertyTypes.map(type => (
-              <option key={type.value} value={type.label}>
-                {type.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Tipo de Negócio */}
-        <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700">
-            Tipo de Negócio
-          </label>
-          <select
-            value={filters.negocio}
-            onChange={(e) => onFilterChange('negocio', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-          >
-            <option value="todos">Todos</option>
-            <option value="Venda">Venda</option>
-            <option value="Aluguel">Aluguel</option>
-            <option value="Venda/Aluguel">Venda/Aluguel</option>
-          </select>
-        </div>
-
-        {/* Cidade */}
-        <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700">
-            Cidade
-          </label>
-          <input
-            type="text"
-            placeholder="Digite a cidade"
-            value={filters.cidade}
-            onChange={(e) => onFilterChange('cidade', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+        {comboSelects.map(({ id, label, options }) => (
+          <ComboFilter
+            id={id}
+            label={label}
+            options={options}
+            onChange={(value) => onFilterChange(id as keyof PropertyFiltersData, value)}
+            value={filters[id as keyof PropertyFiltersData]}
           />
-        </div>
-
-        {/* Bairro */}
-        <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700">
-            Bairro
-          </label>
-          <select
-            value={filters.bairro}
-            onChange={(e) => onFilterChange('bairro', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-          >
-            <option value="">Todos os bairros</option>
-            {neighborhoods.map(neighborhood => (
-              <option key={neighborhood.value} value={neighborhood.label}>
-                {neighborhood.label}
-              </option>
-            ))}
-          </select>
-        </div>
+        ))}
+          <InputFilterProps
+            placeHolder="Digite a cidade"
+            onChange={(value) => onFilterChange('cidade', value)}
+            label="Cidade"
+            value={filters.cidade}
+          />
       </div>
 
       {/* Filtros Expandidos */}

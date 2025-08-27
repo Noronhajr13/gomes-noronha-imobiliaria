@@ -29,10 +29,13 @@ import {
   Shield,
   TrendingUp,
   Camera,
-  Globe
+  Globe,
+  Check,
+  Loader2,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 
-// Mapa de strings para componentes de ícones
 export const iconMap = {
   Home,
   Users,
@@ -64,19 +67,20 @@ export const iconMap = {
   TrendingUp,
   Camera,
   Globe,
+  Check,
+  Loader2,
+  ChevronLeft,
+  ChevronRight,
 };
 
-// Tipo para as chaves dos ícones
 export type IconName = keyof typeof iconMap;
 
-// Interface para props do ícone
 interface IconProps {
   name: IconName;
   className?: string;
   size?: number;
 }
 
-// Componente do ícone
 export const Icon: React.FC<IconProps> = ({ 
   name, 
   className = "w-4 h-4", 

@@ -24,12 +24,12 @@ const BuscarImoveisSection: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen mt-20 bg-white">
-      <Section variant="alternate" className="py-16">
-        <div className="container px-4 mx-auto">
-          {/* Header da Seção */}
+    <div className="min-h-screen mt-8 bg-white">
+      <Section variant="DEFAULT" className="py-24">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+
           <div className="mb-12 text-center">
-            <Text as="h2" variant="primary" className="mb-4 text-3xl font-bold md:text-4xl">
+            <Text as="h2" variant="primary" className="mb-8 text-5xl font-extrabold leading-tight md:text-6xl">
               Encontre seu Imóvel Ideal
             </Text>
             <Text variant="secondary" className="max-w-2xl mx-auto text-lg">
@@ -37,7 +37,6 @@ const BuscarImoveisSection: React.FC = () => {
             </Text>
           </div>
 
-          {/* Formulário de Filtros */}
           <PropertyFilters
             filters={filters}
             onFilterChange={handleFilterChange}

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, Button, Section } from '@/components/ui';
+import Button from '../ui/Button';
+import { Text, Section } from '@/components/ui';
 import PropertyCard, { Property } from './PropertyCard';
 
 interface PropertyGridProps {
@@ -28,14 +29,7 @@ const PropertyGrid: React.FC<PropertyGridProps> = ({
         {/* Header */}
         <div className="mb-16 text-center">
           <Text as="h2" variant="primary" className="mb-6 text-4xl font-bold md:text-5xl">
-            {title.split(' ').map((word, index) => 
-              word === 'Destaque' ? (
-                <Text key={index} as="span" variant="accent" className="font-bold"> {word}</Text>
-              ) : (
-                <span key={index}> {word}</span>
-              )
-            )}
-          </Text>
+            {title}</Text>
           <Text variant="secondary" className="max-w-3xl mx-auto text-xl">
             {subtitle}
           </Text>
@@ -53,14 +47,15 @@ const PropertyGrid: React.FC<PropertyGridProps> = ({
           ))}
         </div>
 
-        {/* CTA */}
-        {showViewAll && (
-          <div className="text-center">
-            <Button variant="primary" size="lg" onClick={onViewAll}>
-              Ver Todos os Imóveis
-            </Button>
-          </div>
-        )}
+        <div className="text-center">
+          <Button
+            text="Ver Todos os Imóveis"
+            variant="standard"
+            base="base"
+            size="lg"
+            href="imoveis"
+          />
+        </div>
       </div>
     </Section>
   );
