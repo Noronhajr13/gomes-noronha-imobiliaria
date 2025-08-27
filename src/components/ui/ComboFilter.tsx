@@ -1,4 +1,4 @@
-import React, { type SelectHTMLAttributes } from 'react';
+import React from 'react';
 
 interface ComboFilterProps {
   options: { value: string; label: string }[];
@@ -12,7 +12,7 @@ export const ComboFilter: React.FC<ComboFilterProps> = ({
   id,
   options, 
   onChange,
-  value,
+  // value, // Não utilizado - select é controlado pelo parent
   label,
   ...props
 }) => {

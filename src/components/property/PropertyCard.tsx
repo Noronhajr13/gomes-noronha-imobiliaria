@@ -30,16 +30,17 @@ interface PropertyCardProps {
 
 const PropertyCard: React.FC<PropertyCardProps> = React.memo(({ 
   property, 
-  onViewDetails, 
-  onWhatsApp 
+  // onViewDetails, // Props para uso futuro
+  // onWhatsApp // Props para uso futuro
 }) => {
-  const handleViewDetails = () => {
-    onViewDetails?.(property);
-  };
+  // Handlers for future use
+  // const handleViewDetails = () => {
+  //   onViewDetails?.(property);
+  // };
 
-  const handleWhatsApp = () => {
-    onWhatsApp?.(property);
-  };
+  // const handleWhatsApp = () => {
+  //   onWhatsApp?.(property);
+  // };
 
   return (
     <Card variant="DEFAULT" className="overflow-hidden transform hover:-translate-y-2">

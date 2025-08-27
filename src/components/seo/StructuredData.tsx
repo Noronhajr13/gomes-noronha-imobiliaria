@@ -19,7 +19,7 @@ const StructuredData: React.FC<StructuredDataProps> = ({
       url: process.env.NEXT_PUBLIC_SITE_URL || 'https://gomesnoronha.com.br',
       logo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://gomesnoronha.com.br'}${companyInfo.logo}`,
       image: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://gomesnoronha.com.br'}${companyInfo.logo}`,
-      telephone: companyInfo.contact.phone,
+      telephone: companyInfo.contact.mobile,
       email: companyInfo.contact.email,
       address: {
         '@type': 'PostalAddress',

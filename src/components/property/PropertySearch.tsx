@@ -51,6 +51,7 @@ const PropertySearch: React.FC<PropertySearchProps> = ({
           .filter(({ id }) => ['imovel', 'negocio', 'bairro'].includes(id))
           .map(({ id, label, options }) => (
             <ComboFilter
+              key={id}
               id={id}
               label={label}
               options={options}

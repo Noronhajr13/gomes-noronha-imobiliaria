@@ -7,7 +7,7 @@ import { cn } from '@/utils/helpers';
 import Button from '@/components/ui/Button';
 import { Logo } from '@/components/ui';
 import NavigationItem from '@/components/layout/header/NavigationItem';
-import LoginButton from '@/components/layout/header/LoginButton';
+// import LoginButton from '@/components/layout/header/LoginButton'; // Não utilizado
 import MobileMenu from '@/components/layout/header/MobileMenu';
 
 interface HeaderProps {

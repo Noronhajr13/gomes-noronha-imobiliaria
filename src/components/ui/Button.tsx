@@ -21,7 +21,7 @@ const Button: React.FC<ButtonProps> = ({
   variant = 'standard',
   size = 'md',
   fullWidth = false,
-  onClick,
+  // onClick, // Não utilizado diretamente - component usa href
   href,
   className
 }) => {

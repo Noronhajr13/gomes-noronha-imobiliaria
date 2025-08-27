@@ -3,7 +3,7 @@
 import React from 'react';
 import { Icon, type IconName } from '@/utils/iconMapper';
 import { companyInfo } from '@/data/MockData';
-import { Section, Text, Button } from '@/components/ui';
+import { Section, Text } from '@/components/ui';
 
 const DespachanteSection: React.FC = () => {
   const services = [

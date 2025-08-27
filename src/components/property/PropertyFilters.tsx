@@ -35,7 +35,7 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
   onFilterChange,
   onClearFilters,
   resultsCount,
-  className
+  // className - prop not used directly but passed to cn()
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -44,6 +44,7 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
       <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-2 lg:grid-cols-4">
         {comboSelects.map(({ id, label, options }) => (
           <ComboFilter
+            key={id}
             id={id}
             label={label}
             options={options}

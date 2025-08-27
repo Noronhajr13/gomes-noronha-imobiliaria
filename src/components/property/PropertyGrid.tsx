@@ -17,8 +17,8 @@ const PropertyGrid: React.FC<PropertyGridProps> = ({
   title = "Imóveis em Destaque",
   subtitle = "Selecionamos os melhores imóveis disponíveis para você.",
   properties,
-  showViewAll = true,
-  onViewAll,
+  // showViewAll = true, // Não utilizado
+  // onViewAll, // Não utilizado
   onViewDetails,
   onWhatsApp
 }) => {

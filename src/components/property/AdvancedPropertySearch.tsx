@@ -6,7 +6,6 @@ import { cn } from '@/utils/helpers';
 import { getButtonClass } from '@/styles/theme';
 import { propertyTypes, neighborhoods, priceRanges } from '@/data/MockData';
 import { SearchFilters } from '@/hooks/usePropertySearch';
-import { Label } from '../ui';
 
 interface AdvancedPropertySearchProps {
   filters: SearchFilters;
@@ -41,9 +40,6 @@ const AdvancedPropertySearch: React.FC<AdvancedPropertySearchProps> = React.memo
     <div className={cn("bg-white rounded-2xl shadow-lg border border-gray-100 p-6", className)}>
       <div className="flex flex-col gap-4 mb-6 lg:flex-row">
         <div className="relative flex-1">
-          <Label>
-            Tipo de Imóvel
-          </Label>
           <Icon name="Search" className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
           <input
             type="text"
