@@ -1,17 +1,29 @@
 "use client";
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/site/layout/header/Header';
 import Footer from '@/components/site/layout/footer/Footer';
 import { AnunciarSection } from '@/components/site/sections';
 
 export default function AnunciarPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const router = useRouter();
 
-  // Função placeholder para setActiveSection (não usado nesta página)
+  // Função para navegação entre páginas
   const handleSectionChange = (section: string) => {
-    // Para navegação entre páginas, poderia usar router.push() aqui
-    console.log('Navigate to:', section);
+    const routes: { [key: string]: string } = {
+      'home': '/',
+      'imoveis': '/site/imoveis',
+      'quemsomos': '/site/quemsomos',
+      'despachante': '/site/despachante',
+      'anunciar': '/site/anunciar',
+      'contato': '/#contato'
+    };
+    
+    if (routes[section]) {
+      router.push(routes[section]);
+    }
   };
 
   return (

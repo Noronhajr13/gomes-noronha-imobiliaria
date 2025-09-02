@@ -575,24 +575,24 @@ export const rentPriceRanges = [
 // Navegação
 export const navigationItems = [
   { id: 'home', name: 'Início', icon: 'Home', href: '/' },
-  { id: 'imoveis', name: 'Imóveis', icon: 'Building', href: '/imoveis' },
-  { id: 'quemsomos', name: 'Quem Somos', icon: 'Users', href: '/quemsomos' },
-  { id: 'despachante', name: 'Despachante', icon: 'Briefcase', href: '/despachante' },
-  { id: 'anunciar', name: 'Anunciar', icon: 'Star', href: '/anunciar' },
+  { id: 'imoveis', name: 'Imóveis', icon: 'Building', href: '/site/imoveis' },
+  { id: 'quemsomos', name: 'Quem Somos', icon: 'Users', href: '/site/quemsomos' },
+  { id: 'despachante', name: 'Despachante', icon: 'Briefcase', href: '/site/despachante' },
+  { id: 'anunciar', name: 'Anunciar', icon: 'Star', href: '/site/anunciar' },
 ];
 
 // Footer Links
 export const footerLinks = {
   imoveis: [
-    { label: 'Casas à Venda', href: '/imoveis?tipo=casa&transacao=venda' },
-    { label: 'Apartamentos à Venda', href: '/imoveis?tipo=apartamento&transacao=venda' },
-    { label: 'Imóveis para Alugar', href: '/imoveis?transacao=aluguel' },
+    { label: 'Casas à Venda', href: '/site/imoveis?tipo=casa&transacao=venda' },
+    { label: 'Apartamentos à Venda', href: '/site/imoveis?tipo=apartamento&transacao=venda' },
+    { label: 'Imóveis para Alugar', href: '/site/imoveis?transacao=aluguel' },
     { label: 'Lançamentos', href: '/lancamentos' },
     { label: 'Imóveis em Destaque', href: '/destaques' }
   ],
   empresa: [
-    { label: 'Sobre Nós', href: '/sobre' },
-    { label: 'Nossa Equipe', href: '/equipe' },
+    { label: 'Sobre Nós', href: '/site/quemsomos' },
+    { label: 'Nossa Equipe', href: '/site/quemsomos' },
     { label: 'Depoimentos', href: '/depoimentos' },
     { label: 'Parceiros', href: '/parceiros' },
     { label: 'Trabalhe Conosco', href: '/trabalhe-conosco' }
