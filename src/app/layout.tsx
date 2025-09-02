@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { companyInfo, seoData } from '@/data/MockData'
-import StructuredData from '@/components/seo/StructuredData'
+import StructuredData from '@/components/site/seo/StructuredData'
 
 const inter = Inter({ subsets: ['latin'] })
 

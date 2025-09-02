@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import Header from '@/components/site/layout/header/Header';
 import Footer from '@/components/site/layout/footer/Footer';
-import { HomeSection } from '@/components/site/sections';
+import BuscarImoveisSection from '@/components/site/sections/BuscarImoveisSection';
 
-export default function Home() {
+export default function ImoveisPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Função placeholder para setActiveSection (não usado nesta página)
@@ -17,14 +17,14 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       <Header 
-        activeSection="home"
+        activeSection="imoveis"
         setActiveSection={handleSectionChange}
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
       />
       
       <main>
-        <HomeSection />
+        <BuscarImoveisSection />
       </main>
       
       <Footer />

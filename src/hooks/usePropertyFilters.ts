@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { properties } from '@/data/MockData';
-import { PropertyFiltersData } from '@/components/property/PropertyFilters';
+import { PropertyFiltersData } from '@/components/site/property/PropertyFilters';
 
 const initialFilters: PropertyFiltersData = {
   tipo: 'todos',

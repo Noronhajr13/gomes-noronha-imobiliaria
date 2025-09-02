@@ -105,13 +105,6 @@ export const companyInfo = {
   mission: "Conectar pessoas aos seus imóveis ideais com excelência e confiança",
   vision: "Ser a imobiliária de referência em Minas Gerais até 2030",
   
-  // História da empresa
-  story: {
-    foundation: "A Gomes & Noronha nasceu em 2004 com uma visão clara: revolucionar o mercado imobiliário de Juiz de Fora através do atendimento personalizado e da busca constante pela excelência.",
-    journey: "Ao longo de mais de duas décadas, construímos nossa reputação baseada em três pilares fundamentais: transparência, confiabilidade e compromisso com a realização dos sonhos de nossos clientes.",
-    present: "Hoje, somos uma das imobiliárias mais respeitadas da região, com um portfólio diversificado que inclui imóveis residenciais, comerciais e terrenos em toda Juiz de Fora e região metropolitana."
-  },
-  
   // Contato
   contact: {
     despachante: "5532988451817",
