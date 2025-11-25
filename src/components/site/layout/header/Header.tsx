@@ -65,7 +65,7 @@ const Header: React.FC<HeaderProps> = ({
               priority={true}
               onClick={() => handleSectionChange('home')}
             />
-            <span className="text-xs font-semibold text-white md:hidden">{companyInfo.creci}</span>
+            <span className="text-xs font-semibold text-white md:hidden">{companyInfo.logoCompact}</span>
           </div>
 
           <nav className="hidden space-x-2 md:flex">

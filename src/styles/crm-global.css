@@ -1,0 +1,44 @@
+@layer base {
+  .crm-dark {
+    /* Backgrounds */
+    --crm-bg-primary: 11 15 20;      /* #0B0F14 */
+    --crm-bg-secondary: 18 22 28;    /* #12161C */
+    --crm-bg-surface: 22 27 34;      /* #161B22 */
+    --crm-bg-elevated: 28 35 45;     /* #1C232D */
+    --crm-bg-hover: 38 45 58;        /* #262D3A */
+
+    /* Texts */
+    --crm-text-primary: 255 255 255;    /* #FFFFFF */
+    --crm-text-secondary: 230 234 242;  /* #E6EAF2 */
+    --crm-text-muted: 201 209 217;      /* #C9D1D9 */
+    --crm-text-disabled: 110 118 129;   /* #6E7681 */
+
+    /* Borders */
+    --crm-border-default: 48 54 61;     /* #30363D */
+    --crm-border-hover: 72 79 88;       /* #484F58 */
+    --crm-border-focus: 88 166 255;     /* #58A6FF */
+
+    /* Status Colors */
+    --crm-success: 35 134 54;           /* #238636 */
+    --crm-warning: 158 106 3;           /* #9E6A03 */
+    --crm-error: 218 54 51;             /* #DA3633 */
+    --crm-info: 31 111 235;             /* #1F6FEB */
+  }
+}
+
+/* Aplicar classes Tailwind customizadas */
+@layer utilities {
+  .crm-container {
+    @apply bg-[rgb(var(--crm-bg-primary))] text-[rgb(var(--crm-text-primary))];
+  }
+  
+  .crm-surface {
+    @apply bg-[rgb(var(--crm-bg-surface))] border border-[rgb(var(--crm-border-default))];
+    @apply rounded-lg;
+  }
+  
+  .crm-card {
+    @apply crm-surface p-6 transition-all duration-200;
+    @apply hover:border-[rgb(var(--crm-border-hover))];
+  }
+}
