@@ -1000,11 +1000,16 @@ GET    /api/auth/me             # Usuário atual
      - HomeSection.tsx - imóveis em destaque da API
    - [x] Testar integração completa *(Site em 3000 consumindo CRM em 3001)*
 
-4. **Deploy**
-   - [ ] Deploy CRM em Vercel + Banco
-   - [ ] Deploy Site em Vercel
+4. **Deploy** 🔄 EM ANDAMENTO
+   - [x] Configurar vercel.json no CRM
+   - [x] Configurar vercel.json no Site
+   - [x] Criar guia de deploy (DEPLOY.md)
+   - [x] Commit das alterações
+   - [ ] Criar repositório CRM no GitHub
+   - [ ] Deploy CRM na Vercel
+   - [ ] Deploy Site na Vercel
    - [ ] Configurar domínios
-   - [ ] Configurar variáveis de ambiente
+   - [ ] Configurar variáveis de ambiente produção
    - [ ] Testar em produção
 
 ### 14.8 Informações do Ambiente Atual
