@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react';
-import { properties } from '@/data/MockData';
+import { useState, useEffect, useMemo } from 'react';
 import { PropertyFiltersData } from '@/components/site/property/PropertyFilters';
+import { Property, fetchProperties, PropertyFilters as APIFilters } from '@/services/api';
 
 const initialFilters: PropertyFiltersData = {
   tipo: 'todos',
@@ -18,6 +18,65 @@ const initialFilters: PropertyFiltersData = {
 
 export const usePropertyFilters = () => {
   const [filters, setFilters] = useState<PropertyFiltersData>(initialFilters);
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Buscar imóveis da API
+  useEffect(() => {
+    async function loadProperties() {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Converter filtros do formulário para filtros da API
+        const apiFilters: APIFilters = {};
+        
+        if (filters.tipo !== 'todos') {
+          // Mapear tipo do site para tipo da API
+          const typeMap: Record<string, string> = {
+            'Casa': 'CASA',
+            'Apartamento': 'APARTAMENTO',
+            'Terreno': 'TERRENO',
+            'Sala Comercial': 'SALA_COMERCIAL',
+            'Loja': 'LOJA',
+            'Galpão': 'GALPAO',
+            'Sítio': 'SITIO',
+            'Cobertura': 'COBERTURA',
+            'Kitnet': 'KITNET',
+            'Flat': 'FLAT'
+          };
+          apiFilters.type = typeMap[filters.tipo] || filters.tipo;
+        }
+        
+        if (filters.negocio !== 'todos') {
+          const transactionMap: Record<string, string> = {
+            'Venda': 'VENDA',
+            'Aluguel': 'ALUGUEL',
+            'Venda/Aluguel': 'VENDA_ALUGUEL'
+          };
+          apiFilters.transactionType = transactionMap[filters.negocio] || filters.negocio;
+        }
+        
+        if (filters.precoMin) apiFilters.minPrice = parseInt(filters.precoMin);
+        if (filters.precoMax) apiFilters.maxPrice = parseInt(filters.precoMax);
+        if (filters.quartos !== 'todos') apiFilters.bedrooms = parseInt(filters.quartos);
+        if (filters.bairro) apiFilters.neighborhood = filters.bairro;
+        if (filters.cidade) apiFilters.city = filters.cidade;
+        
+        const data = await fetchProperties(apiFilters);
+        setProperties(data);
+      } catch (err) {
+        console.error('Erro ao carregar imóveis:', err);
+        setError('Erro ao carregar imóveis');
+        setProperties([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    loadProperties();
+  }, [filters.tipo, filters.negocio, filters.precoMin, filters.precoMax, filters.quartos, filters.bairro, filters.cidade]);
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters(prev => ({
@@ -30,73 +89,45 @@ export const usePropertyFilters = () => {
     setFilters(initialFilters);
   };
 
+  // Aplicar filtros locais adicionais (que não são suportados pela API)
   const filteredProperties = useMemo(() => {
     return properties.filter(property => {
-      // Tipo de imóvel
-      if (filters.tipo !== 'todos' && property.type !== filters.tipo) return false;
-      
-      // Tipo de negócio
-      if (filters.negocio !== 'todos' && property.transactionType !== filters.negocio) return false;
-      
-      // Cidade
-      if (filters.cidade && !property.city.toLowerCase().includes(filters.cidade.toLowerCase())) return false;
-      
-      // Bairro
-      if (filters.bairro && !property.neighborhood.toLowerCase().includes(filters.bairro.toLowerCase())) return false;
-      
-      // Preço mínimo
-      if (filters.precoMin && property.price < parseInt(filters.precoMin)) return false;
-      
-      // Preço máximo
-      if (filters.precoMax && property.price > parseInt(filters.precoMax)) return false;
-      
-      // Quartos
-      if (filters.quartos !== 'todos') {
-        const quartos = parseInt(filters.quartos);
-        if (quartos === 4) {
-          // 4+ quartos
-          if (property.bedrooms < 4) return false;
-        } else {
-          if (property.bedrooms !== quartos) return false;
-        }
-      }
-      
-      // Banheiros
+      // Banheiros (filtro local)
       if (filters.banheiros !== 'todos') {
         const banheiros = parseInt(filters.banheiros);
         if (banheiros === 4) {
-          // 4+ banheiros
           if (property.bathrooms < 4) return false;
         } else {
           if (property.bathrooms !== banheiros) return false;
         }
       }
       
-      // Vagas
+      // Vagas (filtro local)
       if (filters.vagas !== 'todos') {
         const vagas = parseInt(filters.vagas);
         if (vagas === 3) {
-          // 3+ vagas
           if (property.parking < 3) return false;
         } else {
           if (property.parking !== vagas) return false;
         }
       }
       
-      // Área mínima
+      // Área mínima (filtro local)
       if (filters.areaMin && property.area < parseInt(filters.areaMin)) return false;
       
-      // Área máxima
+      // Área máxima (filtro local)
       if (filters.areaMax && property.area > parseInt(filters.areaMax)) return false;
       
       return true;
     });
-  }, [filters]);
+  }, [properties, filters.banheiros, filters.vagas, filters.areaMin, filters.areaMax]);
 
   return {
     filters,
     filteredProperties,
     handleFilterChange,
-    clearFilters
+    clearFilters,
+    loading,
+    error
   };
 };

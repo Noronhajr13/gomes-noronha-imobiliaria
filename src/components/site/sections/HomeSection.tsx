@@ -1,61 +1,74 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '../ui/Button';
 import PropertySearch, { SearchFilters } from '@/components/site/property/PropertySearch';
 import PropertyGrid from '@/components/site/property/PropertyGrid';
 import StatsGrid from '@/components/site/stats/StatsGrid';
-import { Property } from '@/components/site/property/PropertyCard';
-import { 
-  companyInfo, 
-  companyStats, 
-  getFeaturedProperties,
-  formatPrice,
-  getPropertyWhatsAppMessage 
-} from '@/data/MockData';
-import { Property as MockProperty } from '@/data/MockData';
+import { Property as PropertyCardType } from '@/components/site/property/PropertyCard';
+import { companyInfo, companyStats } from '@/data/MockData';
+import { Property as APIProperty, fetchFeaturedProperties, formatPrice, getPropertyWhatsAppUrl } from '@/services/api';
 import Container from '../ui/Container';
 
 const HomeSection: React.FC = () => {
-  // Função para converter MockProperty para Property (interface do PropertyCard)
-  const convertToPropertyCard = (mockProperty: MockProperty): Property => {
+  const [featuredProperties, setFeaturedProperties] = useState<PropertyCardType[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Função para converter Property da API para Property do PropertyCard
+  const convertToPropertyCard = (apiProperty: APIProperty): PropertyCardType => {
     return {
-      id: mockProperty.id,
-      title: mockProperty.title,
-      type: mockProperty.type,
-      price: formatPrice(mockProperty.price, mockProperty.priceLabel),
-      area: `${mockProperty.area}m²`,
-      bedrooms: mockProperty.bedrooms,
-      bathrooms: mockProperty.bathrooms,
-      parking: mockProperty.parking,
-      location: `${mockProperty.neighborhood}, ${mockProperty.city}`,
-      images: mockProperty.images,
-      featured: mockProperty.featured,
-      code: mockProperty.code
+      id: parseInt(apiProperty.id) || Math.random(),
+      title: apiProperty.title,
+      type: apiProperty.type,
+      price: formatPrice(apiProperty.price),
+      area: `${apiProperty.area}m²`,
+      bedrooms: apiProperty.bedrooms,
+      bathrooms: apiProperty.bathrooms,
+      parking: apiProperty.parking,
+      location: `${apiProperty.neighborhood}, ${apiProperty.city}`,
+      images: apiProperty.images?.length ? apiProperty.images : ['/images/placeholder-property.jpg'],
+      featured: apiProperty.featured,
+      code: apiProperty.code
     };
   };
 
-  // Busca imóveis em destaque do MockData
-  const mockFeaturedProperties = getFeaturedProperties(3);
-  const featuredProperties: Property[] = mockFeaturedProperties.map(convertToPropertyCard);
+  // Buscar imóveis em destaque da API
+  useEffect(() => {
+    async function loadFeaturedProperties() {
+      try {
+        setLoading(true);
+        const properties = await fetchFeaturedProperties(3);
+        setFeaturedProperties(properties.map(convertToPropertyCard));
+      } catch (error) {
+        console.error('Erro ao carregar imóveis em destaque:', error);
+        setFeaturedProperties([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadFeaturedProperties();
+  }, []);
 
   // Handlers
   const handleSearch = (filters: SearchFilters) => {
     console.log('Buscar imóveis:', filters);
   };
 
-  const handleViewDetails = (property: Property) => {
+  const handleViewDetails = (property: PropertyCardType) => {
     console.log('Ver detalhes:', property);
   };
 
-  const handleWhatsApp = (property: Property) => {
-    // Encontra o imóvel original no MockData para gerar mensagem completa
-    const originalProperty = mockFeaturedProperties.find(p => p.code === property.code);
-    if (originalProperty) {
-      const message = getPropertyWhatsAppMessage(originalProperty);
-      const phone = companyInfo.contact.whatsapp;
-      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
-    }
+  const handleWhatsApp = (property: PropertyCardType) => {
+    const phone = companyInfo.contact.whatsapp;
+    const message = encodeURIComponent(
+      `Olá! Tenho interesse no imóvel:\n\n` +
+      `📍 ${property.code} - ${property.title}\n` +
+      `💰 ${property.price}\n` +
+      `📐 ${property.area}\n` +
+      `🛏️ ${property.bedrooms} quartos\n\n` +
+      `Gostaria de mais informações.`
+    );
+    window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
   };
 
   const handleViewAll = () => {
@@ -105,12 +118,18 @@ const HomeSection: React.FC = () => {
 
       <StatsGrid stats={companyStats} />
       
-      <PropertyGrid
-        properties={featuredProperties}
-        onViewDetails={handleViewDetails}
-        onWhatsApp={handleWhatsApp}
-        onViewAll={handleViewAll}
-      />
+      {loading ? (
+        <div className="flex justify-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        </div>
+      ) : (
+        <PropertyGrid
+          properties={featuredProperties}
+          onViewDetails={handleViewDetails}
+          onWhatsApp={handleWhatsApp}
+          onViewAll={handleViewAll}
+        />
+      )}
     </div>
   );
 };

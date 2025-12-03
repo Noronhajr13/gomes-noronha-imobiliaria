@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useMemo, useCallback } from 'react';
-import { Property } from '@/data/MockData';
-import { properties } from '@/data/MockData';
+import { useState, useEffect, useCallback } from 'react';
+import { Property, fetchProperties, PropertyFilters } from '@/services/api';
 
 export interface SearchFilters {
   type?: string;
@@ -25,95 +24,103 @@ export interface UsePropertySearchReturn {
   resetFilters: () => void;
   totalCount: number;
   isLoading: boolean;
+  error: string | null;
 }
 
 const usePropertySearch = (initialFilters: SearchFilters = {}): UsePropertySearchReturn => {
   const [filters, setFilters] = useState<SearchFilters>(initialFilters);
-  const [isLoading, setIsLoading] = useState(false);
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const filteredProperties = useMemo(() => {
-    setIsLoading(true);
-    
-    let result = [...properties];
+  // Buscar imóveis da API quando filtros mudam
+  useEffect(() => {
+    async function loadProperties() {
+      try {
+        setIsLoading(true);
+        setError(null);
 
-    // Filtro por texto/query
-    if (filters.query && filters.query.trim()) {
-      const query = filters.query.toLowerCase().trim();
-      result = result.filter(property =>
-        property.title.toLowerCase().includes(query) ||
-        property.neighborhood.toLowerCase().includes(query) ||
-        property.city.toLowerCase().includes(query) ||
-        property.type.toLowerCase().includes(query) ||
-        property.code.toLowerCase().includes(query) ||
-        (property.description && property.description.toLowerCase().includes(query))
-      );
+        // Converter filtros do componente para filtros da API
+        const apiFilters: PropertyFilters = {};
+
+        if (filters.type && filters.type !== 'all') {
+          const typeMap: Record<string, string> = {
+            'Casa': 'CASA',
+            'Apartamento': 'APARTAMENTO',
+            'Terreno': 'TERRENO',
+            'Sala Comercial': 'SALA_COMERCIAL',
+            'Loja': 'LOJA',
+            'Galpão': 'GALPAO',
+            'Sítio': 'SITIO',
+            'Cobertura': 'COBERTURA',
+            'Kitnet': 'KITNET',
+            'Flat': 'FLAT'
+          };
+          apiFilters.type = typeMap[filters.type] || filters.type;
+        }
+
+        if (filters.transactionType && filters.transactionType !== 'all') {
+          const transactionMap: Record<string, string> = {
+            'Venda': 'VENDA',
+            'Aluguel': 'ALUGUEL',
+            'Venda/Aluguel': 'VENDA_ALUGUEL'
+          };
+          apiFilters.transactionType = transactionMap[filters.transactionType] || filters.transactionType;
+        }
+
+        if (filters.priceMin) apiFilters.minPrice = filters.priceMin;
+        if (filters.priceMax) apiFilters.maxPrice = filters.priceMax;
+        if (filters.bedrooms) apiFilters.bedrooms = filters.bedrooms;
+        if (filters.neighborhood && filters.neighborhood !== 'all') apiFilters.neighborhood = filters.neighborhood;
+        if (filters.city && filters.city !== 'all') apiFilters.city = filters.city;
+        if (filters.featured) apiFilters.featured = filters.featured;
+
+        const data = await fetchProperties(apiFilters);
+
+        // Aplicar filtros locais que não são suportados pela API
+        let result = data;
+
+        // Filtro por texto/query (local)
+        if (filters.query && filters.query.trim()) {
+          const query = filters.query.toLowerCase().trim();
+          result = result.filter(property =>
+            property.title.toLowerCase().includes(query) ||
+            property.neighborhood.toLowerCase().includes(query) ||
+            property.city.toLowerCase().includes(query) ||
+            property.type.toLowerCase().includes(query) ||
+            property.code.toLowerCase().includes(query) ||
+            (property.description && property.description.toLowerCase().includes(query))
+          );
+        }
+
+        // Filtro por banheiros (local)
+        if (filters.bathrooms !== undefined && filters.bathrooms > 0) {
+          result = result.filter(property => property.bathrooms >= filters.bathrooms!);
+        }
+
+        // Filtro por área mínima (local)
+        if (filters.area !== undefined && filters.area > 0) {
+          result = result.filter(property => property.area >= filters.area!);
+        }
+
+        // Ordenação: Featured primeiro, depois por preço
+        result.sort((a, b) => {
+          if (a.featured && !b.featured) return -1;
+          if (!a.featured && b.featured) return 1;
+          return b.price - a.price; // Preço decrescente
+        });
+
+        setProperties(result);
+      } catch (err) {
+        console.error('Erro ao buscar imóveis:', err);
+        setError('Erro ao carregar imóveis');
+        setProperties([]);
+      } finally {
+        setIsLoading(false);
+      }
     }
 
-    // Filtro por tipo de imóvel
-    if (filters.type && filters.type !== 'all') {
-      result = result.filter(property => 
-        property.type.toLowerCase() === filters.type!.toLowerCase()
-      );
-    }
-
-    // Filtro por tipo de transação
-    if (filters.transactionType && filters.transactionType !== 'all') {
-      result = result.filter(property => 
-        property.transactionType.toLowerCase().includes(filters.transactionType!.toLowerCase())
-      );
-    }
-
-    // Filtro por faixa de preço
-    if (filters.priceMin !== undefined) {
-      result = result.filter(property => property.price >= filters.priceMin!);
-    }
-    if (filters.priceMax !== undefined) {
-      result = result.filter(property => property.price <= filters.priceMax!);
-    }
-
-    // Filtro por quartos
-    if (filters.bedrooms !== undefined && filters.bedrooms > 0) {
-      result = result.filter(property => property.bedrooms >= filters.bedrooms!);
-    }
-
-    // Filtro por banheiros
-    if (filters.bathrooms !== undefined && filters.bathrooms > 0) {
-      result = result.filter(property => property.bathrooms >= filters.bathrooms!);
-    }
-
-    // Filtro por bairro
-    if (filters.neighborhood && filters.neighborhood !== 'all') {
-      result = result.filter(property => 
-        property.neighborhood.toLowerCase().includes(filters.neighborhood!.toLowerCase())
-      );
-    }
-
-    // Filtro por cidade
-    if (filters.city && filters.city !== 'all') {
-      result = result.filter(property => 
-        property.city.toLowerCase().includes(filters.city!.toLowerCase())
-      );
-    }
-
-    // Filtro por área mínima
-    if (filters.area !== undefined && filters.area > 0) {
-      result = result.filter(property => property.area >= filters.area!);
-    }
-
-    // Filtro por imóveis em destaque
-    if (filters.featured) {
-      result = result.filter(property => property.featured);
-    }
-
-    // Ordenação: Featured primeiro, depois por preço
-    result.sort((a, b) => {
-      if (a.featured && !b.featured) return -1;
-      if (!a.featured && b.featured) return 1;
-      return b.price - a.price; // Preço decrescente
-    });
-
-    setIsLoading(false);
-    return result;
+    loadProperties();
   }, [filters]);
 
   const resetFilters = useCallback(() => {
@@ -125,12 +132,13 @@ const usePropertySearch = (initialFilters: SearchFilters = {}): UsePropertySearc
   }, []);
 
   return {
-    filteredProperties,
+    filteredProperties: properties,
     filters,
     setFilters: setFiltersCallback,
     resetFilters,
-    totalCount: filteredProperties.length,
-    isLoading
+    totalCount: properties.length,
+    isLoading,
+    error
   };
 };
 

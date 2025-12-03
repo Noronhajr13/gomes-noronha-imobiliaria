@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { companyInfo } from '@/data/MockData';
 import { Icon } from '@/utils/iconMapper';
+import { createLead } from '@/services/api';
 
 const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -11,11 +12,35 @@ const ContactSection: React.FC = () => {
     telefone: '',
     mensagem: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert('Mensagem enviada! (Demo)');
-    setFormData({ nome: '', email: '', telefone: '', mensagem: '' });
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      const success = await createLead({
+        name: formData.nome,
+        email: formData.email,
+        phone: formData.telefone,
+        message: formData.mensagem,
+        source: 'SITE_CONTATO'
+      });
+
+      if (success) {
+        setSubmitStatus('success');
+        setFormData({ nome: '', email: '', telefone: '', mensagem: '' });
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      console.error('Erro ao enviar mensagem:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -23,6 +48,11 @@ const ContactSection: React.FC = () => {
       ...formData,
       [e.target.name]: e.target.value
     });
+  };
+
+  const handleWhatsApp = () => {
+    const message = encodeURIComponent('Olá! Gostaria de falar com um corretor.');
+    window.open(`https://wa.me/55${companyInfo.contact.whatsapp}?text=${message}`, '_blank');
   };
 
   return (
@@ -102,7 +132,10 @@ const ContactSection: React.FC = () => {
               <p className="mb-4 text-blue-100">
                 Entre em contato via WhatsApp para respostas mais rápidas.
               </p>
-              <button className="px-6 py-2 font-semibold text-blue-600 transition-colors bg-white rounded-lg hover:bg-gray-100">
+              <button 
+                onClick={handleWhatsApp}
+                className="px-6 py-2 font-semibold text-blue-600 transition-colors bg-white rounded-lg hover:bg-gray-100"
+              >
                 Chamar no WhatsApp
               </button>
             </div>
@@ -177,10 +210,30 @@ const ContactSection: React.FC = () => {
               
               <button
                 type="submit"
-                className="w-full px-6 py-3 font-semibold text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
+                disabled={isSubmitting}
+                className="w-full px-6 py-3 font-semibold text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
               >
-                Enviar Mensagem
+                {isSubmitting ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Enviando...
+                  </span>
+                ) : (
+                  'Enviar Mensagem'
+                )}
               </button>
+              
+              {submitStatus === 'success' && (
+                <p className="text-sm text-center text-green-600">
+                  ✓ Mensagem enviada com sucesso! Entraremos em contato em breve.
+                </p>
+              )}
+              
+              {submitStatus === 'error' && (
+                <p className="text-sm text-center text-red-600">
+                  ✕ Erro ao enviar mensagem. Tente novamente ou entre em contato via WhatsApp.
+                </p>
+              )}
             </form>
           </div>
         </div>

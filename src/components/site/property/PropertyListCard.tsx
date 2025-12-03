@@ -2,8 +2,11 @@ import React from 'react';
 import Image from 'next/image';
 import { Icon } from '@/utils/iconMapper';
 import { Button, Card, Text, Badge } from '@/components/site/ui';
-import { Property, formatPrice, formatArea, getPropertyWhatsAppMessage, getWhatsAppUrl, companyInfo } from '@/data/MockData';
+import { Property, formatPrice, getPropertyWhatsAppUrl } from '@/services/api';
 import { cn } from '@/utils/helpers';
+
+// Número de WhatsApp da empresa
+const COMPANY_WHATSAPP = '5511999999999'; // TODO: Mover para variável de ambiente
 
 interface PropertyListCardProps {
   property: Property;
@@ -12,6 +15,26 @@ interface PropertyListCardProps {
   className?: string;
 }
 
+// Mapear transactionType da API para exibição
+const transactionTypeLabels: Record<string, string> = {
+  'VENDA': 'Venda',
+  'ALUGUEL': 'Aluguel',
+  'VENDA_ALUGUEL': 'Venda/Aluguel'
+};
+
+// Formatar área
+const formatArea = (area: number): string => `${area} m²`;
+
+// Obter localização formatada
+const getLocation = (property: Property): string => {
+  return `${property.neighborhood}, ${property.city}`;
+};
+
+// Obter imagem padrão se não houver imagens
+const getPropertyImage = (property: Property): string => {
+  return property.images?.[0] || '/images/placeholder-property.jpg';
+};
+
 const PropertyListCard: React.FC<PropertyListCardProps> = React.memo(({ 
   property, 
   view, 
@@ -19,14 +42,17 @@ const PropertyListCard: React.FC<PropertyListCardProps> = React.memo(({
   className 
 }) => {
   const handleWhatsApp = () => {
-    const message = getPropertyWhatsAppMessage(property);
-    const whatsappUrl = getWhatsAppUrl(companyInfo.contact.whatsapp, message);
+    const whatsappUrl = getPropertyWhatsAppUrl(property, COMPANY_WHATSAPP);
     window.open(whatsappUrl, '_blank');
   };
 
   const handleViewDetails = () => {
     onViewDetails?.(property);
   };
+
+  const transactionLabel = transactionTypeLabels[property.transactionType] || property.transactionType;
+  const location = getLocation(property);
+  const image = getPropertyImage(property);
 
   // Card em modo lista
   if (view === 'list') {
@@ -35,7 +61,7 @@ const PropertyListCard: React.FC<PropertyListCardProps> = React.memo(({
         <div className="flex flex-col md:flex-row">
           <div className="md:w-1/3">
             <Image
-              src={property.images[0]}
+              src={image}
               alt={property.title}
               width={400}
               height={300}
@@ -46,7 +72,7 @@ const PropertyListCard: React.FC<PropertyListCardProps> = React.memo(({
             <div className="flex items-start justify-between mb-4">
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <Badge variant="success">{property.transactionType}</Badge>
+                  <Badge variant="success">{transactionLabel}</Badge>
                   <Text variant="muted" className="text-xs">#{property.code}</Text>
                 </div>
                 <Text as="h3" variant="primary" className="mb-2 text-xl font-bold">
@@ -54,12 +80,12 @@ const PropertyListCard: React.FC<PropertyListCardProps> = React.memo(({
                 </Text>
                 <div className="flex items-center mb-4 text-gray-600">
                   <Icon name="MapPin" className="w-4 h-4 mr-2" />
-                  <Text variant="secondary" className="text-sm">{property.location}</Text>
+                  <Text variant="secondary" className="text-sm">{location}</Text>
                 </div>
               </div>
               <div className="text-right">
                 <div className="mb-2 text-2xl font-bold text-green-600">
-                  {formatPrice(property.price, property.priceLabel)}
+                  {formatPrice(property.price)}
                 </div>
                 <Text variant="muted" className="text-sm">{formatArea(property.area)}</Text>
               </div>
@@ -115,7 +141,7 @@ const PropertyListCard: React.FC<PropertyListCardProps> = React.memo(({
     <Card variant="DEFAULT" className={cn("overflow-hidden hover:shadow-lg transition-shadow", className)}>
       <div className="relative">
         <Image
-          src={property.images[0]}
+          src={image}
           alt={property.title}
           width={600}
           height={400}
@@ -126,15 +152,15 @@ const PropertyListCard: React.FC<PropertyListCardProps> = React.memo(({
             <Badge variant="warning">Destaque</Badge>
           </div>
         )}
-        {property.new && (
+        {property.exclusive && (
           <div className="absolute top-2 right-2">
-            <Badge variant="success">Novo</Badge>
+            <Badge variant="success">Exclusivo</Badge>
           </div>
         )}
       </div>
       <div className="p-4">
         <div className="flex items-center gap-2 mb-2">
-          <Badge variant="success">{property.transactionType}</Badge>
+          <Badge variant="success">{transactionLabel}</Badge>
           <Text variant="muted" className="text-xs">#{property.code}</Text>
         </div>
         <Text as="h3" variant="primary" className="mb-2 text-lg font-bold">
@@ -142,10 +168,10 @@ const PropertyListCard: React.FC<PropertyListCardProps> = React.memo(({
         </Text>
         <div className="flex items-center mb-3 text-gray-600">
           <Icon name="MapPin" className="w-4 h-4 mr-2" />
-          <Text variant="secondary" className="text-sm">{property.location}</Text>
+          <Text variant="secondary" className="text-sm">{location}</Text>
         </div>
         <div className="mb-3 text-2xl font-bold text-green-600">
-          {formatPrice(property.price, property.priceLabel)}
+          {formatPrice(property.price)}
         </div>
         <div className="flex items-center justify-between mb-4 text-sm text-gray-600">
           <div className="flex items-center">

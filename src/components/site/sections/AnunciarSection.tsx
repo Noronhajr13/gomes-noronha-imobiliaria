@@ -5,6 +5,7 @@ import Container from '../ui/Container';
 import { Text } from '@/components/site/ui';
 import { Icon, type IconName } from '@/utils/iconMapper';
 import { companyInfo, propertyTypes } from '@/data/MockData';
+import { createLead } from '@/services/api';
 
 const AnunciarSection: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -16,10 +17,38 @@ const AnunciarSection: React.FC = () => {
     preco: '',
     observacoes: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Aqui você implementaria o envio do formulário
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    // Enviar lead para o CRM
+    const leadMessage = `[ANUNCIAR IMÓVEL]
+Tipo: ${formData.tipoImovel}
+Endereço: ${formData.endereco}
+Preço Desejado: R$ ${formData.preco}
+Observações: ${formData.observacoes}`;
+
+    try {
+      const success = await createLead({
+        name: formData.nome,
+        email: formData.email,
+        phone: formData.telefone,
+        message: leadMessage,
+        source: 'SITE_ANUNCIAR'
+      });
+
+      if (success) {
+        setSubmitStatus('success');
+      }
+    } catch (error) {
+      console.error('Erro ao enviar lead:', error);
+    }
+
+    // Também envia via WhatsApp
     const whatsappMessage = `Olá! Gostaria de anunciar meu imóvel:
 Nome: ${formData.nome}
 Telefone: ${formData.telefone}
@@ -30,6 +59,21 @@ Preço: R$ ${formData.preco}
 Observações: ${formData.observacoes}`;
 
     window.open(`https://wa.me/55${companyInfo.contact.whatsapp}?text=${encodeURIComponent(whatsappMessage)}`, '_blank');
+    
+    setIsSubmitting(false);
+    
+    // Limpar formulário após sucesso
+    if (submitStatus !== 'error') {
+      setFormData({
+        nome: '',
+        telefone: '',
+        email: '',
+        tipoImovel: '',
+        endereco: '',
+        preco: '',
+        observacoes: ''
+      });
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -215,11 +259,27 @@ Observações: ${formData.observacoes}`;
               
               <button
                 type="submit"
-                className="flex items-center justify-center w-full gap-2 px-6 py-3 font-semibold text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700"
+                disabled={isSubmitting}
+                className="flex items-center justify-center w-full gap-2 px-6 py-3 font-semibold text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
               >
-                <Icon name="MessageCircle" className="w-5 h-5" />
-                Enviar via WhatsApp
+                {isSubmitting ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Enviando...
+                  </>
+                ) : (
+                  <>
+                    <Icon name="MessageCircle" className="w-5 h-5" />
+                    Enviar via WhatsApp
+                  </>
+                )}
               </button>
+              
+              {submitStatus === 'success' && (
+                <p className="text-sm text-center text-green-600">
+                  ✓ Dados enviados com sucesso! Entraremos em contato em breve.
+                </p>
+              )}
             </form>
           </div>
         </div>
