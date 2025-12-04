@@ -67,8 +67,10 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
           ))}
 
           <div className={`pt-6 ${borderColor} mt-4 space-y-4 border-t`}>
-            <Link
-              href="/crm/login"
+            <a
+              href={process.env.NEXT_PUBLIC_CRM_URL || 'https://gomes-noronha-crm.vercel.app'}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-4 p-4 bg-white text-black shadow-lg rounded-xl"
             >
               <div className="flex items-center justify-center w-10 h-10 text-white transition-all duration-300 bg-black rounded-xl">
@@ -77,7 +79,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               <div>
                 <span className="text-lg font-medium">Área do Corretor</span>
               </div>
-            </Link>
+            </a>
             
             <a 
               href={`tel:${phone}`}

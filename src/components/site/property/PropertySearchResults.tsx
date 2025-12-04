@@ -7,6 +7,7 @@ import { Property as MockProperty } from '@/data/MockData';
 import PropertyCard, { Property } from './PropertyCard';
 import PropertyListCard from './PropertyListCard';
 import { formatPrice, getPropertyWhatsAppMessage, companyInfo } from '@/data/MockData';
+import { Property as ApiProperty } from '@/services/api';
 
 interface PropertySearchResultsProps {
   properties: MockProperty[];
@@ -43,6 +44,30 @@ const PropertySearchResults: React.FC<PropertySearchResultsProps> = React.memo((
       images: mockProperty.images,
       featured: mockProperty.featured,
       code: mockProperty.code
+    };
+  }, []);
+
+  // Conversão de MockProperty para ApiProperty (para PropertyListCard)
+  const convertToApiProperty = useCallback((mockProperty: MockProperty): ApiProperty => {
+    return {
+      id: mockProperty.id,
+      code: mockProperty.code,
+      title: mockProperty.title,
+      description: mockProperty.description,
+      type: mockProperty.type,
+      transactionType: mockProperty.transactionType,
+      price: mockProperty.price,
+      area: mockProperty.area,
+      bedrooms: mockProperty.bedrooms,
+      bathrooms: mockProperty.bathrooms,
+      parking: mockProperty.parking,
+      neighborhood: mockProperty.neighborhood,
+      city: mockProperty.city,
+      state: mockProperty.state,
+      images: mockProperty.images,
+      amenities: mockProperty.amenities,
+      featured: mockProperty.featured,
+      priceLabel: mockProperty.priceLabel
     };
   }, []);
 
@@ -167,11 +192,14 @@ const PropertySearchResults: React.FC<PropertySearchResultsProps> = React.memo((
           {currentProperties.map((property) => (
             <PropertyListCard
               key={property.id}
-              property={property}
+              property={convertToApiProperty(property)}
               view="list"
               onViewDetails={(prop) => {
-                const convertedProp = convertToPropertyCard(prop);
-                handleViewDetails(convertedProp);
+                const originalProperty = properties.find(p => p.code === prop.code);
+                if (originalProperty) {
+                  const convertedProp = convertToPropertyCard(originalProperty);
+                  handleViewDetails(convertedProp);
+                }
               }}
             />
           ))}

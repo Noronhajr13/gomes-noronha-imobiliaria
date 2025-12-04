@@ -50,7 +50,7 @@ const PropertyListCard: React.FC<PropertyListCardProps> = React.memo(({
     onViewDetails?.(property);
   };
 
-  const transactionLabel = transactionTypeLabels[property.transactionType] || property.transactionType;
+  const transactionLabel = property.transactionType ? transactionTypeLabels[property.transactionType] || property.transactionType : 'Venda';
   const location = getLocation(property);
   const image = getPropertyImage(property);
 

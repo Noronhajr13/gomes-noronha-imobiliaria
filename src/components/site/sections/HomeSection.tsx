@@ -17,7 +17,7 @@ const HomeSection: React.FC = () => {
   // Função para converter Property da API para Property do PropertyCard
   const convertToPropertyCard = (apiProperty: APIProperty): PropertyCardType => {
     return {
-      id: parseInt(apiProperty.id) || Math.random(),
+      id: typeof apiProperty.id === 'string' ? parseInt(apiProperty.id) || Math.random() : apiProperty.id,
       title: apiProperty.title,
       type: apiProperty.type,
       price: formatPrice(apiProperty.price),

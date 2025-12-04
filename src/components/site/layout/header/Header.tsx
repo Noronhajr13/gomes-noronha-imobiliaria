@@ -80,14 +80,14 @@ const Header: React.FC<HeaderProps> = ({
               />
             ))}
           </nav>
-          <Button
-            text="Área do corretor"
-            variant="inverser"
-            size="sm"
-            base="card"
-            href="/crm/login"
-            className="hidden md:flex"
-          />
+          <a
+            href={process.env.NEXT_PUBLIC_CRM_URL || 'https://gomes-noronha-crm.vercel.app'}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium text-black bg-white rounded-lg hover:bg-gray-100 transition-colors"
+          >
+            Área do corretor
+          </a>
           <button 
             className="relative p-3 transition-colors duration-300 md:hidden rounded-xl hover:bg-gray-100"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

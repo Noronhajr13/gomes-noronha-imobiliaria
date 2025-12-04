@@ -5,13 +5,13 @@
 const CRM_API_URL = process.env.NEXT_PUBLIC_CRM_API_URL || 'http://localhost:3001/api'
 
 export interface Property {
-  id: string
+  id: string | number
   code: string
   title: string
-  description: string | null
+  description?: string | null
   type: string
-  transactionType: string
-  status: string
+  transactionType?: string
+  status?: string
   price: number
   area: number
   bedrooms: number
@@ -22,21 +22,22 @@ export interface Property {
   addressNumber?: string
   neighborhood: string
   city: string
-  state: string
+  state?: string
   zipCode?: string
   latitude?: number
   longitude?: number
   images: string[]
   videos?: string[]
   virtualTour?: string
-  amenities: string[]
+  amenities?: string[]
   featured: boolean
-  exclusive: boolean
+  exclusive?: boolean
   condominiumFee?: number
   iptu?: number
   yearBuilt?: number
-  createdAt: string
-  updatedAt: string
+  createdAt?: string
+  updatedAt?: string
+  priceLabel?: string
 }
 
 export interface PropertyFilters {
