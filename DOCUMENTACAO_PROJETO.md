@@ -1,9 +1,31 @@
 # 📋 DOCUMENTAÇÃO COMPLETA DO PROJETO
 ## Gomes & Noronha - Sistema Imobiliário
 
-**Data de Documentação:** 01/12/2025  
-**Versão:** 0.1.0  
-**Status:** Produção
+**Data de Documentação:** 04/12/2025  
+**Versão:** 1.0.0  
+**Status:** ✅ Projetos Separados - Em Deploy
+
+---
+
+## 🚀 STATUS DOS PROJETOS
+
+### Repositórios GitHub
+| Projeto | Repositório | Status |
+|---------|-------------|--------|
+| **Site (Público)** | [gomes-noronha-imobiliaria](https://github.com/Noronhajr13/gomes-noronha-imobiliaria) | ✅ Sincronizado |
+| **CRM (Privado)** | [gomes-noronha-crm](https://github.com/Noronhajr13/gomes-noronha-crm) | ✅ Sincronizado |
+
+### Último Commit - Site
+```
+13436f9 docs: adicionar guia de deploy e atualizar documentação
+43789ac feat: Integração Site com CRM API
+```
+
+### Último Commit - CRM
+```
+795054d fix: adicionar SessionProvider para autenticação funcionar corretamente
+497c749 fix: corrigir erros de build - task includes e login Suspense
+```
 
 ---
 
@@ -23,6 +45,7 @@
 12. [SEO e Performance](#12-seo-e-performance)
 13. [Configurações](#13-configurações)
 14. [Plano de Separação CRM/Site](#14-plano-de-separação-crmsite)
+15. [Deploy e Produção](#15-deploy-e-produção)
 
 ---
 
@@ -64,37 +87,40 @@ Site: https://gomesnoronha.com.br
 
 ### 2.1 Diagrama Simplificado
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                     PROJETO MONOLÍTICO                          │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│  ┌─────────────────────────┐  ┌─────────────────────────────┐  │
-│  │      SITE (Público)     │  │       CRM (Privado)         │  │
-│  ├─────────────────────────┤  ├─────────────────────────────┤  │
-│  │ /                       │  │ /crm/login                  │  │
-│  │ /site/imoveis           │  │ /crm/dashboard (planejado)  │  │
-│  │ /site/quemsomos         │  │ /crm/imoveis (planejado)    │  │
-│  │ /site/despachante       │  │ /crm/leads (planejado)      │  │
-│  │ /site/anunciar          │  │ /crm/pipeline (planejado)   │  │
-│  └─────────────────────────┘  │ /crm/tarefas (planejado)    │  │
-│                               │ /crm/relatorios (planejado) │  │
-│                               │ /crm/automacao (planejado)  │  │
-│                               │ /crm/configuracoes (plan.)  │  │
-│                               └─────────────────────────────┘  │
-│                                                                 │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │                 DADOS COMPARTILHADOS                     │   │
-│  │                    (MockData.ts)                         │   │
-│  └─────────────────────────────────────────────────────────┘   │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                      ARQUITETURA SEPARADA (ATUAL)                            │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌─────────────────────────────┐           ┌─────────────────────────────┐ │
+│  │         SITE                │           │           CRM               │ │
+│  │  gomes-noronha-imobiliaria  │           │     gomes-noronha-crm       │ │
+│  │     (Next.js Frontend)      │           │    (Next.js Full-Stack)     │ │
+│  ├─────────────────────────────┤           ├─────────────────────────────┤ │
+│  │                             │           │                             │ │
+│  │  /                          │  ◄────►  │  /api/properties            │ │
+│  │  /site/imoveis              │   API    │  /api/leads                 │ │
+│  │  /site/quemsomos            │   REST   │  /api/tasks                 │ │
+│  │  /site/despachante          │           │  /api/dashboard             │ │
+│  │  /site/anunciar             │           │  /api/auth/[...nextauth]    │ │
+│  │                             │           │                             │ │
+│  │  Dados: Consome API CRM     │           │  /login                     │ │
+│  │  Port: 3000                 │           │  /dashboard                 │ │
+│  │                             │           │                             │ │
+│  │  GitHub: Noronhajr13/       │           │  Banco: Prisma Postgres     │ │
+│  │  gomes-noronha-imobiliaria  │           │  Port: 3001                 │ │
+│  │                             │           │                             │ │
+│  └─────────────────────────────┘           │  GitHub: Noronhajr13/       │ │
+│                                            │  gomes-noronha-crm          │ │
+│                                            └─────────────────────────────┘ │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### 2.2 Fluxo de Dados Atual
-- **MockData.ts** é a fonte única de verdade para todos os dados
-- Não há backend/API implementado
-- Dados são estáticos (hardcoded)
-- Prisma está instalado mas não configurado
+- **CRM** é a fonte única de verdade (banco Prisma Postgres na nuvem)
+- **Site** consome dados via API REST do CRM
+- **Autenticação** via NextAuth.js com credenciais
+- **CORS** configurado para permitir requisições do Site
 
 ---
 
@@ -978,15 +1004,17 @@ GET    /api/auth/me             # Usuário atual
 
 2. **CRM** ✅ CONCLUÍDO
    - [x] Configurar Prisma e modelo de dados *(schema.prisma com User, Property, Lead, Task, Visit, Activity, Setting)*
-   - [x] Implementar autenticação (NextAuth.js) *(src/lib/auth.ts com credenciais)*
+   - [x] Implementar autenticação (NextAuth.js) *(src/lib/auth.ts com credenciais + SessionProvider)*
    - [x] Criar API Routes *(properties, leads, tasks, dashboard, auth)*
    - [x] Migrar dados do MockData para banco *(seed.ts executado - Prisma Postgres na nuvem)*
    - [x] Implementar Dashboard *(consumindo API real com estatísticas)*
    - [x] Implementar CRUD de imóveis *(API completa GET/POST/PUT/DELETE)*
    - [x] Implementar gestão de leads *(API completa GET/POST/PUT/DELETE)*
    - [x] Implementar tarefas e pipeline *(API completa GET/POST/PUT/DELETE)*
+   - [x] Corrigir erros de build *(task includes, login Suspense boundary)*
+   - [x] Push para GitHub *(https://github.com/Noronhajr13/gomes-noronha-crm)*
 
-3. **Site** 🔄 EM ANDAMENTO
+3. **Site** ✅ CONCLUÍDO
    - [x] Limpar código do CRM *(removido /src/app/crm e /src/components/crm)*
    - [x] Configurar consumo de API *(src/services/api.ts criado + .env.local configurado)*
    - [x] Middleware CORS no CRM *(src/middleware.ts configurado)*
@@ -999,23 +1027,28 @@ GET    /api/auth/me             # Usuário atual
      - BuscarImoveisSection.tsx - estados de loading/erro
      - HomeSection.tsx - imóveis em destaque da API
    - [x] Testar integração completa *(Site em 3000 consumindo CRM em 3001)*
+   - [x] Push para GitHub *(https://github.com/Noronhajr13/gomes-noronha-imobiliaria)*
 
 4. **Deploy** 🔄 EM ANDAMENTO
    - [x] Configurar vercel.json no CRM
    - [x] Configurar vercel.json no Site
    - [x] Criar guia de deploy (DEPLOY.md)
    - [x] Commit das alterações
-   - [ ] Criar repositório CRM no GitHub
-   - [ ] Deploy CRM na Vercel
+   - [x] Criar repositório CRM no GitHub ✅
+   - [x] Criar repositório Site no GitHub ✅
+   - [x] Deploy CRM na Vercel ✅
    - [ ] Deploy Site na Vercel
-   - [ ] Configurar domínios
+   - [ ] Configurar domínios (gomesnoronha.com.br, crm.gomesnoronha.com.br)
    - [ ] Configurar variáveis de ambiente produção
    - [ ] Testar em produção
 
-### 14.8 Informações do Ambiente Atual
+### 14.8 Informações do Ambiente
+
+#### Desenvolvimento Local
 
 **CRM (gomes-noronha-crm):**
-- URL: http://localhost:3001
+- URL Local: http://localhost:3001
+- GitHub: https://github.com/Noronhajr13/gomes-noronha-crm
 - Banco: Prisma Postgres (nuvem)
 - Usuários de teste:
   - admin@gomesnoronha.com.br / admin123 (Admin)
@@ -1023,17 +1056,89 @@ GET    /api/auth/me             # Usuário atual
   - claudio@gomesnoronha.com.br / claudio123 (Despachante)
 
 **Site (gomes-noronha-imobiliaria):**
-- URL: http://localhost:3000
+- URL Local: http://localhost:3000
+- GitHub: https://github.com/Noronhajr13/gomes-noronha-imobiliaria
 - API CRM: NEXT_PUBLIC_CRM_API_URL=http://localhost:3001/api
+
+#### Produção (Vercel)
+
+**Variáveis de Ambiente CRM:**
+```env
+DATABASE_URL=prisma+postgres://accelerate.prisma-data.net/?api_key=...
+NEXTAUTH_SECRET=[gerar com: openssl rand -base64 32]
+NEXTAUTH_URL=https://[seu-crm].vercel.app
+SITE_URL=https://[seu-site].vercel.app
+```
+
+**Variáveis de Ambiente Site:**
+```env
+NEXT_PUBLIC_CRM_API_URL=https://[seu-crm].vercel.app/api
+```
+
+---
+
+## 15. DEPLOY E PRODUÇÃO
+
+### 15.1 Checklist de Deploy
+
+#### CRM
+- [x] Build passa sem erros (`npm run build`)
+- [x] Código no GitHub
+- [x] Vercel conectado ao repositório
+- [ ] Variáveis de ambiente configuradas
+- [ ] Domínio configurado (crm.gomesnoronha.com.br)
+
+#### Site
+- [x] Build passa sem erros (`npm run build`)
+- [x] Código no GitHub
+- [ ] Vercel conectado ao repositório
+- [ ] Variáveis de ambiente configuradas
+- [ ] Domínio configurado (gomesnoronha.com.br)
+
+### 15.2 Comandos Úteis
+
+```bash
+# Desenvolvimento CRM
+cd /home/noronha/projetos/gomes-noronha-crm
+npm run dev          # Inicia servidor em localhost:3001
+npm run build        # Build de produção
+npx prisma studio    # Interface visual do banco
+
+# Desenvolvimento Site
+cd /home/noronha/projetos/gomes-noronha-imobiliaria
+npm run dev          # Inicia servidor em localhost:3000
+npm run build        # Build de produção
+
+# Git
+git status           # Ver alterações
+git add -A           # Adicionar todas alterações
+git commit -m "msg"  # Commitar
+git push origin main # Enviar para GitHub
+```
+
+### 15.3 Problema Conhecido - Erro de Login na Vercel
+
+Se aparecer o erro: *"There is a problem with the server configuration"*
+
+**Causa:** Variáveis de ambiente não configuradas corretamente.
+
+**Solução:**
+1. Acesse Vercel Dashboard → Projeto CRM → Settings → Environment Variables
+2. Configure:
+   - `DATABASE_URL` - Connection string do Prisma Postgres
+   - `NEXTAUTH_SECRET` - Secret gerado com `openssl rand -base64 32`
+   - `NEXTAUTH_URL` - URL do deploy (ex: https://gomes-noronha-crm.vercel.app)
+   - `SITE_URL` - URL do site público
+3. Clique em **Redeploy** para aplicar as mudanças
 
 ---
 
 ## 📝 NOTAS FINAIS
 
-### Regras de Desenvolvimento (do CLAUDE.md)
+### Regras de Desenvolvimento
 
-1. **MockData.ts** como fonte única (até migrar para API)
-2. Usar funções helper do `theme.ts` para componentes
+1. **CRM** é a fonte única de dados - Site consome via API
+2. Usar funções helper do `theme.ts` para componentes do Site
 3. Seguir padrão TypeScript com interfaces bem definidas
 4. Usar `cn()` para concatenação de classes
 5. Novos componentes seguem padrão existente
@@ -1042,6 +1147,8 @@ GET    /api/auth/me             # Usuário atual
 8. `npm run lint` antes de finalizar alterações
 9. `React.memo` para componentes pesados
 10. Implementar loading states e error boundaries
+11. **CRM:** Sempre usar SessionProvider para autenticação
+12. **Site:** Usar `src/services/api.ts` para chamadas à API
 
 ### Contato do Desenvolvedor
 **CN CONECTA**  
@@ -1049,5 +1156,5 @@ www.cnconecta.com.br
 
 ---
 
-*Documentação gerada em 01/12/2025*  
-*Versão do Projeto: 0.1.0*
+*Documentação atualizada em 04/12/2025*  
+*Versão do Projeto: 1.0.0*
