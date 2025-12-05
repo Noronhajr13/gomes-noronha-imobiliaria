@@ -1,9 +1,9 @@
 # 📋 DOCUMENTAÇÃO COMPLETA DO PROJETO
 ## Gomes & Noronha - Sistema Imobiliário
 
-**Data de Documentação:** 04/12/2025  
-**Versão:** 1.0.0  
-**Status:** ✅ Projetos Separados - Em Deploy
+**Data de Documentação:** 05/12/2025  
+**Versão:** 1.1.0  
+**Status:** ✅ Projetos Separados - CRM em Desenvolvimento
 
 ---
 
@@ -46,6 +46,7 @@
 13. [Configurações](#13-configurações)
 14. [Plano de Separação CRM/Site](#14-plano-de-separação-crmsite)
 15. [Deploy e Produção](#15-deploy-e-produção)
+16. [Roadmap CRM - Funcionalidades a Desenvolver](#16-roadmap-crm---funcionalidades-a-desenvolver)
 
 ---
 
@@ -98,10 +99,10 @@ Site: https://gomesnoronha.com.br
 │  ├─────────────────────────────┤           ├─────────────────────────────┤ │
 │  │                             │           │                             │ │
 │  │  /                          │  ◄────►  │  /api/properties            │ │
-│  │  /site/imoveis              │   API    │  /api/leads                 │ │
-│  │  /site/quemsomos            │   REST   │  /api/tasks                 │ │
-│  │  /site/despachante          │           │  /api/dashboard             │ │
-│  │  /site/anunciar             │           │  /api/auth/[...nextauth]    │ │
+│  │  /imoveis                   │   API    │  /api/leads                 │ │
+│  │  /quemsomos                 │   REST   │  /api/tasks                 │ │
+│  │  /despachante               │           │  /api/dashboard             │ │
+│  │  /anunciar                  │           │  /api/auth/[...nextauth]    │ │
 │  │                             │           │                             │ │
 │  │  Dados: Consome API CRM     │           │  /login                     │ │
 │  │  Port: 3000                 │           │  /dashboard                 │ │
@@ -254,10 +255,10 @@ src/
 | Rota | Arquivo | Seção | Status |
 |------|---------|-------|--------|
 | `/` | `app/page.tsx` | HomeSection | ✅ Completo |
-| `/site/imoveis` | `app/site/imoveis/page.tsx` | BuscarImoveisSection | ✅ Completo |
-| `/site/quemsomos` | `app/site/quemsomos/page.tsx` | AboutSection | ✅ Completo |
-| `/site/despachante` | `app/site/despachante/page.tsx` | DespachanteSection | ✅ Completo |
-| `/site/anunciar` | `app/site/anunciar/page.tsx` | AnunciarSection | ✅ Completo |
+| `/imoveis` | `app/imoveis/page.tsx` | BuscarImoveisSection | ✅ Completo |
+| `/quemsomos` | `app/quemsomos/page.tsx` | AboutSection | ✅ Completo |
+| `/despachante` | `app/despachante/page.tsx` | DespachanteSection | ✅ Completo |
+| `/anunciar` | `app/anunciar/page.tsx` | AnunciarSection | ✅ Completo |
 
 ### 5.2 Componentes de Layout
 
@@ -1133,6 +1134,526 @@ Se aparecer o erro: *"There is a problem with the server configuration"*
 
 ---
 
+## 16. ROADMAP CRM - FUNCIONALIDADES A DESENVOLVER
+
+### 16.1 Visão Geral das Telas
+
+| Tela | Rota | Prioridade | Status |
+|------|------|------------|--------|
+| Dashboard | `/dashboard` | Alta | ✅ Básico |
+| Cadastro de Imóveis | `/imoveis/novo` | Alta | ⏳ A desenvolver |
+| Lista de Imóveis | `/imoveis` | Alta | ⏳ A desenvolver |
+| Lista de Atendimentos | `/atendimentos` | Alta | ⏳ A desenvolver |
+| Detalhe do Atendimento | `/atendimentos/[id]` | Alta | ⏳ A desenvolver |
+| Lista de Leads | `/leads` | Alta | ⏳ A desenvolver |
+
+---
+
+### 16.2 CADASTRO DE IMÓVEIS (`/imoveis/novo`)
+
+#### Visão da Tela
+Formulário completo para cadastro de novos imóveis com múltiplas seções organizadas.
+
+#### Seções do Formulário
+
+**1. Informações Básicas**
+| Campo | Tipo | Obrigatório | Observações |
+|-------|------|-------------|-------------|
+| Título | Text | Sim | Ex: "Casa 3 quartos no Cascatinha" |
+| Descrição | Textarea | Não | Descrição detalhada do imóvel |
+| Tipo | Select | Sim | Casa, Apartamento, Terreno, etc. |
+| Transação | Select | Sim | Venda, Aluguel, Venda/Aluguel |
+| Status | Select | Sim | Disponível, Reservado, Vendido, etc. |
+
+**2. Valores**
+| Campo | Tipo | Obrigatório | Observações |
+|-------|------|-------------|-------------|
+| Preço | Currency | Sim | Valor em R$ |
+| Condomínio | Currency | Não | Taxa mensal |
+| IPTU | Currency | Não | Valor anual |
+
+**3. Características**
+| Campo | Tipo | Obrigatório | Observações |
+|-------|------|-------------|-------------|
+| Área (m²) | Number | Sim | Área total |
+| Quartos | Number | Não | Default: 0 |
+| Banheiros | Number | Não | Default: 0 |
+| Suítes | Number | Não | Default: 0 |
+| Vagas | Number | Não | Default: 0 |
+| Ano Construção | Number | Não | 4 dígitos |
+
+**4. Endereço**
+| Campo | Tipo | Obrigatório | Observações |
+|-------|------|-------------|-------------|
+| CEP | Text (mask) | Não | Auto-preenche endereço |
+| Endereço | Text | Sim | Logradouro |
+| Número | Text | Não | - |
+| Complemento | Text | Não | Apt, Bloco, etc. |
+| Bairro | Text/Select | Sim | Lista de bairros de JF |
+| Cidade | Text | Sim | Default: Juiz de Fora |
+| Estado | Select | Sim | Default: MG |
+
+**5. Mídia**
+| Campo | Tipo | Obrigatório | Observações |
+|-------|------|-------------|-------------|
+| Fotos | Upload múltiplo | Sim | Mínimo 1 foto |
+| Vídeos | URL/Upload | Não | YouTube ou upload |
+| Tour Virtual | URL | Não | Link 360° |
+
+**6. Comodidades/Amenidades**
+| Campo | Tipo | Obrigatório |
+|-------|------|-------------|
+| Amenidades | Checkbox múltiplo | Não |
+
+**Lista de Amenidades:**
+- Piscina, Churrasqueira, Jardim, Playground
+- Academia, Salão de Festas, Portaria 24h
+- Elevador, Ar Condicionado, Aquecedor Solar
+- Varanda/Sacada, Closet, Despensa
+- Área de Serviço, Quintal, Garagem Coberta
+
+**7. Destaques**
+| Campo | Tipo | Observações |
+|-------|------|-------------|
+| Destaque | Toggle | Aparecer na home |
+| Exclusivo | Toggle | Badge exclusivo |
+
+#### API Endpoint
+```
+POST /api/properties
+PUT /api/properties/[id]
+
+Request Body:
+{
+  "title": "string",
+  "description": "string",
+  "type": "CASA | APARTAMENTO | ...",
+  "transactionType": "VENDA | ALUGUEL | VENDA_ALUGUEL",
+  "status": "DISPONIVEL | RESERVADO | ...",
+  "price": number,
+  "condominiumFee": number | null,
+  "iptu": number | null,
+  "area": number,
+  "bedrooms": number,
+  "bathrooms": number,
+  "suites": number,
+  "parking": number,
+  "yearBuilt": number | null,
+  "address": "string",
+  "addressNumber": "string",
+  "complement": "string",
+  "neighborhood": "string",
+  "city": "string",
+  "state": "string",
+  "zipCode": "string",
+  "images": ["string"],
+  "videos": ["string"],
+  "virtualTour": "string",
+  "amenities": ["string"],
+  "featured": boolean,
+  "exclusive": boolean
+}
+```
+
+#### Schema Prisma (já existe)
+```prisma
+model Property {
+  id              String          @id @default(cuid())
+  code            String          @unique  // Gerado automaticamente
+  title           String
+  description     String?         @db.Text
+  type            PropertyType
+  transactionType TransactionType
+  status          PropertyStatus  @default(DISPONIVEL)
+  price           Float
+  condominiumFee  Float?
+  iptu            Float?
+  area            Float
+  bedrooms        Int             @default(0)
+  bathrooms       Int             @default(0)
+  suites          Int             @default(0)
+  parking         Int             @default(0)
+  yearBuilt       Int?
+  address         String
+  addressNumber   String?
+  complement      String?
+  neighborhood    String
+  city            String
+  state           String
+  zipCode         String?
+  latitude        Float?
+  longitude       Float?
+  images          String[]
+  videos          String[]
+  virtualTour     String?
+  amenities       String[]
+  featured        Boolean         @default(false)
+  exclusive       Boolean         @default(false)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  publishedAt     DateTime?
+  userId          String
+  user            User            @relation(fields: [userId], references: [id])
+  leads           Lead[]
+  visits          Visit[]
+}
+```
+
+---
+
+### 16.3 LISTA DE IMÓVEIS (`/imoveis`)
+
+#### Visão da Tela
+Tabela/Grid com todos os imóveis cadastrados no sistema com filtros e ações.
+
+#### Elementos da Interface
+
+**1. Barra Superior**
+- Título: "Imóveis" + contador total
+- Botão "Novo Imóvel" → `/imoveis/novo`
+- Toggle de visualização: Grid / Lista
+
+**2. Filtros**
+| Filtro | Tipo | Opções |
+|--------|------|--------|
+| Busca | Text | Título, código, endereço |
+| Tipo | Select | Casa, Apartamento, etc. |
+| Transação | Select | Venda, Aluguel, Ambos |
+| Status | Select | Disponível, Reservado, Vendido, etc. |
+| Preço | Range | Min - Max |
+| Corretor | Select | Lista de usuários |
+
+**3. Colunas da Tabela**
+| Coluna | Descrição |
+|--------|-----------|
+| Foto | Thumbnail da primeira imagem |
+| Código | Código único (ex: GN001) |
+| Título | Nome do imóvel |
+| Tipo | Casa, Apt, etc. |
+| Endereço | Bairro, Cidade |
+| Preço | Valor formatado |
+| Status | Badge colorido |
+| Atendimentos | Contador de leads/visitas |
+| Ações | Editar, Ver, Excluir |
+
+**4. Ações em Lote**
+- Selecionar múltiplos
+- Alterar status em lote
+- Exportar selecionados
+
+**5. Paginação**
+- 10, 25, 50 itens por página
+- Navegação de páginas
+
+#### API Endpoint
+```
+GET /api/properties
+Query Params:
+  - page: number
+  - limit: number
+  - search: string
+  - type: PropertyType
+  - transactionType: TransactionType
+  - status: PropertyStatus
+  - minPrice: number
+  - maxPrice: number
+  - userId: string
+```
+
+---
+
+### 16.4 LISTA DE ATENDIMENTOS (`/atendimentos`)
+
+#### Visão da Tela
+Listagem de todos os atendimentos/interações com leads organizados por status no funil.
+
+#### Elementos da Interface
+
+**1. Barra Superior**
+- Título: "Atendimentos"
+- Filtro de período (Hoje, Semana, Mês, Todos)
+- Botão "Novo Atendimento"
+
+**2. Abas de Status (Funil)**
+| Aba | Status | Cor |
+|-----|--------|-----|
+| Novos | NOVO | Azul |
+| Em Contato | CONTATO_REALIZADO | Amarelo |
+| Qualificados | QUALIFICADO | Verde claro |
+| Visita Agendada | VISITA_AGENDADA | Roxo |
+| Proposta | PROPOSTA_ENVIADA | Laranja |
+| Negociação | NEGOCIACAO | Verde |
+| Fechados | FECHADO_GANHO / FECHADO_PERDIDO | Verde/Vermelho |
+
+**3. Cards de Atendimento**
+| Elemento | Descrição |
+|----------|-----------|
+| Avatar/Inicial | Inicial do nome ou foto |
+| Nome do Lead | Nome completo |
+| Telefone | Com botão WhatsApp |
+| Imóvel de Interesse | Se houver |
+| Origem | Site, WhatsApp, Indicação, etc. |
+| Data | Quando foi criado |
+| Corretor Responsável | Quem está atendendo |
+| Última Atividade | Última interação |
+
+**4. Filtros Laterais**
+- Por corretor
+- Por origem do lead
+- Por imóvel de interesse
+- Por data de criação
+
+**5. Ações Rápidas**
+- Mover para próximo status
+- Agendar visita
+- Enviar WhatsApp
+- Adicionar nota
+
+#### API Endpoint (Baseado em Leads)
+```
+GET /api/leads
+Query Params:
+  - page: number
+  - limit: number
+  - status: LeadStatus
+  - source: LeadSource
+  - userId: string
+  - startDate: Date
+  - endDate: Date
+```
+
+---
+
+### 16.5 DETALHE DO ATENDIMENTO (`/atendimentos/[id]`)
+
+#### Visão da Tela
+Página completa com todas as informações do lead/atendimento e histórico de interações.
+
+#### Layout (2 Colunas)
+
+**Coluna Esquerda (70%)**
+
+**1. Cabeçalho do Lead**
+| Elemento | Descrição |
+|----------|-----------|
+| Nome | Nome completo em destaque |
+| Status | Badge com status atual + botão alterar |
+| Score | Pontuação do lead (0-100) |
+| Origem | De onde veio o lead |
+| Data de criação | Quando entrou no sistema |
+
+**2. Informações de Contato**
+| Campo | Ação |
+|-------|------|
+| Telefone | Botão ligar + Botão WhatsApp |
+| Email | Botão enviar email |
+| CPF | Se informado |
+| Contato preferido | Horário/canal preferido |
+
+**3. Interesse**
+| Campo | Descrição |
+|-------|-----------|
+| Tipo de transação | Comprar, Alugar |
+| Orçamento | Faixa de preço |
+| Bairros de interesse | Lista de bairros |
+| Imóvel específico | Se veio de um imóvel |
+
+**4. Timeline de Atividades**
+Lista cronológica de todas as interações:
+- Lead criado
+- Contato realizado (ligação, WhatsApp)
+- Visita agendada
+- Visita realizada + feedback
+- Proposta enviada
+- Notas adicionadas
+- Status alterado
+
+**5. Adicionar Atividade**
+| Tipo | Campos |
+|------|--------|
+| Nota/Comentário | Texto livre |
+| Ligação | Duração, resultado |
+| WhatsApp | Texto enviado |
+| Email | Assunto, corpo |
+| Visita | Imóvel, data, resultado |
+
+**Coluna Direita (30%)**
+
+**1. Ações Rápidas**
+- Agendar visita
+- Enviar proposta
+- Alterar status
+- Atribuir corretor
+
+**2. Tarefas Relacionadas**
+Lista de tarefas pendentes do lead:
+- Follow-up em X dias
+- Ligar para confirmar visita
+- Enviar documentação
+
+**3. Imóveis Sugeridos**
+Com base no interesse:
+- Cards pequenos de imóveis compatíveis
+- Botão "Enviar por WhatsApp"
+
+**4. Visitas Realizadas**
+Histórico de visitas:
+- Imóvel visitado
+- Data
+- Feedback
+- Rating (1-5 estrelas)
+
+#### APIs Necessárias
+```
+GET /api/leads/[id]
+PUT /api/leads/[id]
+GET /api/leads/[id]/activities
+POST /api/leads/[id]/activities
+GET /api/leads/[id]/visits
+POST /api/leads/[id]/visits
+GET /api/leads/[id]/tasks
+```
+
+#### Schema Prisma Relacionado
+```prisma
+model Activity {
+  id          String       @id @default(cuid())
+  type        ActivityType
+  description String
+  metadata    Json?
+  createdAt   DateTime     @default(now())
+  userId      String
+  user        User         @relation(fields: [userId], references: [id])
+  leadId      String?
+  lead        Lead?        @relation(fields: [leadId], references: [id])
+}
+
+model Visit {
+  id          String      @id @default(cuid())
+  scheduledAt DateTime
+  completedAt DateTime?
+  status      VisitStatus @default(AGENDADA)
+  notes       String?     @db.Text
+  feedback    String?     @db.Text
+  rating      Int?
+  propertyId  String
+  property    Property    @relation(fields: [propertyId], references: [id])
+  leadId      String
+  lead        Lead        @relation(fields: [leadId], references: [id])
+}
+```
+
+---
+
+### 16.6 LISTA DE LEADS (`/leads`)
+
+#### Visão da Tela
+Tabela de leads com foco em dados de contato e gestão rápida.
+
+#### Diferença de Atendimentos vs Leads
+- **Atendimentos:** Visão de funil/processo de venda
+- **Leads:** Visão de dados/contatos (tabela)
+
+#### Elementos da Interface
+
+**1. Barra Superior**
+- Título: "Leads" + contador
+- Botão "Novo Lead"
+- Exportar CSV
+
+**2. Filtros**
+| Filtro | Tipo |
+|--------|------|
+| Busca | Nome, email, telefone |
+| Status | Multi-select |
+| Origem | Multi-select |
+| Corretor | Select |
+| Período | Date range |
+
+**3. Colunas da Tabela**
+| Coluna | Descrição |
+|--------|-----------|
+| Nome | Nome do lead |
+| Email | Com ação de copiar |
+| Telefone | Com botão WhatsApp |
+| Origem | Badge |
+| Status | Badge colorido |
+| Corretor | Responsável |
+| Criado em | Data formatada |
+| Último contato | Data da última atividade |
+| Ações | Ver, Editar, WhatsApp |
+
+**4. Ações em Lote**
+- Atribuir corretor
+- Alterar status
+- Exportar selecionados
+- Enviar para automação
+
+#### API Endpoint
+```
+GET /api/leads
+POST /api/leads
+PUT /api/leads/[id]
+DELETE /api/leads/[id]
+```
+
+---
+
+### 16.7 Componentes Compartilhados (CRM)
+
+#### Componentes a Criar
+
+| Componente | Descrição |
+|------------|-----------|
+| `DataTable` | Tabela genérica com sort, filter, pagination |
+| `StatusBadge` | Badge de status com cores |
+| `PropertyCard` | Card compacto de imóvel |
+| `LeadCard` | Card de lead para kanban |
+| `ActivityTimeline` | Timeline de atividades |
+| `QuickActions` | Menu de ações rápidas |
+| `FilterBar` | Barra de filtros reutilizável |
+| `SearchInput` | Input de busca com debounce |
+| `DateRangePicker` | Seletor de período |
+| `FileUpload` | Upload de arquivos/imagens |
+| `CurrencyInput` | Input para valores monetários |
+| `PhoneInput` | Input com máscara de telefone |
+| `AddressForm` | Formulário de endereço com CEP |
+| `Modal` | Modal reutilizável |
+| `Sidebar` | Menu lateral do CRM |
+| `TopBar` | Barra superior com user/notifications |
+
+---
+
+### 16.8 Checklist de Implementação
+
+#### Fase 1: Infraestrutura
+- [ ] Criar layout base do CRM com Sidebar
+- [ ] Implementar TopBar com usuário logado
+- [ ] Criar componentes UI base (DataTable, Modal, etc.)
+- [ ] Configurar React Query para cache de dados
+- [ ] Criar hooks de API (useProperties, useLeads, etc.)
+
+#### Fase 2: Imóveis
+- [ ] Página de Lista de Imóveis
+- [ ] Página de Cadastro de Imóvel
+- [ ] Página de Edição de Imóvel
+- [ ] Upload de imagens
+- [ ] Validação com Zod
+
+#### Fase 3: Leads/Atendimentos
+- [ ] Página de Lista de Leads (tabela)
+- [ ] Página de Atendimentos (kanban/funil)
+- [ ] Página de Detalhe do Atendimento
+- [ ] Timeline de atividades
+- [ ] Sistema de tarefas relacionadas
+
+#### Fase 4: Integrações
+- [ ] Integração WhatsApp (link direto)
+- [ ] Notificações no sistema
+- [ ] Dashboard com métricas
+
+---
+
 ## 📝 NOTAS FINAIS
 
 ### Regras de Desenvolvimento
@@ -1156,5 +1677,5 @@ www.cnconecta.com.br
 
 ---
 
-*Documentação atualizada em 04/12/2025*  
-*Versão do Projeto: 1.0.0*
+*Documentação atualizada em 05/12/2025*  
+*Versão do Projeto: 1.1.0*
