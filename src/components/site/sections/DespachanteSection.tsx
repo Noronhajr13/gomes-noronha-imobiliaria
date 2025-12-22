@@ -4,7 +4,6 @@ import React from 'react';
 import Container from '../ui/Container';
 import { Icon, type IconName } from '@/utils/iconMapper';
 import { companyInfo } from '@/data/MockData';
-import { Text } from '@/components/site/ui';
 
 const DespachanteSection: React.FC = () => {
   const services = [

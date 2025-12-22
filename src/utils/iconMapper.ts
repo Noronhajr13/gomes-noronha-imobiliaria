@@ -1,11 +1,11 @@
 import React from 'react';
-import { 
-  Home, 
-  Users, 
-  Briefcase, 
-  Phone, 
-  Mail, 
-  MapPin, 
+import {
+  Home,
+  Users,
+  Briefcase,
+  Phone,
+  Mail,
+  MapPin,
   Clock,
   Star,
   Crown,
@@ -34,7 +34,9 @@ import {
   Check,
   Loader2,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Calendar,
+  Info
 } from 'lucide-react';
 
 export const iconMap = {
@@ -73,6 +75,8 @@ export const iconMap = {
   Loader2,
   ChevronLeft,
   ChevronRight,
+  Calendar,
+  Info,
 };
 
 export type IconName = keyof typeof iconMap;

@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import Container from '../ui/Container';
-import { Text } from '@/components/site/ui';
 import { Icon, type IconName } from '@/utils/iconMapper';
 import { companyInfo, propertyTypes } from '@/data/MockData';
 import { createLead } from '@/services/api';

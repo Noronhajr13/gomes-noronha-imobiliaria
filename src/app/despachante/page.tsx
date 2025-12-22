@@ -14,13 +14,13 @@ export default function DespachantePage() {
   const handleSectionChange = (section: string) => {
     const routes: { [key: string]: string } = {
       'home': '/',
-      'imoveis': '/site/imoveis',
-      'quemsomos': '/site/quemsomos',
-      'despachante': '/site/despachante',
-      'anunciar': '/site/anunciar',
+      'imoveis': '/imoveis',
+      'quemsomos': '/quemsomos',
+      'despachante': '/despachante',
+      'anunciar': '/anunciar',
       'contato': '/#contato'
     };
-    
+
     if (routes[section]) {
       router.push(routes[section]);
     }

@@ -1,9 +1,9 @@
 # 📋 DOCUMENTAÇÃO COMPLETA DO PROJETO
 ## Gomes & Noronha - Sistema Imobiliário
 
-**Data de Documentação:** 05/12/2025  
-**Versão:** 1.1.0  
-**Status:** ✅ Projetos Separados - CRM em Desenvolvimento
+**Data de Documentação:** 09/12/2025  
+**Versão:** 1.2.0  
+**Status:** ✅ CRM Funcional - Imóveis e Atendimentos Implementados
 
 ---
 
@@ -13,7 +13,7 @@
 | Projeto | Repositório | Status |
 |---------|-------------|--------|
 | **Site (Público)** | [gomes-noronha-imobiliaria](https://github.com/Noronhajr13/gomes-noronha-imobiliaria) | ✅ Sincronizado |
-| **CRM (Privado)** | [gomes-noronha-crm](https://github.com/Noronhajr13/gomes-noronha-crm) | ✅ Sincronizado |
+| **CRM (Privado)** | [gomes-noronha-crm](https://github.com/Noronhajr13/gomes-noronha-crm) | ✅ Funcional |
 
 ### Último Commit - Site
 ```
@@ -23,9 +23,23 @@
 
 ### Último Commit - CRM
 ```
+0252c95 feat: implementa módulo de Atendimentos (Leads)
+d2bd7a1 feat: Adiciona páginas de detalhe e edição de imóvel
+5a64eb6 feat: Implementa Lista de Imóveis e Cadastro de Imóveis
 795054d fix: adicionar SessionProvider para autenticação funcionar corretamente
-497c749 fix: corrigir erros de build - task includes e login Suspense
 ```
+
+### Funcionalidades Implementadas no CRM
+| Módulo | Status | Descrição |
+|--------|--------|-----------|
+| **Autenticação** | ✅ | Login com NextAuth.js |
+| **Dashboard** | ✅ | Métricas, gráficos, atividades recentes |
+| **Imóveis** | ✅ | CRUD completo (Lista, Cadastro, Edição, Detalhes) |
+| **Atendimentos** | ✅ | CRUD completo (Lista, Cadastro, Edição, Detalhes) |
+| **APIs** | ✅ | Properties, Leads, Tasks, Dashboard |
+| **Tarefas** | 🔄 | API pronta, UI pendente |
+| **Relatórios** | ❌ | Pendente |
+| **Configurações** | ❌ | Pendente |
 
 ---
 
@@ -1626,31 +1640,105 @@ DELETE /api/leads/[id]
 
 ### 16.8 Checklist de Implementação
 
-#### Fase 1: Infraestrutura
-- [ ] Criar layout base do CRM com Sidebar
-- [ ] Implementar TopBar com usuário logado
-- [ ] Criar componentes UI base (DataTable, Modal, etc.)
+> **Última atualização:** 09/12/2025
+
+#### Fase 1: Infraestrutura ✅ CONCLUÍDA
+- [x] Criar layout base do CRM com Sidebar (`/components/layout/CRMLayout.tsx`)
+- [x] Implementar TopBar com usuário logado (`/components/layout/TopBar.tsx`)
+- [x] Sidebar com navegação (`/components/layout/Sidebar.tsx`)
+- [x] Autenticação com NextAuth.js (`/api/auth/[...nextauth]`)
+- [x] Página de Login (`/login`)
+- [ ] Criar componentes UI base (DataTable, Modal, etc.) - *Parcialmente, inline nos componentes*
 - [ ] Configurar React Query para cache de dados
 - [ ] Criar hooks de API (useProperties, useLeads, etc.)
 
-#### Fase 2: Imóveis
-- [ ] Página de Lista de Imóveis
-- [ ] Página de Cadastro de Imóvel
-- [ ] Página de Edição de Imóvel
-- [ ] Upload de imagens
-- [ ] Validação com Zod
+#### Fase 2: Imóveis ✅ CONCLUÍDA
+- [x] Página de Lista de Imóveis (`/imoveis` - PropertiesListContent.tsx)
+  - Grid e List view
+  - Filtros por tipo, transação, status
+  - Busca por texto
+  - Paginação
+- [x] Página de Cadastro de Imóvel (`/imoveis/novo` - PropertyFormContent.tsx)
+  - Formulário com 6 abas (Básico, Localização, Características, Descrição, Mídia, Publicação)
+  - Validação de campos obrigatórios
+- [x] Página de Detalhes do Imóvel (`/imoveis/[id]` - PropertyDetailContent.tsx)
+  - Abas de informações, fotos e histórico
+  - Modal de exclusão
+- [x] Página de Edição de Imóvel (`/imoveis/[id]/editar` - PropertyEditContent.tsx)
+  - Mesmo layout do cadastro, pré-populado
+- [x] API de Imóveis (`/api/properties` e `/api/properties/[id]`)
+  - GET, POST, PUT, DELETE
+- [ ] Upload de imagens - *Campo de URLs implementado, falta integrar storage*
+- [ ] Validação com Zod - *Validação básica implementada*
 
-#### Fase 3: Leads/Atendimentos
-- [ ] Página de Lista de Leads (tabela)
-- [ ] Página de Atendimentos (kanban/funil)
-- [ ] Página de Detalhe do Atendimento
-- [ ] Timeline de atividades
-- [ ] Sistema de tarefas relacionadas
+#### Fase 3: Leads/Atendimentos ✅ CONCLUÍDA
+- [x] Página de Lista de Atendimentos (`/atendimentos` - AttendancesListContent.tsx)
+  - Filtros por origem e status
+  - Busca por nome, email, telefone
+  - Cards de estatísticas (Novos, Em Andamento, Negociação, Fechados)
+  - Tabela com paginação
+  - Ações rápidas (WhatsApp, telefone, email)
+- [x] Página de Detalhe do Atendimento (`/atendimentos/[id]` - AttendanceDetailContent.tsx)
+  - Informações de contato
+  - Dados de interesse (tipo, orçamento, bairros)
+  - Imóvel de interesse vinculado
+  - Corretor responsável
+  - Aba de atividades (histórico/timeline)
+  - Aba de visitas agendadas
+  - Modal para alterar status
+  - Botões de ação rápida (Ligar, WhatsApp, Email)
+- [x] Página de Novo Atendimento (`/atendimentos/novo` - AttendanceFormContent.tsx)
+  - Formulário completo
+  - Seleção de imóvel e corretor
+- [x] Página de Edição de Atendimento (`/atendimentos/[id]/editar` - AttendanceEditContent.tsx)
+- [x] API de Leads (`/api/leads` e `/api/leads/[id]`)
+  - GET com busca e filtros
+  - POST, PUT, PATCH, DELETE
+  - Registro de atividades automático
+- [x] Timeline de atividades - *Implementada na aba de atividades*
+- [ ] Página de Leads (visão tabela separada) - *Pode usar /atendimentos*
+- [ ] Kanban/Funil visual - *Lista implementada, falta kanban*
+- [ ] Sistema de tarefas relacionadas - *API existe, falta integrar na UI*
 
-#### Fase 4: Integrações
-- [ ] Integração WhatsApp (link direto)
+#### Fase 4: Dashboard ✅ CONCLUÍDA
+- [x] Página de Dashboard (`/dashboard` - DashboardContent.tsx)
+  - Cards de métricas (Imóveis, Leads, Visitas, Conversão)
+  - Gráfico de leads por mês
+  - Lista de atividades recentes
+  - Tarefas pendentes
+- [x] API de Dashboard (`/api/dashboard`)
+
+#### Fase 5: Integrações 🔄 PENDENTE
+- [x] Integração WhatsApp (link direto) - *Implementado em várias telas*
 - [ ] Notificações no sistema
-- [ ] Dashboard com métricas
+- [ ] Upload de imagens para storage
+- [ ] Exportar CSV/Excel
+- [ ] Automações de follow-up
+
+#### Fase 6: Extras 🔄 PENDENTE
+- [ ] Página de Tarefas/Agenda (`/tarefas`)
+- [ ] Página de Configurações (`/configuracoes`)
+- [ ] Página de Relatórios (`/relatorios`)
+- [ ] Gestão de Usuários/Corretores
+
+---
+
+### 16.9 Últimos Commits do CRM
+```
+0252c95 feat: implementa módulo de Atendimentos (Leads)
+d2bd7a1 feat: Adiciona páginas de detalhe e edição de imóvel
+5a64eb6 feat: Implementa Lista de Imóveis e Cadastro de Imóveis
+795054d fix: adicionar SessionProvider para autenticação funcionar corretamente
+497c749 fix: corrigir erros de build - task includes e login Suspense
+c65c521 feat: CRM completo com APIs, auth e dashboard
+```
+
+#### Fase 7: Próximos Passos
+- [ ] Página de Tarefas/Agenda com UI completa
+- [ ] Kanban visual para atendimentos
+- [ ] Upload de imagens para Cloudinary/S3
+- [ ] Exportar dados CSV/Excel
+- [ ] Notificações e alertas
 
 ---
 
@@ -1677,5 +1765,5 @@ www.cnconecta.com.br
 
 ---
 
-*Documentação atualizada em 05/12/2025*  
-*Versão do Projeto: 1.1.0*
+*Documentação atualizada em 09/12/2025*  
+*Versão do Projeto: 1.2.0*

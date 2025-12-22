@@ -3,17 +3,14 @@
 import React from 'react';
 import Container from '../ui/Container';
 import { Text, Button } from '@/components/site/ui';
-import { ValueCard, TeamMemberCard, FeatureHighlight, CompanyMission } from '@/components/site/about';
-import StatsGrid from '@/components/site/stats/StatsGrid';
-import { 
-  companyInfo, 
-  companyStats, 
-  companyValues, 
-  companyFeatures, 
+import { ValueCard, TeamMemberCard } from '@/components/site/about';
+import {
+  companyInfo,
+  companyValues,
   teamMembers,
-  getWhatsAppUrl 
+  getWhatsAppUrl
 } from '@/data/MockData';
-import { Icon, type IconName } from '@/utils/iconMapper';
+import { type IconName } from '@/utils/iconMapper';
 import CompanySection from './CompanySection';
 
 const AboutSection: React.FC = () => {

@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { companyInfo, navigationItems } from '@/data/MockData';
 import { Icon } from '@/utils/iconMapper';
 import { cn } from '@/utils/helpers';
-import Button from '@/components/site/ui/Button';
 import { Logo } from '@/components/site/ui';
 import NavigationItem from '@/components/site/layout/header/NavigationItem';
 import MobileMenu from '@/components/site/layout/header/MobileMenu';
