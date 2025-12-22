@@ -3,6 +3,26 @@
  */
 
 const CRM_API_URL = process.env.NEXT_PUBLIC_CRM_API_URL || 'http://localhost:3001/api'
+const CRM_BASE_URL = CRM_API_URL.replace('/api', '')
+
+/**
+ * Normaliza URL de imagem (converte relativa para absoluta)
+ */
+export function normalizeImageUrl(url: string): string {
+  if (!url) return '/images/placeholder-property.svg'
+  if (url.startsWith('http')) return url
+  return `${CRM_BASE_URL}${url}`
+}
+
+/**
+ * Normaliza array de URLs de imagens
+ */
+function normalizePropertyImages(property: Property): Property {
+  return {
+    ...property,
+    images: property.images?.map(normalizeImageUrl) || []
+  }
+}
 
 export interface Property {
   id: string | number
@@ -96,9 +116,10 @@ export async function fetchProperties(filters?: PropertyFilters): Promise<Proper
     }
 
     const data = await response.json()
-    
+
     // A API retorna { properties: [...], pagination: {...} }
-    return data.properties || data || []
+    const properties = data.properties || data || []
+    return properties.map(normalizePropertyImages)
   } catch (error) {
     console.error('Erro ao buscar imóveis:', error)
     return []
@@ -119,7 +140,8 @@ export async function fetchPropertyById(id: string): Promise<Property | null> {
       throw new Error(`Erro ao buscar imóvel: ${response.status}`)
     }
 
-    return response.json()
+    const property = await response.json()
+    return normalizePropertyImages(property)
   } catch (error) {
     console.error('Erro ao buscar imóvel:', error)
     return null

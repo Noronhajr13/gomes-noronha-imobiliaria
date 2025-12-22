@@ -4,3 +4,4 @@ export { default as ServicesSection } from './ServicesSection';
 export { default as ContactSection } from './ContactSection';
 export { default as DespachanteSection } from './DespachanteSection';
 export { default as AnunciarSection } from './AnunciarSection';
+export { default as BuscarImoveisSection } from './BuscarImoveisSection';

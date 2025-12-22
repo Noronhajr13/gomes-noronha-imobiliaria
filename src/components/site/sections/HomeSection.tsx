@@ -1,36 +1,18 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import Button from '../ui/Button';
+import LinkButton from '../ui/Button';
 import PropertySearch, { SearchFilters } from '@/components/site/property/PropertySearch';
 import PropertyGrid from '@/components/site/property/PropertyGrid';
 import StatsGrid from '@/components/site/stats/StatsGrid';
-import { Property as PropertyCardType } from '@/components/site/property/PropertyCard';
 import { companyInfo, companyStats } from '@/data/MockData';
-import { Property as APIProperty, fetchFeaturedProperties, formatPrice, getPropertyWhatsAppUrl } from '@/services/api';
-import Container from '../ui/Container';
+import { fetchFeaturedProperties } from '@/services/api';
+import { PropertyDisplay } from '@/types/property';
+import { toPropertyDisplay } from '@/utils/propertyConverter';
 
 const HomeSection: React.FC = () => {
-  const [featuredProperties, setFeaturedProperties] = useState<PropertyCardType[]>([]);
+  const [featuredProperties, setFeaturedProperties] = useState<PropertyDisplay[]>([]);
   const [loading, setLoading] = useState(true);
-
-  // Função para converter Property da API para Property do PropertyCard
-  const convertToPropertyCard = (apiProperty: APIProperty): PropertyCardType => {
-    return {
-      id: typeof apiProperty.id === 'string' ? parseInt(apiProperty.id) || Math.random() : apiProperty.id,
-      title: apiProperty.title,
-      type: apiProperty.type,
-      price: formatPrice(apiProperty.price),
-      area: `${apiProperty.area}m²`,
-      bedrooms: apiProperty.bedrooms,
-      bathrooms: apiProperty.bathrooms,
-      parking: apiProperty.parking,
-      location: `${apiProperty.neighborhood}, ${apiProperty.city}`,
-      images: apiProperty.images?.length ? apiProperty.images : ['/images/placeholder-property.jpg'],
-      featured: apiProperty.featured,
-      code: apiProperty.code
-    };
-  };
 
   // Buscar imóveis em destaque da API
   useEffect(() => {
@@ -38,7 +20,7 @@ const HomeSection: React.FC = () => {
       try {
         setLoading(true);
         const properties = await fetchFeaturedProperties(3);
-        setFeaturedProperties(properties.map(convertToPropertyCard));
+        setFeaturedProperties(properties.map(toPropertyDisplay));
       } catch (error) {
         console.error('Erro ao carregar imóveis em destaque:', error);
         setFeaturedProperties([]);
@@ -52,28 +34,6 @@ const HomeSection: React.FC = () => {
   // Handlers
   const handleSearch = (filters: SearchFilters) => {
     console.log('Buscar imóveis:', filters);
-  };
-
-  const handleViewDetails = (property: PropertyCardType) => {
-    console.log('Ver detalhes:', property);
-  };
-
-  const handleWhatsApp = (property: PropertyCardType) => {
-    const phone = companyInfo.contact.whatsapp;
-    const message = encodeURIComponent(
-      `Olá! Tenho interesse no imóvel:\n\n` +
-      `📍 ${property.code} - ${property.title}\n` +
-      `💰 ${property.price}\n` +
-      `📐 ${property.area}\n` +
-      `🛏️ ${property.bedrooms} quartos\n\n` +
-      `Gostaria de mais informações.`
-    );
-    window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
-  };
-
-  const handleViewAll = () => {
-    console.log('Ver todos os imóveis');
-    // Navegar para página de imóveis
   };
 
   return (
@@ -96,14 +56,14 @@ const HomeSection: React.FC = () => {
           </div>
 
           <div className="flex flex-col justify-center gap-4 mb-12 sm:flex-row">
-            <Button
+            <LinkButton
               text="Ver Imóveis Disponíveis"
               icon="Search"
               variant="standard"
               size="lg"
               href="imoveis"
             />
-            <Button
+            <LinkButton
               text="Falar com Corretor"
               icon="MessageCircle"
               variant="contact"
@@ -125,9 +85,6 @@ const HomeSection: React.FC = () => {
       ) : (
         <PropertyGrid
           properties={featuredProperties}
-          onViewDetails={handleViewDetails}
-          onWhatsApp={handleWhatsApp}
-          onViewAll={handleViewAll}
         />
       )}
     </div>

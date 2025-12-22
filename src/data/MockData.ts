@@ -97,7 +97,7 @@ export const companyInfo = {
   foundedYear: 2024,
   creci: "CRECI PJ 9297",
   logo: "/images/logo-principal.png", // Logo principal (fundo claro)
-  logoWhite: "/images/logo-teste.png", // Logo branca (fundo escuro)
+  logoWhite: "/images/logo-principal.png", // Logo branca (fundo escuro)
   logoCompact: "/images/logo-alternativa.png", // Logo compacta/quadrada
   favicon: "/favicon.ico",
   
@@ -587,15 +587,10 @@ export const footerLinks = {
     { label: 'Casas à Venda', href: '/imoveis?tipo=casa&transacao=venda' },
     { label: 'Apartamentos à Venda', href: '/imoveis?tipo=apartamento&transacao=venda' },
     { label: 'Imóveis para Alugar', href: '/imoveis?transacao=aluguel' },
-    { label: 'Lançamentos', href: '/lancamentos' },
-    { label: 'Imóveis em Destaque', href: '/destaques' }
   ],
   empresa: [
     { label: 'Sobre Nós', href: '/quemsomos' },
     { label: 'Nossa Equipe', href: '/quemsomos' },
-    { label: 'Depoimentos', href: '/depoimentos' },
-    { label: 'Parceiros', href: '/parceiros' },
-    { label: 'Trabalhe Conosco', href: '/trabalhe-conosco' }
   ]
 };
 

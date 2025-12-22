@@ -96,3 +96,5 @@ export const Badge: React.FC<BadgeProps> = ({
 export { default as SocialLinks } from './SocialLinks';
 export { default as Logo } from './Logo';
 export { default as LogoPreloader } from './LogoPreloader';
+export { default as LinkButton } from './Button';
+export { default as Container } from './Container';

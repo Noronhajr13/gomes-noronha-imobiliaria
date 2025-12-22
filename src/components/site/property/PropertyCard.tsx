@@ -1,56 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { Icon } from '@/utils/iconMapper';
-import Button from '../ui/Button';
+import LinkButton from '../ui/Button';
 import { Card, Text, Badge } from '@/components/site/ui';
-import { 
-  companyInfo
-} from '@/data/MockData';
+import { companyInfo } from '@/data/MockData';
+import { PropertyDisplay } from '@/types/property';
 
-export interface Property {
-  id: number;
-  title: string;
-  type: string;
-  price: string;
-  area: string;
-  bedrooms: number;
-  bathrooms: number;
-  parking: number;
-  location: string;
-  images: string[];
-  featured: boolean;
-  code: string;
-}
+const PLACEHOLDER_IMAGE = '/images/placeholder-property.svg';
+
+// Re-exportar PropertyDisplay como Property para compatibilidade
+export type { PropertyDisplay as Property } from '@/types/property';
 
 interface PropertyCardProps {
-  property: Property;
-  onViewDetails?: (property: Property) => void;
-  onWhatsApp?: (property: Property) => void;
+  property: PropertyDisplay;
 }
 
-const PropertyCard: React.FC<PropertyCardProps> = React.memo(({ 
-  property, 
-  // onViewDetails, // Props para uso futuro
-  // onWhatsApp // Props para uso futuro
+const PropertyCard: React.FC<PropertyCardProps> = React.memo(({
+  property,
 }) => {
-  // Handlers for future use
-  // const handleViewDetails = () => {
-  //   onViewDetails?.(property);
-  // };
-
-  // const handleWhatsApp = () => {
-  //   onWhatsApp?.(property);
-  // };
+  const [imgError, setImgError] = useState(false);
+  const imageUrl = property.images?.[0] || PLACEHOLDER_IMAGE;
 
   return (
     <Card variant="DEFAULT" className="overflow-hidden transform hover:-translate-y-2">
       <div className="relative">
-        <Image 
-          src={property.images[0]}
+        <Image
+          src={imgError ? PLACEHOLDER_IMAGE : imageUrl}
           alt={property.title}
           width={600}
           height={400}
           className="object-cover w-full h-64"
+          onError={() => setImgError(true)}
         />
         <div className="absolute top-4 left-4">
           <Badge variant="photo">{property.type}</Badge>
@@ -99,17 +79,17 @@ const PropertyCard: React.FC<PropertyCardProps> = React.memo(({
 
         <div className="flex items-center justify-between mb-4">
           <Text variant="accent" className="text-2xl font-bold">{property.price}</Text>
-          <Button 
+          <LinkButton
             text="Ver mais"
             icon="ArrowRight"
-            variant="standard" 
-            size="sm" 
-            href=""
+            variant="standard"
+            size="sm"
+            href={`/imoveis/${property.code}`}
             base="smallBottom"
           />
         </div>
-        
-        <Button
+
+        <LinkButton
           text="Falar via WhatsApp"
           icon="Search"
           variant="contact"

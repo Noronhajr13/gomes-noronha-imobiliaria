@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import Image from 'next/image';
 import { Icon } from '@/utils/iconMapper';
 import { Button, Card, Text, Badge } from '@/components/site/ui';
 import { Property, formatPrice, getPropertyWhatsAppUrl } from '@/services/api';
+import { companyInfo } from '@/data/MockData';
 import { cn } from '@/utils/helpers';
 
-// Número de WhatsApp da empresa
-const COMPANY_WHATSAPP = '5511999999999'; // TODO: Mover para variável de ambiente
+const PLACEHOLDER_IMAGE = '/images/placeholder-property.svg';
 
 interface PropertyListCardProps {
   property: Property;
@@ -30,29 +30,35 @@ const getLocation = (property: Property): string => {
   return `${property.neighborhood}, ${property.city}`;
 };
 
-// Obter imagem padrão se não houver imagens
-const getPropertyImage = (property: Property): string => {
-  return property.images?.[0] || '/images/placeholder-property.jpg';
-};
-
-const PropertyListCard: React.FC<PropertyListCardProps> = React.memo(({ 
-  property, 
-  view, 
+const PropertyListCard: React.FC<PropertyListCardProps> = React.memo(({
+  property,
+  view,
   onViewDetails,
-  className 
+  className
 }) => {
+  const [imgError, setImgError] = useState(false);
+  const imageUrl = property.images?.[0] || PLACEHOLDER_IMAGE;
+
+  const handleImageError = useCallback(() => {
+    setImgError(true);
+  }, []);
+
   const handleWhatsApp = () => {
-    const whatsappUrl = getPropertyWhatsAppUrl(property, COMPANY_WHATSAPP);
+    const whatsappUrl = getPropertyWhatsAppUrl(property, companyInfo.contact.whatsapp);
     window.open(whatsappUrl, '_blank');
   };
 
   const handleViewDetails = () => {
-    onViewDetails?.(property);
+    if (onViewDetails) {
+      onViewDetails(property);
+    } else {
+      window.location.href = `/imoveis/${property.code}`;
+    }
   };
 
   const transactionLabel = property.transactionType ? transactionTypeLabels[property.transactionType] || property.transactionType : 'Venda';
   const location = getLocation(property);
-  const image = getPropertyImage(property);
+  const image = imgError ? PLACEHOLDER_IMAGE : imageUrl;
 
   // Card em modo lista
   if (view === 'list') {
@@ -66,6 +72,7 @@ const PropertyListCard: React.FC<PropertyListCardProps> = React.memo(({
               width={400}
               height={300}
               className="object-cover w-full h-48 md:h-full"
+              onError={handleImageError}
             />
           </div>
           <div className="p-6 md:w-2/3">
@@ -146,6 +153,7 @@ const PropertyListCard: React.FC<PropertyListCardProps> = React.memo(({
           width={600}
           height={400}
           className="object-cover w-full h-48"
+          onError={handleImageError}
         />
         {property.featured && (
           <div className="absolute top-2 left-2">

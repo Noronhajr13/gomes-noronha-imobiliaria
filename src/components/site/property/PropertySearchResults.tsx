@@ -6,7 +6,7 @@ import { cn } from '@/utils/helpers';
 import { Property as MockProperty } from '@/data/MockData';
 import PropertyCard, { Property } from './PropertyCard';
 import PropertyListCard from './PropertyListCard';
-import { formatPrice, getPropertyWhatsAppMessage, companyInfo } from '@/data/MockData';
+import { formatPrice } from '@/data/MockData';
 import { Property as ApiProperty } from '@/services/api';
 
 interface PropertySearchResultsProps {
@@ -94,20 +94,6 @@ const PropertySearchResults: React.FC<PropertySearchResultsProps> = React.memo((
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
-  const handleViewDetails = useCallback((property: Property) => {
-    console.log('Ver detalhes:', property);
-    // Aqui implementaria a navegação para a página do imóvel
-  }, []);
-
-  const handleWhatsApp = useCallback((property: Property) => {
-    const originalProperty = properties.find(p => p.code === property.code);
-    if (originalProperty) {
-      const message = getPropertyWhatsAppMessage(originalProperty);
-      const phone = companyInfo.contact.whatsapp;
-      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
-    }
-  }, [properties]);
-
   if (isLoading) {
     return (
       <div className={cn("flex items-center justify-center py-12", className)}>
@@ -182,8 +168,6 @@ const PropertySearchResults: React.FC<PropertySearchResultsProps> = React.memo((
             <PropertyCard
               key={property.id}
               property={convertToPropertyCard(property)}
-              onViewDetails={handleViewDetails}
-              onWhatsApp={handleWhatsApp}
             />
           ))}
         </div>
@@ -194,13 +178,6 @@ const PropertySearchResults: React.FC<PropertySearchResultsProps> = React.memo((
               key={property.id}
               property={convertToApiProperty(property)}
               view="list"
-              onViewDetails={(prop) => {
-                const originalProperty = properties.find(p => p.code === prop.code);
-                if (originalProperty) {
-                  const convertedProp = convertToPropertyCard(originalProperty);
-                  handleViewDetails(convertedProp);
-                }
-              }}
             />
           ))}
         </div>

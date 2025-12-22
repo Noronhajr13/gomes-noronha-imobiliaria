@@ -8,6 +8,20 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      // Desenvolvimento local - CRM
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3001',
+        pathname: '/uploads/**',
+      },
+      // Produção - Supabase Storage
+      {
+        protocol: 'https',
+        hostname: '*.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/**',
+      },
     ],
   },
 }

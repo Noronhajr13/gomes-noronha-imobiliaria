@@ -2,26 +2,30 @@ import React from 'react';
 import { Icon, IconName } from '@/utils/iconMapper';
 import { cn } from '@/utils/helpers';
 
-interface ButtonProps {
+/**
+ * LinkButton - Botão estilizado que renderiza como link (<a>)
+ * Use para navegação e links externos (href)
+ *
+ * Para botões com ações (onClick), use o Button padrão de @/components/site/ui
+ */
+interface LinkButtonProps {
   text: string;
   icon?: IconName;
   base?: 'base' | 'card' | 'smallBottom';
   variant?: 'standard' | 'contact' | 'inverser' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   fullWidth?: boolean;
-  onClick?: () => void;
   href?: string;
   className?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({ 
+const LinkButton: React.FC<LinkButtonProps> = ({
   text,
   icon,
   base = 'base',
   variant = 'standard',
   size = 'md',
   fullWidth = false,
-  // onClick, // Não utilizado diretamente - component usa href
   href,
   className
 }) => {
@@ -60,4 +64,4 @@ const Button: React.FC<ButtonProps> = ({
   );
 };
 
-export default Button;
+export default LinkButton;
