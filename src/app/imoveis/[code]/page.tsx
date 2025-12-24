@@ -65,3 +65,6 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
 
 // Revalidação ISR (60 segundos)
 export const revalidate = 60;
+
+// Permitir rotas dinâmicas não geradas no build
+export const dynamicParams = true;
