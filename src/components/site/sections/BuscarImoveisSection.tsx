@@ -46,8 +46,7 @@ const BuscarImoveisSection: React.FC = () => {
   } = usePropertyFilters();
 
   const handleViewDetails = (property: Property) => {
-    // Futuramente: navegação para página de detalhes
-    console.log('Ver detalhes do imóvel:', property.code);
+    window.location.href = `/imoveis/${property.code}`;
   };
 
   const handleRetry = () => {
