@@ -1,7 +1,10 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { fetchProperties, fetchPropertyById, formatPrice } from '@/services/api';
+import { fetchPropertyById, formatPrice } from '@/services/api';
 import PropertyDetailClient from '@/components/site/property/detail/PropertyDetailClient';
+
+// Forçar renderização dinâmica (SSR)
+export const dynamic = 'force-dynamic';
 
 interface PropertyPageProps {
   params: Promise<{
@@ -42,15 +45,6 @@ export async function generateMetadata({ params }: PropertyPageProps): Promise<M
   };
 }
 
-// Gerar paths estáticos (SSG)
-export async function generateStaticParams() {
-  const properties = await fetchProperties({ limit: 100 });
-
-  return properties.map((property) => ({
-    code: property.code,
-  }));
-}
-
 // Página do imóvel
 export default async function PropertyPage({ params }: PropertyPageProps) {
   const { code } = await params;
@@ -62,9 +56,3 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
 
   return <PropertyDetailClient property={property} />;
 }
-
-// Revalidação ISR (60 segundos)
-export const revalidate = 60;
-
-// Permitir rotas dinâmicas não geradas no build
-export const dynamicParams = true;
