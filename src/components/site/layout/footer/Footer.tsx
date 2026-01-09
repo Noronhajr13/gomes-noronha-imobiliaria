@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import Link from 'next/link';
 import { companyInfo, footerLinks, navigationItems, formatPhone } from '@/data/MockData';
 import { SocialLinks, Logo } from '@/components/site/ui';
 import { Icon } from '@/utils/iconMapper';
@@ -37,12 +38,12 @@ const Footer: React.FC = () => {
                 Links Rápidos
               </h4>
               <ul className="space-y-3">
-                {navigationItems.map((link, index) => (
-                  <li key={index}>
-                    <a href={link.href} className="flex items-center text-gray-300 transition-colors duration-300 transform hover:text-white hover:translate-x-1 group">
+                {navigationItems.map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href} className="flex items-center text-gray-300 transition-colors duration-300 transform hover:text-white hover:translate-x-1 group">
                       <Icon name="ArrowRight" className="w-4 h-4 mr-2 transition-opacity duration-300 opacity-0 group-hover:opacity-100" />
                       {link.name}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -54,12 +55,12 @@ const Footer: React.FC = () => {
                 Imóveis
               </h4>
               <ul className="space-y-3">
-                {footerLinks.imoveis.map((link, index) => (
-                  <li key={index}>
-                    <a href={link.href} className="flex items-center text-sm text-gray-300 transition-colors duration-300 transform hover:text-white hover:translate-x-1 group">
+                {footerLinks.imoveis.map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href} className="flex items-center text-sm text-gray-300 transition-colors duration-300 transform hover:text-white hover:translate-x-1 group">
                       <Icon name="ArrowRight" className="w-3 h-3 mr-2 transition-opacity duration-300 opacity-0 group-hover:opacity-100" />
                       {link.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
