@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 interface PropertyAnalyticsProps {
   propertyCode: string;
@@ -9,7 +9,7 @@ interface PropertyAnalyticsProps {
   propertyType: string;
 }
 
-const PropertyAnalytics: React.FC<PropertyAnalyticsProps> = ({
+const PropertyAnalytics: React.FC<PropertyAnalyticsProps> = React.memo(({
   propertyCode,
   propertyTitle,
   propertyPrice,
@@ -54,7 +54,9 @@ const PropertyAnalytics: React.FC<PropertyAnalyticsProps> = ({
   }, [propertyCode, propertyTitle, propertyPrice, propertyType]);
 
   return null; // Este componente não renderiza nada
-};
+});
+
+PropertyAnalytics.displayName = 'PropertyAnalytics';
 
 // Tipos para window com analytics
 declare global {

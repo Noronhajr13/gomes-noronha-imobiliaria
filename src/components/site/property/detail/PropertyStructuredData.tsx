@@ -6,7 +6,7 @@ interface PropertyStructuredDataProps {
   property: Property;
 }
 
-const PropertyStructuredData: React.FC<PropertyStructuredDataProps> = ({ property }) => {
+const PropertyStructuredData: React.FC<PropertyStructuredDataProps> = React.memo(({ property }) => {
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -94,6 +94,8 @@ const PropertyStructuredData: React.FC<PropertyStructuredDataProps> = ({ propert
       />
     </>
   );
-};
+});
+
+PropertyStructuredData.displayName = 'PropertyStructuredData';
 
 export default PropertyStructuredData;

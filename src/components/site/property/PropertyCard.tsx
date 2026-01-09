@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { Icon } from '@/utils/iconMapper';
-import LinkButton from '../ui/Button';
-import { Card, Text, Badge } from '@/components/site/ui';
+import { Button, Card, Text, Badge } from '@/components/site/ui';
 import { companyInfo } from '@/data/MockData';
 import { PropertyDisplay } from '@/types/property';
 
 const PLACEHOLDER_IMAGE = '/images/placeholder-property.svg';
-
-// Re-exportar PropertyDisplay como Property para compatibilidade
-export type { PropertyDisplay as Property } from '@/types/property';
 
 interface PropertyCardProps {
   property: PropertyDisplay;
@@ -79,25 +75,26 @@ const PropertyCard: React.FC<PropertyCardProps> = React.memo(({
 
         <div className="flex items-center justify-between mb-4">
           <Text variant="accent" className="text-2xl font-bold">{property.price}</Text>
-          <LinkButton
-            text="Ver mais"
+          <Button
             icon="ArrowRight"
-            variant="standard"
+            iconPosition="right"
+            variant="primary"
             size="sm"
             href={`/imoveis/${property.code}`}
-            base="smallBottom"
-          />
+          >
+            Ver mais
+          </Button>
         </div>
 
-        <LinkButton
-          text="Falar via WhatsApp"
-          icon="Search"
-          variant="contact"
+        <Button
+          icon="Phone"
+          variant="success"
           size="sm"
-          base="card"
-          className="w-full"
+          fullWidth
           href={`https://wa.me/${companyInfo.contact.whatsapp}?text=${encodeURIComponent('Olá! Gostaria de falar com um corretor.')}`}
-        />
+        >
+          Falar via WhatsApp
+        </Button>
       </div>
     </Card>
   );

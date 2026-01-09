@@ -1,45 +1,27 @@
-"use client";
+import { Metadata } from 'next';
+import { seoData, companyInfo } from '@/data/MockData';
+import DespachanteClient from './DespachanteClient';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Header from '@/components/site/layout/header/Header';
-import Footer from '@/components/site/layout/footer/Footer';
-import { DespachanteSection } from '@/components/site/sections';
+export const metadata: Metadata = {
+  title: seoData.despachante.title,
+  description: seoData.despachante.description,
+  keywords: seoData.despachante.keywords,
+  openGraph: {
+    title: seoData.despachante.title,
+    description: seoData.despachante.description,
+    images: [seoData.despachante.ogImage],
+    type: 'website',
+    locale: 'pt_BR',
+    siteName: companyInfo.name,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: seoData.despachante.title,
+    description: seoData.despachante.description,
+    images: [seoData.despachante.ogImage],
+  },
+};
 
 export default function DespachantePage() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const router = useRouter();
-
-  // Função para navegação entre páginas
-  const handleSectionChange = (section: string) => {
-    const routes: { [key: string]: string } = {
-      'home': '/',
-      'imoveis': '/imoveis',
-      'quemsomos': '/quemsomos',
-      'despachante': '/despachante',
-      'anunciar': '/anunciar',
-      'contato': '/#contato'
-    };
-
-    if (routes[section]) {
-      router.push(routes[section]);
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-white">
-      <Header 
-        activeSection="despachante"
-        setActiveSection={handleSectionChange}
-        mobileMenuOpen={mobileMenuOpen}
-        setMobileMenuOpen={setMobileMenuOpen}
-      />
-      
-      <main>
-        <DespachanteSection />
-      </main>
-      
-      <Footer />
-    </div>
-  );
+  return <DespachanteClient />;
 }

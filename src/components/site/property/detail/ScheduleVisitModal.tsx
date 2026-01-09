@@ -11,7 +11,7 @@ interface ScheduleVisitModalProps {
   propertyTitle: string;
 }
 
-const ScheduleVisitModal: React.FC<ScheduleVisitModalProps> = ({
+const ScheduleVisitModal: React.FC<ScheduleVisitModalProps> = React.memo(({
   isOpen,
   onClose,
   propertyCode,
@@ -265,6 +265,8 @@ const ScheduleVisitModal: React.FC<ScheduleVisitModalProps> = ({
       </div>
     </div>
   );
-};
+});
+
+ScheduleVisitModal.displayName = 'ScheduleVisitModal';
 
 export default ScheduleVisitModal;

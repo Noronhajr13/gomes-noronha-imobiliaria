@@ -75,7 +75,33 @@ export const theme = {
       warning: 'bg-yellow-500 text-black px-3 py-1 rounded-full text-sm font-medium',
       danger: 'bg-red-600 text-white px-3 py-1 rounded-full text-sm font-medium',
       photo: 'bg-gray-800 text-white px-3 py-1 rounded-full text-sm font-medium',
-    }
+      // Variante para especialidades (TeamMemberCard)
+      specialty: 'px-2 py-1 text-xs font-medium text-green-700 bg-green-100 rounded-full',
+    },
+    // Links e interações
+    link: {
+      primary: 'text-black hover:text-gray-700 transition-colors',
+      secondary: 'text-gray-600 hover:text-black transition-colors',
+      muted: 'text-gray-400 hover:text-gray-300 transition-colors',
+      accent: 'text-green-600 hover:text-green-700 transition-colors',
+    },
+    // Input/Form elements
+    input: {
+      DEFAULT: 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 transition-all',
+      error: 'w-full px-3 py-2 border border-red-500 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 transition-all',
+      select: 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 transition-all bg-white',
+    },
+    // Labels
+    label: {
+      DEFAULT: 'block mb-2 text-sm font-medium text-gray-700',
+    },
+    // Mensagens de feedback
+    message: {
+      error: 'text-red-500',
+      success: 'text-green-600',
+      warning: 'text-yellow-600',
+      info: 'text-blue-600',
+    },
   }
 } as const;
 
@@ -104,4 +130,20 @@ export const getBadgeClass = (variant: keyof typeof theme.components.badge = 'pr
 
 export const getSectionClass = (variant: keyof typeof theme.components.section = 'DEFAULT') => {
   return theme.components.section[variant];
+};
+
+export const getLinkClass = (variant: keyof typeof theme.components.link = 'primary') => {
+  return theme.components.link[variant];
+};
+
+export const getInputClass = (variant: keyof typeof theme.components.input = 'DEFAULT') => {
+  return theme.components.input[variant];
+};
+
+export const getLabelClass = () => {
+  return theme.components.label.DEFAULT;
+};
+
+export const getMessageClass = (variant: keyof typeof theme.components.message = 'error') => {
+  return theme.components.message[variant];
 };

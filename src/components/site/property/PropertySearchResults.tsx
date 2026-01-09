@@ -3,11 +3,11 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { Icon } from '@/utils/iconMapper';
 import { cn } from '@/utils/helpers';
-import { Property as MockProperty } from '@/data/MockData';
-import PropertyCard, { Property } from './PropertyCard';
-import PropertyListCard from './PropertyListCard';
-import { formatPrice } from '@/data/MockData';
+import { Property as MockProperty, formatPrice } from '@/data/MockData';
 import { Property as ApiProperty } from '@/services/api';
+import { toPropertyDisplay } from '@/types/property';
+import PropertyCard from './PropertyCard';
+import PropertyListCard from './PropertyListCard';
 
 interface PropertySearchResultsProps {
   properties: MockProperty[];
@@ -29,23 +29,11 @@ const PropertySearchResults: React.FC<PropertySearchResultsProps> = React.memo((
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Conversão de MockProperty para Property (memoizada)
-  const convertToPropertyCard = useCallback((mockProperty: MockProperty): Property => {
-    return {
-      id: mockProperty.id,
-      title: mockProperty.title,
-      type: mockProperty.type,
-      price: formatPrice(mockProperty.price, mockProperty.priceLabel),
-      area: `${mockProperty.area}m²`,
-      bedrooms: mockProperty.bedrooms,
-      bathrooms: mockProperty.bathrooms,
-      parking: mockProperty.parking,
-      location: `${mockProperty.neighborhood}, ${mockProperty.city}`,
-      images: mockProperty.images,
-      featured: mockProperty.featured,
-      code: mockProperty.code
-    };
-  }, []);
+  // Conversão de MockProperty para PropertyDisplay usando utilitário centralizado
+  const convertToPropertyDisplay = useCallback(
+    (mockProperty: MockProperty) => toPropertyDisplay(mockProperty, formatPrice),
+    []
+  );
 
   // Conversão de MockProperty para ApiProperty (para PropertyListCard)
   const convertToApiProperty = useCallback((mockProperty: MockProperty): ApiProperty => {
@@ -167,7 +155,7 @@ const PropertySearchResults: React.FC<PropertySearchResultsProps> = React.memo((
           {currentProperties.map((property) => (
             <PropertyCard
               key={property.id}
-              property={convertToPropertyCard(property)}
+              property={convertToPropertyDisplay(property)}
             />
           ))}
         </div>

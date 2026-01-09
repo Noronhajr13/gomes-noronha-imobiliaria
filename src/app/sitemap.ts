@@ -44,9 +44,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 
-  // Páginas dinâmicas de imóveis (futuro)
+  // Páginas dinâmicas de imóveis
   const propertyPages: MetadataRoute.Sitemap = properties.map((property) => ({
-    url: `${baseUrl}/imovel/${property.code}`,
+    url: `${baseUrl}/imoveis/${property.code}`,
     lastModified: property.updatedAt,
     changeFrequency: 'weekly' as const,
     priority: 0.6,

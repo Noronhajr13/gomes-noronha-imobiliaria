@@ -1,30 +1,10 @@
 import React from 'react';
-import { getButtonClass, getCardClass, getTextClass, getBadgeClass } from '@/styles/theme';
+import { getCardClass, getTextClass, getBadgeClass } from '@/styles/theme';
 import { cn } from '@/utils/helpers';
 
-// Botão reutilizável
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'success' | 'outline' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
-  children: React.ReactNode;
-}
-
-export const Button: React.FC<ButtonProps> = ({ 
-  variant = 'primary', 
-  size = 'md', 
-  className, 
-  children, 
-  ...props 
-}) => {
-  return (
-    <button 
-      className={cn(getButtonClass(variant, size), className)}
-      {...props}
-    >
-      {children}
-    </button>
-  );
-};
+// Button unificado - importado do arquivo dedicado
+export { default as Button, LinkButton } from './Button';
+export type { ButtonProps, ButtonVariant, ButtonSize } from './Button';
 
 // Card reutilizável
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -70,7 +50,7 @@ export const Text: React.FC<TextProps> = ({
 
 // Badge reutilizável
 interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'photo';
+  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'photo' | 'specialty';
   children: React.ReactNode;
 }
 
@@ -96,5 +76,4 @@ export const Badge: React.FC<BadgeProps> = ({
 export { default as SocialLinks } from './SocialLinks';
 export { default as Logo } from './Logo';
 export { default as LogoPreloader } from './LogoPreloader';
-export { default as LinkButton } from './Button';
 export { default as Container } from './Container';

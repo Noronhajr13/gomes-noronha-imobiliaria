@@ -1,67 +1,114 @@
+"use client";
+
 import React from 'react';
+import Link from 'next/link';
 import { Icon, IconName } from '@/utils/iconMapper';
+import { getButtonClass } from '@/styles/theme';
 import { cn } from '@/utils/helpers';
 
 /**
- * LinkButton - Botão estilizado que renderiza como link (<a>)
- * Use para navegação e links externos (href)
+ * Button - Componente unificado de botão
  *
- * Para botões com ações (onClick), use o Button padrão de @/components/site/ui
+ * Comportamento inteligente:
+ * - Com href interno (começa com /) → renderiza como Next/Link
+ * - Com href externo → renderiza como <a> com target="_blank"
+ * - Sem href → renderiza como <button>
  */
-interface LinkButtonProps {
-  text: string;
-  icon?: IconName;
-  base?: 'base' | 'card' | 'smallBottom';
-  variant?: 'standard' | 'contact' | 'inverser' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
+
+export type ButtonVariant = 'primary' | 'secondary' | 'success' | 'outline' | 'danger';
+export type ButtonSize = 'sm' | 'md' | 'lg';
+
+export interface ButtonProps {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
   fullWidth?: boolean;
-  href?: string;
+  icon?: IconName;
+  iconPosition?: 'left' | 'right';
   className?: string;
+  children: React.ReactNode;
+  onClick?: () => void;
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
 }
 
-const LinkButton: React.FC<LinkButtonProps> = ({
-  text,
-  icon,
-  base = 'base',
-  variant = 'standard',
+// Verifica se a URL é externa
+const isExternalUrl = (href: string): boolean => {
+  return href.startsWith('http://') || href.startsWith('https://') || href.startsWith('mailto:') || href.startsWith('tel:');
+};
+
+const Button: React.FC<ButtonProps> = ({
+  variant = 'primary',
   size = 'md',
   fullWidth = false,
+  icon,
+  iconPosition = 'left',
+  className,
+  children,
+  onClick,
   href,
-  className
+  type = 'button',
+  disabled = false,
 }) => {
-  const baseButtonClasses = {
-    base: "inline-flex items-center justify-center font-semibold rounded-full transition-all duration-200 transform hover:-translate-y-0.5",
-    card: "inline-flex items-center justify-center transition-colors duration-300 font-semibold rounded-lg",
-    smallBottom: "flex items-center gap-2"
-  }
-
-  const variantButtonClasses = {
-    standard: "bg-black text-white hover:bg-gray-400 hover:text-black shadow-md hover:shadow-lg",
-    inverser: "bg-white text-black hover:bg-black hover:text-white shadow-md hover:shadow-lg",
-    contact: "bg-green-600 text-white hover:bg-green-400 hover:text-black",
-    ghost: "text-black hover:text-gray-700"
-  };
-
-  const sizeButtonClasses = {
-    sm: "px-4 py-2 text-sm gap-1.5",
-    md: "px-6 py-2.5 text-base gap-2",
-    lg: "px-8 py-3 text-lg gap-2.5"
-  };
-
   const buttonClasses = cn(
-    baseButtonClasses[base],
-    variantButtonClasses[variant],
-    sizeButtonClasses[size],
-    fullWidth && "w-full",
+    getButtonClass(variant, size),
+    fullWidth && 'w-full',
+    'inline-flex items-center justify-center gap-2',
+    disabled && 'opacity-50 cursor-not-allowed',
     className
   );
-  
+
+  const iconSize = size === 'sm' ? 'w-4 h-4' : 'w-5 h-5';
+
+  const content = (
+    <>
+      {icon && iconPosition === 'left' && <Icon name={icon} className={iconSize} />}
+      {children}
+      {icon && iconPosition === 'right' && <Icon name={icon} className={iconSize} />}
+    </>
+  );
+
+  // Se tem href, renderiza como link
+  if (href) {
+    // Link externo
+    if (isExternalUrl(href)) {
+      return (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={buttonClasses}
+          onClick={onClick}
+        >
+          {content}
+        </a>
+      );
+    }
+
+    // Link interno - usa Next/Link
+    return (
+      <Link href={href} className={buttonClasses} onClick={onClick}>
+        {content}
+      </Link>
+    );
+  }
+
+  // Sem href, renderiza como button
   return (
-    <a href={href} className={buttonClasses}>
-      {icon && <Icon name={icon} className={size === 'sm' ? 'w-4 h-4' : 'w-5 h-5'} />}
-      {text}
-    </a>
+    <button
+      className={buttonClasses}
+      onClick={onClick}
+      type={type}
+      disabled={disabled}
+    >
+      {content}
+    </button>
   );
 };
 
-export default LinkButton;
+Button.displayName = 'Button';
+
+export default Button;
+
+// Alias para retrocompatibilidade
+export { Button as LinkButton };

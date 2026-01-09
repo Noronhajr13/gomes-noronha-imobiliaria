@@ -3,24 +3,24 @@
 import { useState } from 'react';
 import Header from '@/components/site/layout/header/Header';
 import Footer from '@/components/site/layout/footer/Footer';
-import { HomeSection } from '@/components/site/sections';
+import { AboutSection } from '@/components/site/sections';
 import { useNavigation } from '@/hooks/useNavigation';
 
-export default function Home() {
+export default function QuemSomosClient() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { handleSectionChange } = useNavigation();
 
   return (
     <div className="min-h-screen bg-white">
       <Header
-        activeSection="home"
+        activeSection="quemsomos"
         setActiveSection={handleSectionChange}
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
       />
 
       <main>
-        <HomeSection />
+        <AboutSection />
       </main>
 
       <Footer />

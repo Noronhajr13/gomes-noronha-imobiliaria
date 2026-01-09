@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { Property, fetchProperties, PropertyFilters } from '@/services/api';
+import { mapPropertyType, mapTransactionType } from '@/utils/propertyTypeMapper';
 
 export interface SearchFilters {
   type?: string;
@@ -44,28 +45,11 @@ const usePropertySearch = (initialFilters: SearchFilters = {}): UsePropertySearc
         const apiFilters: PropertyFilters = {};
 
         if (filters.type && filters.type !== 'all') {
-          const typeMap: Record<string, string> = {
-            'Casa': 'CASA',
-            'Apartamento': 'APARTAMENTO',
-            'Terreno': 'TERRENO',
-            'Sala Comercial': 'SALA_COMERCIAL',
-            'Loja': 'LOJA',
-            'Galpão': 'GALPAO',
-            'Sítio': 'SITIO',
-            'Cobertura': 'COBERTURA',
-            'Kitnet': 'KITNET',
-            'Flat': 'FLAT'
-          };
-          apiFilters.type = typeMap[filters.type] || filters.type;
+          apiFilters.type = mapPropertyType(filters.type);
         }
 
         if (filters.transactionType && filters.transactionType !== 'all') {
-          const transactionMap: Record<string, string> = {
-            'Venda': 'VENDA',
-            'Aluguel': 'ALUGUEL',
-            'Venda/Aluguel': 'VENDA_ALUGUEL'
-          };
-          apiFilters.transactionType = transactionMap[filters.transactionType] || filters.transactionType;
+          apiFilters.transactionType = mapTransactionType(filters.transactionType);
         }
 
         if (filters.priceMin) apiFilters.minPrice = filters.priceMin;
