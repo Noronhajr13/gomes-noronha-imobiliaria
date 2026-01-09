@@ -10,7 +10,7 @@ interface RelatedPropertiesProps {
   currentProperty: Property;
 }
 
-const RelatedProperties: React.FC<RelatedPropertiesProps> = ({ currentProperty }) => {
+const RelatedProperties: React.FC<RelatedPropertiesProps> = React.memo(({ currentProperty }) => {
   const [relatedProperties, setRelatedProperties] = useState<PropertyDisplay[]>([]);
   const [loading, setLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -104,6 +104,8 @@ const RelatedProperties: React.FC<RelatedPropertiesProps> = ({ currentProperty }
       />
     </section>
   );
-};
+});
+
+RelatedProperties.displayName = 'RelatedProperties';
 
 export default RelatedProperties;

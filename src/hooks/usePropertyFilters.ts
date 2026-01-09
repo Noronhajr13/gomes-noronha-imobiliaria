@@ -1,6 +1,7 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { PropertyFiltersData } from '@/components/site/property/PropertyFilters';
 import { Property, fetchProperties, PropertyFilters as APIFilters } from '@/services/api';
+import { mapPropertyType, mapTransactionType } from '@/utils/propertyTypeMapper';
 
 const initialFilters: PropertyFiltersData = {
   tipo: 'todos',
@@ -23,6 +24,9 @@ export const usePropertyFilters = () => {
   const [error, setError] = useState<string | null>(null);
 
   // Buscar imóveis da API
+  // NOTA: O dependency array contém apenas filtros enviados para a API.
+  // Filtros locais (banheiros, vagas, areaMin, areaMax) são aplicados via useMemo
+  // em filteredProperties, não requerem nova chamada à API.
   useEffect(() => {
     async function loadProperties() {
       try {
@@ -33,29 +37,11 @@ export const usePropertyFilters = () => {
         const apiFilters: APIFilters = {};
         
         if (filters.tipo !== 'todos') {
-          // Mapear tipo do site para tipo da API
-          const typeMap: Record<string, string> = {
-            'Casa': 'CASA',
-            'Apartamento': 'APARTAMENTO',
-            'Terreno': 'TERRENO',
-            'Sala Comercial': 'SALA_COMERCIAL',
-            'Loja': 'LOJA',
-            'Galpão': 'GALPAO',
-            'Sítio': 'SITIO',
-            'Cobertura': 'COBERTURA',
-            'Kitnet': 'KITNET',
-            'Flat': 'FLAT'
-          };
-          apiFilters.type = typeMap[filters.tipo] || filters.tipo;
+          apiFilters.type = mapPropertyType(filters.tipo);
         }
-        
+
         if (filters.negocio !== 'todos') {
-          const transactionMap: Record<string, string> = {
-            'Venda': 'VENDA',
-            'Aluguel': 'ALUGUEL',
-            'Venda/Aluguel': 'VENDA_ALUGUEL'
-          };
-          apiFilters.transactionType = transactionMap[filters.negocio] || filters.negocio;
+          apiFilters.transactionType = mapTransactionType(filters.negocio);
         }
         
         if (filters.precoMin) apiFilters.minPrice = parseInt(filters.precoMin);
@@ -78,16 +64,16 @@ export const usePropertyFilters = () => {
     loadProperties();
   }, [filters.tipo, filters.negocio, filters.precoMin, filters.precoMax, filters.quartos, filters.bairro, filters.cidade]);
 
-  const handleFilterChange = (key: string, value: string) => {
+  const handleFilterChange = useCallback((key: string, value: string) => {
     setFilters(prev => ({
       ...prev,
       [key]: value
     }));
-  };
+  }, []);
 
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
     setFilters(initialFilters);
-  };
+  }, []);
 
   // Aplicar filtros locais adicionais (que não são suportados pela API)
   const filteredProperties = useMemo(() => {

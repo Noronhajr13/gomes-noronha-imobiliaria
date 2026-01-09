@@ -1,12 +1,12 @@
 import React from 'react';
-import LinkButton from '../ui/Button';
-import { Text } from '@/components/site/ui';
-import PropertyCard, { Property } from './PropertyCard';
+import { Button, Text } from '@/components/site/ui';
+import { PropertyDisplay } from '@/types/property';
+import PropertyCard from './PropertyCard';
 
 interface PropertyGridProps {
   title?: string;
   subtitle?: string;
-  properties: Property[];
+  properties: PropertyDisplay[];
   showViewAll?: boolean;
   onViewAll?: () => void;
 }
@@ -33,20 +33,20 @@ const PropertyGrid: React.FC<PropertyGridProps> = ({
         <div className="grid gap-8 mb-12 md:grid-cols-2 lg:grid-cols-3">
           {properties.map((property) => (
             <PropertyCard
-              key={property.id}
+              key={property.code}
               property={property}
             />
           ))}
         </div>
 
         <div className="text-center">
-          <LinkButton
-            text="Ver Todos os Imóveis"
-            variant="standard"
-            base="base"
+          <Button
+            variant="primary"
             size="lg"
-            href="imoveis"
-          />
+            href="/imoveis"
+          >
+            Ver Todos os Imóveis
+          </Button>
         </div>
       </div>
     </section>

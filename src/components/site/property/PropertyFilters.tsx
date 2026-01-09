@@ -5,8 +5,9 @@ import { Icon } from '@/utils/iconMapper';
 import { Button, Card } from '@/components/site/ui';
 import { cn } from '@/utils/helpers';
 import { comboSelects } from '@/data/MockData';
+import { getInputClass, getLabelClass } from '@/styles/theme';
 import ComboFilter from '../ui/ComboFilter';
-import InputFilterProps from '../ui/InputFilter';
+import InputFilter from '../ui/InputFilter';
 
 export interface PropertyFiltersData {
   tipo: string;
@@ -35,12 +36,12 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
   onFilterChange,
   onClearFilters,
   resultsCount,
-  // className - prop not used directly but passed to cn()
+  className
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <Card variant="DEFAULT" className={cn("p-6 mb-8")}>
+    <Card variant="DEFAULT" className={cn("p-6 mb-8", className)}>
       <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-2 lg:grid-cols-4">
         {comboSelects.map(({ id, label, options }) => (
           <ComboFilter
@@ -52,7 +53,7 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
             value={filters[id as keyof PropertyFiltersData]}
           />
         ))}
-          <InputFilterProps
+          <InputFilter
             placeHolder="Digite a cidade"
             onChange={(value) => onFilterChange('cidade', value)}
             label="Cidade"
@@ -65,7 +66,7 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
         <div className="grid grid-cols-1 gap-4 pt-4 mb-4 border-t border-gray-200 md:grid-cols-2 lg:grid-cols-4">
           {/* Preço Mínimo */}
           <div>
-            <label className="block mb-2 text-sm font-medium text-gray-700">
+            <label className={getLabelClass()}>
               Preço Mínimo
             </label>
             <input
@@ -73,13 +74,13 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
               placeholder="R$ 0"
               value={filters.precoMin}
               onChange={(e) => onFilterChange('precoMin', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              className={getInputClass('DEFAULT')}
             />
           </div>
 
           {/* Preço Máximo */}
           <div>
-            <label className="block mb-2 text-sm font-medium text-gray-700">
+            <label className={getLabelClass()}>
               Preço Máximo
             </label>
             <input
@@ -87,19 +88,19 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
               placeholder="R$ 999.999"
               value={filters.precoMax}
               onChange={(e) => onFilterChange('precoMax', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              className={getInputClass('DEFAULT')}
             />
           </div>
 
           {/* Quartos */}
           <div>
-            <label className="block mb-2 text-sm font-medium text-gray-700">
+            <label className={getLabelClass()}>
               Quartos
             </label>
             <select
               value={filters.quartos}
               onChange={(e) => onFilterChange('quartos', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              className={getInputClass('select')}
             >
               <option value="todos">Qualquer</option>
               <option value="1">1 quarto</option>
@@ -111,13 +112,13 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
 
           {/* Banheiros */}
           <div>
-            <label className="block mb-2 text-sm font-medium text-gray-700">
+            <label className={getLabelClass()}>
               Banheiros
             </label>
             <select
               value={filters.banheiros}
               onChange={(e) => onFilterChange('banheiros', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              className={getInputClass('select')}
             >
               <option value="todos">Qualquer</option>
               <option value="1">1 banheiro</option>
@@ -129,13 +130,13 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
 
           {/* Vagas de Garagem */}
           <div>
-            <label className="block mb-2 text-sm font-medium text-gray-700">
+            <label className={getLabelClass()}>
               Vagas
             </label>
             <select
               value={filters.vagas}
               onChange={(e) => onFilterChange('vagas', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              className={getInputClass('select')}
             >
               <option value="todos">Qualquer</option>
               <option value="0">Sem vaga</option>
@@ -147,7 +148,7 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
 
           {/* Área Mínima */}
           <div>
-            <label className="block mb-2 text-sm font-medium text-gray-700">
+            <label className={getLabelClass()}>
               Área Mínima (m²)
             </label>
             <input
@@ -155,13 +156,13 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
               placeholder="0"
               value={filters.areaMin}
               onChange={(e) => onFilterChange('areaMin', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              className={getInputClass('DEFAULT')}
             />
           </div>
 
           {/* Área Máxima */}
           <div>
-            <label className="block mb-2 text-sm font-medium text-gray-700">
+            <label className={getLabelClass()}>
               Área Máxima (m²)
             </label>
             <input
@@ -169,7 +170,7 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
               placeholder="999"
               value={filters.areaMax}
               onChange={(e) => onFilterChange('areaMax', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              className={getInputClass('DEFAULT')}
             />
           </div>
         </div>

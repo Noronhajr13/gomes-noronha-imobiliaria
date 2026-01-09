@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { Button, Card, Text } from '@/components/site/ui';
+import { Button, Card, Text, Badge } from '@/components/site/ui';
 import { TeamMember, getWhatsAppUrl } from '@/data/MockData';
 import { cn } from '@/utils/helpers';
 
@@ -10,7 +10,7 @@ interface TeamMemberCardProps {
   className?: string;
 }
 
-const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
+const TeamMemberCard: React.FC<TeamMemberCardProps> = React.memo(({
   member,
   onContact,
   className
@@ -65,12 +65,9 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
             </Text>
             <div className="flex flex-wrap gap-2">
               {member.specialties.map((specialty, index) => (
-                <span 
-                  key={index}
-                  className="px-2 py-1 text-xs font-medium text-green-700 bg-green-100 rounded-full"
-                >
+                <Badge key={index} variant="specialty">
                   {specialty}
-                </span>
+                </Badge>
               ))}
             </div>
           </div>
@@ -87,6 +84,8 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
       </div>
     </Card>
   );
-};
+});
+
+TeamMemberCard.displayName = 'TeamMemberCard';
 
 export default TeamMemberCard;

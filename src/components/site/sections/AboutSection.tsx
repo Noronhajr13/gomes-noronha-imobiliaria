@@ -35,9 +35,9 @@ const AboutSection: React.FC = () => {
         </Text>
         
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {companyValues.map((value, index) => (
+          {companyValues.map((value) => (
             <ValueCard
-              key={index}
+              key={value.title}
               icon={value.icon as IconName}
               title={value.title}
               description={value.description}
@@ -53,9 +53,9 @@ const AboutSection: React.FC = () => {
         </Text>
         
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {teamMembers.map((member, index) => (
+          {teamMembers.map((member) => (
             <TeamMemberCard
-              key={index}
+              key={member.name}
               member={member}
             />
           ))}

@@ -12,7 +12,7 @@ interface ImageZoomModalProps {
   propertyTitle: string;
 }
 
-const ImageZoomModal: React.FC<ImageZoomModalProps> = ({
+const ImageZoomModal: React.FC<ImageZoomModalProps> = React.memo(({
   images,
   initialIndex,
   isOpen,
@@ -150,6 +150,8 @@ const ImageZoomModal: React.FC<ImageZoomModalProps> = ({
       </div>
     </div>
   );
-};
+});
+
+ImageZoomModal.displayName = 'ImageZoomModal';
 
 export default ImageZoomModal;

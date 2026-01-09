@@ -127,11 +127,11 @@ const ServicesSection: React.FC = () => {
 
         {/* Services Grid */}
         <div className="grid gap-8 mb-16 md:grid-cols-2 lg:grid-cols-3">
-          {services.map((service, index) => {
+          {services.map((service) => {
             const colors = getColorClasses(service.color);
-            
+
             return (
-              <div key={index} className="relative group">
+              <div key={service.title} className="relative group">
                 {/* Card Principal */}
                 <div className="flex flex-col h-full p-8 transition-all duration-500 transform bg-white border-2 border-gray-100 rounded-3xl shadow-strong hover:border-gray-200 hover:-translate-y-2 hover:shadow-xl">
                   
@@ -149,8 +149,8 @@ const ServicesSection: React.FC = () => {
                   <div className="flex-grow mb-6">
                     <h4 className="mb-3 font-semibold text-gray-900">Incluído:</h4>
                     <ul className="space-y-2">
-                      {service.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-center gap-2 text-sm text-gray-600">
+                      {service.features.map((feature) => (
+                        <li key={feature} className="flex items-center gap-2 text-sm text-gray-600">
                           <div className={`w-4 h-4 ${colors.icon} rounded-full flex items-center justify-center flex-shrink-0`}>
                             <div className="w-1.5 h-1.5 bg-current rounded-full"></div>
                           </div>

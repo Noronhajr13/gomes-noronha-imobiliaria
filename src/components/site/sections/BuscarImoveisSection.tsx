@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import Container from '../ui/Container';
 import { Text } from '@/components/site/ui';
 import { Property } from '@/services/api';
@@ -35,19 +36,20 @@ const ErrorMessage: React.FC<{ message: string; onRetry: () => void }> = ({ mess
 );
 
 const BuscarImoveisSection: React.FC = () => {
+  const router = useRouter();
   const [view, setView] = useState<'grid' | 'list'>('grid');
-  const { 
-    filters, 
-    filteredProperties, 
-    handleFilterChange, 
+  const {
+    filters,
+    filteredProperties,
+    handleFilterChange,
     clearFilters,
     loading,
     error
   } = usePropertyFilters();
 
-  const handleViewDetails = (property: Property) => {
-    window.location.href = `/imoveis/${property.code}`;
-  };
+  const handleViewDetails = useCallback((property: Property) => {
+    router.push(`/imoveis/${property.code}`);
+  }, [router]);
 
   const handleRetry = () => {
     clearFilters();

@@ -1,45 +1,27 @@
-"use client";
+import { Metadata } from 'next';
+import { seoData, companyInfo } from '@/data/MockData';
+import AnunciarClient from './AnunciarClient';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Header from '@/components/site/layout/header/Header';
-import Footer from '@/components/site/layout/footer/Footer';
-import { AnunciarSection } from '@/components/site/sections';
+export const metadata: Metadata = {
+  title: seoData.anunciar.title,
+  description: seoData.anunciar.description,
+  keywords: seoData.anunciar.keywords,
+  openGraph: {
+    title: seoData.anunciar.title,
+    description: seoData.anunciar.description,
+    images: [seoData.anunciar.ogImage],
+    type: 'website',
+    locale: 'pt_BR',
+    siteName: companyInfo.name,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: seoData.anunciar.title,
+    description: seoData.anunciar.description,
+    images: [seoData.anunciar.ogImage],
+  },
+};
 
 export default function AnunciarPage() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const router = useRouter();
-
-  // Função para navegação entre páginas
-  const handleSectionChange = (section: string) => {
-    const routes: { [key: string]: string } = {
-      'home': '/',
-      'imoveis': '/imoveis',
-      'quemsomos': '/quemsomos',
-      'despachante': '/despachante',
-      'anunciar': '/anunciar',
-      'contato': '/#contato'
-    };
-
-    if (routes[section]) {
-      router.push(routes[section]);
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-white">
-      <Header 
-        activeSection="anunciar"
-        setActiveSection={handleSectionChange}
-        mobileMenuOpen={mobileMenuOpen}
-        setMobileMenuOpen={setMobileMenuOpen}
-      />
-      
-      <main>
-        <AnunciarSection />
-      </main>
-      
-      <Footer />
-    </div>
-  );
+  return <AnunciarClient />;
 }

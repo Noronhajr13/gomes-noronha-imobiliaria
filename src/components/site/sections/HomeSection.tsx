@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import LinkButton from '../ui/Button';
+import { Button } from '@/components/site/ui';
 import PropertySearch, { SearchFilters } from '@/components/site/property/PropertySearch';
 import PropertyGrid from '@/components/site/property/PropertyGrid';
 import StatsGrid from '@/components/site/stats/StatsGrid';
@@ -56,20 +56,22 @@ const HomeSection: React.FC = () => {
           </div>
 
           <div className="flex flex-col justify-center gap-4 mb-12 sm:flex-row">
-            <LinkButton
-              text="Ver Imóveis Disponíveis"
+            <Button
               icon="Search"
-              variant="standard"
+              variant="primary"
               size="lg"
-              href="imoveis"
-            />
-            <LinkButton
-              text="Falar com Corretor"
-              icon="MessageCircle"
-              variant="contact"
+              href="/imoveis"
+            >
+              Ver Imóveis Disponíveis
+            </Button>
+            <Button
+              icon="Phone"
+              variant="success"
               size="lg"
               href={`https://wa.me/${companyInfo.contact.whatsapp}?text=${encodeURIComponent('Olá! Gostaria de falar com um corretor.')}`}
-            />
+            >
+              Falar com Corretor
+            </Button>
           </div>
 
           <PropertySearch onSearch={handleSearch} />

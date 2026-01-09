@@ -608,6 +608,24 @@ export const seoData = {
     keywords: ['comprar imóvel', 'alugar imóvel', 'casas juiz de fora', 'apartamentos juiz de fora'],
     ogImage: '/og-imoveis.jpg'
   },
+  quemsomos: {
+    title: 'Quem Somos - Conheça a Equipe Gomes & Noronha | CRECI PJ 9297',
+    description: 'Conheça a equipe de profissionais da Gomes & Noronha. Corretores especializados em imóveis em Juiz de Fora com atendimento personalizado.',
+    keywords: ['equipe gomes noronha', 'corretores juiz de fora', 'sobre a imobiliária', 'CRECI PJ 9297'],
+    ogImage: '/og-quemsomos.jpg'
+  },
+  anunciar: {
+    title: 'Anunciar Imóvel - Venda ou Alugue com a Gomes & Noronha',
+    description: 'Anuncie seu imóvel com a Gomes & Noronha. Avaliação gratuita, divulgação profissional e acompanhamento completo até a venda ou locação.',
+    keywords: ['anunciar imóvel', 'vender imóvel juiz de fora', 'alugar imóvel', 'avaliar imóvel'],
+    ogImage: '/og-anunciar.jpg'
+  },
+  despachante: {
+    title: 'Despachante Imobiliário - Regularização de Imóveis | Gomes & Noronha',
+    description: 'Serviços de despachante imobiliário em Juiz de Fora. Regularização de documentos, escrituras, inventários e assessoria documental completa.',
+    keywords: ['despachante imobiliário', 'regularização de imóveis', 'documentação imobiliária', 'escritura juiz de fora'],
+    ogImage: '/og-despachante.jpg'
+  },
   servicos: {
     title: 'Serviços Imobiliários em Juiz de Fora | Gomes & Noronha',
     description: 'Venda, compra, aluguel e avaliação de imóveis. Assessoria completa com profissionais especializados.',

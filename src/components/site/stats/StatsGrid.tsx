@@ -28,9 +28,9 @@ const StatsGrid: React.FC<StatsGridProps> = React.memo(({
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="p-8 bg-white border border-gray-100 shadow-xl rounded-2xl">
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-            {stats.map((stat, index) => (
-              <div 
-                key={index} 
+            {stats.map((stat) => (
+              <div
+                key={stat.label} 
                 className="text-center group"
               >
                 {/* Ícone */}

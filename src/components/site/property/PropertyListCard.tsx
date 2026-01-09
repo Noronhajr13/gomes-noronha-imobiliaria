@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { Icon } from '@/utils/iconMapper';
 import { Button, Card, Text, Badge } from '@/components/site/ui';
 import { Property, formatPrice, getPropertyWhatsAppUrl } from '@/services/api';
@@ -36,6 +37,7 @@ const PropertyListCard: React.FC<PropertyListCardProps> = React.memo(({
   onViewDetails,
   className
 }) => {
+  const router = useRouter();
   const [imgError, setImgError] = useState(false);
   const imageUrl = property.images?.[0] || PLACEHOLDER_IMAGE;
 
@@ -43,18 +45,18 @@ const PropertyListCard: React.FC<PropertyListCardProps> = React.memo(({
     setImgError(true);
   }, []);
 
-  const handleWhatsApp = () => {
+  const handleWhatsApp = useCallback(() => {
     const whatsappUrl = getPropertyWhatsAppUrl(property, companyInfo.contact.whatsapp);
     window.open(whatsappUrl, '_blank');
-  };
+  }, [property]);
 
-  const handleViewDetails = () => {
+  const handleViewDetails = useCallback(() => {
     if (onViewDetails) {
       onViewDetails(property);
     } else {
-      window.location.href = `/imoveis/${property.code}`;
+      router.push(`/imoveis/${property.code}`);
     }
-  };
+  }, [onViewDetails, property, router]);
 
   const transactionLabel = property.transactionType ? transactionTypeLabels[property.transactionType] || property.transactionType : 'Venda';
   const location = getLocation(property);
