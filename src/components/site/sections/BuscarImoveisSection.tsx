@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Container from '../ui/Container';
 import { Text } from '@/components/site/ui';
 import { Property } from '@/services/api';
 import { usePropertyFilters } from '@/hooks/usePropertyFilters';
+import { PropertyFiltersData } from '@/components/site/property/PropertyFilters';
 import PropertyFilters from '@/components/site/property/PropertyFilters';
 import PropertyListCard from '@/components/site/property/PropertyListCard';
 import PropertyViewToggle from '@/components/site/property/PropertyViewToggle';
@@ -26,7 +27,7 @@ const ErrorMessage: React.FC<{ message: string; onRetry: () => void }> = ({ mess
       </svg>
     </div>
     <Text variant="secondary" className="mb-4">{message}</Text>
-    <button 
+    <button
       onClick={onRetry}
       className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
     >
@@ -35,7 +36,11 @@ const ErrorMessage: React.FC<{ message: string; onRetry: () => void }> = ({ mess
   </div>
 );
 
-const BuscarImoveisSection: React.FC = () => {
+interface BuscarImoveisSectionProps {
+  initialFilters?: Partial<PropertyFiltersData>;
+}
+
+const BuscarImoveisSection: React.FC<BuscarImoveisSectionProps> = ({ initialFilters }) => {
   const router = useRouter();
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const {
@@ -43,9 +48,18 @@ const BuscarImoveisSection: React.FC = () => {
     filteredProperties,
     handleFilterChange,
     clearFilters,
+    setFiltersFromUrl,
     loading,
     error
-  } = usePropertyFilters();
+  } = usePropertyFilters({ initialFiltersFromUrl: initialFilters });
+
+  // Aplicar filtros da URL quando o componente monta
+  useEffect(() => {
+    if (initialFilters && Object.keys(initialFilters).length > 0) {
+      setFiltersFromUrl(initialFilters);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleViewDetails = useCallback((property: Property) => {
     router.push(`/imoveis/${property.code}`);
@@ -56,7 +70,7 @@ const BuscarImoveisSection: React.FC = () => {
   };
 
   return (
-    <Container title="Encontre seu Imóvel Ideal" subtitle="Use nossos filtros avançados para encontrar o imóvel perfeito para você">
+    <Container title="Encontre seu imóvel ideal" subtitle="Use nossos filtros avançados para encontrar o imóvel perfeito para você">
         <PropertyFilters
           filters={filters}
           onFilterChange={handleFilterChange}
@@ -84,8 +98,8 @@ const BuscarImoveisSection: React.FC = () => {
         {/* Grid de Resultados */}
         {!loading && !error && filteredProperties.length > 0 && (
           <div className={`grid gap-6 ${
-            view === 'grid' 
-              ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' 
+            view === 'grid'
+              ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
               : 'grid-cols-1'
           }`}>
             {filteredProperties.map(property => (

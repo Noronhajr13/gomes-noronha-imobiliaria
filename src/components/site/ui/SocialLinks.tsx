@@ -29,10 +29,10 @@ const SocialLinks: React.FC<SocialLinksProps> = ({
       icon: 'Mail',
       color: 'blue'
     },
-    { 
-      name: 'Instagram', 
-      url: companyInfo.social.instagram, 
-      icon: 'Star',
+    {
+      name: 'Instagram',
+      url: companyInfo.social.instagram,
+      icon: 'Instagram',
       color: 'pink'
     }
   ];

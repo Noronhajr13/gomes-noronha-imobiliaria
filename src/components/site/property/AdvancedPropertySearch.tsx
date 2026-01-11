@@ -4,8 +4,10 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { Icon } from '@/utils/iconMapper';
 import { cn } from '@/utils/helpers';
 import { getButtonClass } from '@/styles/theme';
-import { propertyTypes, neighborhoods, priceRanges } from '@/data/MockData';
+import { priceRanges } from '@/data/MockData';
 import { SearchFilters } from '@/hooks/usePropertySearch';
+import { usePropertyTypes } from '@/hooks/usePropertyTypes';
+import { useNeighborhoods, neighborhoodsToSelectOptions } from '@/hooks/useNeighborhoods';
 
 interface AdvancedPropertySearchProps {
   filters: SearchFilters;
@@ -21,6 +23,9 @@ const AdvancedPropertySearch: React.FC<AdvancedPropertySearchProps> = React.memo
   className
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const { propertyTypeOptions } = usePropertyTypes();
+  const { neighborhoods } = useNeighborhoods();
+  const neighborhoodOptions = neighborhoodsToSelectOptions(neighborhoods);
 
   const updateFilter = useCallback((key: keyof SearchFilters, value: string | number | boolean | null | undefined) => {
     onFiltersChange({
@@ -79,13 +84,12 @@ const AdvancedPropertySearch: React.FC<AdvancedPropertySearchProps> = React.memo
                 Tipo de Imóvel
               </label>
               <select
-                value={filters.type || 'all'}
-                onChange={(e) => updateFilter('type', e.target.value === 'all' ? undefined : e.target.value)}
+                value={filters.type || 'todos'}
+                onChange={(e) => updateFilter('type', e.target.value === 'todos' ? undefined : e.target.value)}
                 className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent"
               >
-                <option value="all">Todos os tipos</option>
-                {propertyTypes.map((type) => (
-                  <option key={type.value} value={type.label}>
+                {propertyTypeOptions.map((type) => (
+                  <option key={type.value} value={type.value}>
                     {type.label}
                   </option>
                 ))}
@@ -119,7 +123,7 @@ const AdvancedPropertySearch: React.FC<AdvancedPropertySearchProps> = React.memo
                 className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent"
               >
                 <option value="all">Todos os bairros</option>
-                {neighborhoods.map((neighborhood) => (
+                {neighborhoodOptions.map((neighborhood) => (
                   <option key={neighborhood.value} value={neighborhood.label}>
                     {neighborhood.label}
                   </option>

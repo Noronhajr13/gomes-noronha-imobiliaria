@@ -1,19 +1,22 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Icon } from '@/utils/iconMapper';
 import { Button, Card } from '@/components/site/ui';
 import { cn } from '@/utils/helpers';
-import { comboSelects } from '@/data/MockData';
 import { getInputClass, getLabelClass } from '@/styles/theme';
-import ComboFilter from '../ui/ComboFilter';
-import InputFilter from '../ui/InputFilter';
+import { usePropertyTypes } from '@/hooks/usePropertyTypes';
+import { usePropertyPurposes } from '@/hooks/usePropertyPurposes';
+import { useCities } from '@/hooks/useCities';
+import { useNeighborhoods } from '@/hooks/useNeighborhoods';
 
 export interface PropertyFiltersData {
   tipo: string;
   negocio: string;
   cidade: string;
+  cidadeId: string;
   bairro: string;
+  bairroId: string;
   precoMin: string;
   precoMax: string;
   quartos: string;
@@ -40,25 +43,154 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
+  // Hooks para buscar dados da API
+  const { propertyTypeOptions, isLoading: typesLoading } = usePropertyTypes();
+  const { propertyPurposeOptions, isLoading: purposesLoading } = usePropertyPurposes();
+  const { cities, isLoading: citiesLoading } = useCities();
+  const { neighborhoods, isLoading: neighborhoodsLoading } = useNeighborhoods(filters.cidadeId || undefined);
+
+  // Converter cidades para formato de select
+  const cityOptions = [
+    { value: 'todos', label: 'Todas as cidades' },
+    ...cities.map(city => ({
+      value: city.id,
+      label: `${city.name} - ${city.state}`
+    }))
+  ];
+
+  // Converter bairros para formato de select
+  const neighborhoodOptions = [
+    { value: 'todos', label: 'Todos os bairros' },
+    ...neighborhoods.map(neighborhood => ({
+      value: neighborhood.id,
+      label: neighborhood.name
+    }))
+  ];
+
+  // Quando a cidade muda, limpar o bairro selecionado
+  useEffect(() => {
+    if (filters.cidadeId === '' || filters.cidadeId === 'todos') {
+      onFilterChange('bairroId', 'todos');
+      onFilterChange('bairro', '');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters.cidadeId]);
+
+  // Handler para mudança de cidade
+  const handleCityChange = (value: string) => {
+    onFilterChange('cidadeId', value);
+    // Encontrar o nome da cidade para manter compatibilidade
+    const city = cities.find(c => c.id === value);
+    onFilterChange('cidade', city?.name || '');
+    // Limpar bairro quando cidade muda
+    onFilterChange('bairroId', 'todos');
+    onFilterChange('bairro', '');
+  };
+
+  // Handler para mudança de bairro
+  const handleNeighborhoodChange = (value: string) => {
+    onFilterChange('bairroId', value);
+    // Encontrar o nome do bairro para manter compatibilidade
+    const neighborhood = neighborhoods.find(n => n.id === value);
+    onFilterChange('bairro', neighborhood?.name || '');
+  };
+
   return (
     <Card variant="DEFAULT" className={cn("p-6 mb-8", className)}>
       <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-2 lg:grid-cols-4">
-        {comboSelects.map(({ id, label, options }) => (
-          <ComboFilter
-            key={id}
-            id={id}
-            label={label}
-            options={options}
-            onChange={(value) => onFilterChange(id as keyof PropertyFiltersData, value)}
-            value={filters[id as keyof PropertyFiltersData]}
-          />
-        ))}
-          <InputFilter
-            placeHolder="Digite a cidade"
-            onChange={(value) => onFilterChange('cidade', value)}
-            label="Cidade"
-            value={filters.cidade}
-          />
+        {/* Tipo de Negócio */}
+        <div>
+          <label className={getLabelClass()}>
+            Tipos de Negócio
+          </label>
+          <select
+            value={filters.negocio || 'todos'}
+            onChange={(e) => onFilterChange('negocio', e.target.value)}
+            className={getInputClass('select')}
+            disabled={purposesLoading}
+          >
+            {purposesLoading ? (
+              <option value="todos">Carregando...</option>
+            ) : (
+              propertyPurposeOptions.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))
+            )}
+          </select>
+        </div>
+
+        {/* Tipo de Imóvel */}
+        <div>
+          <label className={getLabelClass()}>
+            Tipos de Imóvel
+          </label>
+          <select
+            value={filters.tipo || 'todos'}
+            onChange={(e) => onFilterChange('tipo', e.target.value)}
+            className={getInputClass('select')}
+            disabled={typesLoading}
+          >
+            {typesLoading ? (
+              <option value="todos">Carregando...</option>
+            ) : (
+              propertyTypeOptions.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))
+            )}
+          </select>
+        </div>
+
+        {/* Cidade - Dados dinâmicos do CRM */}
+        <div>
+          <label className={getLabelClass()}>
+            Cidade
+          </label>
+          <select
+            value={filters.cidadeId || 'todos'}
+            onChange={(e) => handleCityChange(e.target.value)}
+            className={getInputClass('select')}
+            disabled={citiesLoading}
+          >
+            {citiesLoading ? (
+              <option value="todos">Carregando...</option>
+            ) : (
+              cityOptions.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))
+            )}
+          </select>
+        </div>
+
+        {/* Bairro - Dados dinâmicos do CRM (depende da cidade) */}
+        <div>
+          <label className={getLabelClass()}>
+            Bairros
+          </label>
+          <select
+            value={filters.bairroId || 'todos'}
+            onChange={(e) => handleNeighborhoodChange(e.target.value)}
+            className={getInputClass('select')}
+            disabled={neighborhoodsLoading || !filters.cidadeId || filters.cidadeId === 'todos'}
+          >
+            {neighborhoodsLoading ? (
+              <option value="todos">Carregando...</option>
+            ) : !filters.cidadeId || filters.cidadeId === 'todos' ? (
+              <option value="todos">Selecione uma cidade</option>
+            ) : (
+              neighborhoodOptions.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))
+            )}
+          </select>
+        </div>
       </div>
 
       {/* Filtros Expandidos */}

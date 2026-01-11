@@ -3,8 +3,9 @@
 import React, { useState } from 'react';
 import Container from '../ui/Container';
 import { Icon, type IconName } from '@/utils/iconMapper';
-import { companyInfo, propertyTypes } from '@/data/MockData';
+import { companyInfo } from '@/data/MockData';
 import { createLead } from '@/services/api';
+import { usePropertyTypes } from '@/hooks/usePropertyTypes';
 
 const AnunciarSection: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -18,6 +19,8 @@ const AnunciarSection: React.FC = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  
+  const { propertyTypeOptions, isLoading: typesLoading } = usePropertyTypes();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -206,10 +209,15 @@ Observações: ${formData.observacoes}`;
                   className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                   required
                 >
-                  <option value="">Selecione o tipo</option>
-                  {propertyTypes.map((type, index) => (
-                    <option key={index} value={type.value}>{type.label}</option>
-                  ))}
+                  {typesLoading ? (
+                    <option value="todos">Carregando...</option>
+                  ) : (
+                    propertyTypeOptions.map(option => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))
+                  )}
                 </select>
               </div>
 
