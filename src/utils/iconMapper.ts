@@ -36,7 +36,13 @@ import {
   ChevronLeft,
   ChevronRight,
   Calendar,
-  Info
+  Info,
+  // Redes sociais
+  Instagram,
+  Facebook,
+  Twitter,
+  Linkedin,
+  Youtube,
 } from 'lucide-react';
 
 export const iconMap = {
@@ -77,6 +83,12 @@ export const iconMap = {
   ChevronRight,
   Calendar,
   Info,
+  // Redes sociais
+  Instagram,
+  Facebook,
+  Twitter,
+  Linkedin,
+  Youtube,
 };
 
 export type IconName = keyof typeof iconMap;

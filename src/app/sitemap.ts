@@ -1,9 +1,9 @@
 import { MetadataRoute } from 'next'
-import { properties } from '@/data/MockData'
+import { fetchProperties } from '@/services/api'
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://gomesnoronha.com.br'
-  
+
   // Páginas estáticas
   const staticPages: MetadataRoute.Sitemap = [
     {
@@ -44,10 +44,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 
-  // Páginas dinâmicas de imóveis
+  // Páginas dinâmicas de imóveis (buscar da API)
+  const properties = await fetchProperties()
   const propertyPages: MetadataRoute.Sitemap = properties.map((property) => ({
     url: `${baseUrl}/imoveis/${property.code}`,
-    lastModified: property.updatedAt,
+    lastModified: property.updatedAt ? new Date(property.updatedAt) : new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.6,
   }))

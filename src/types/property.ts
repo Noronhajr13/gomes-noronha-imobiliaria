@@ -39,7 +39,7 @@ export type { Property } from '@/services/api';
  * };
  */
 export interface PropertyDisplay {
-  id: number;
+  id: string | number;
   title: string;
   type: string;
   price: string;        // formatado: "R$ 100.000"
@@ -59,7 +59,7 @@ export interface PropertyDisplay {
  */
 export function toPropertyDisplay(
   property: {
-    id: number;
+    id: string | number;
     code: string;
     title: string;
     type: string;

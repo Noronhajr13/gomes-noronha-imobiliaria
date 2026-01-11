@@ -1,35 +1,4 @@
 // Tipos
-export interface Property {
-  id: number;
-  title: string;
-  type: 'Casa' | 'Apartamento' | 'Terreno' | 'Sala Comercial' | 'Loja' | 'Galpão' | 'Sítio';
-  transactionType: 'Venda' | 'Aluguel' | 'Venda/Aluguel';
-  price: number;
-  priceLabel?: string; // Para aluguéis: "/mês"
-  area: number;
-  bedrooms: number;
-  bathrooms: number;
-  parking: number;
-  location: string;
-  neighborhood: string;
-  city: string;
-  state: string;
-  zipCode?: string;
-  images: string[];
-  featured: boolean;
-  new?: boolean;
-  code: string;
-  description?: string;
-  amenities?: string[];
-  yearBuilt?: number;
-  condominiumFee?: number;
-  iptu?: number;
-  virtualTour?: string;
-  video?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
 export interface Testimonial {
   id: number;
   name: string;
@@ -92,7 +61,7 @@ export interface Partner {
 export const companyInfo = {
   name: "Gomes & Noronha",
   fullName: "Gomes & Noronha Negócios Imobiliários",
-  tagline: "Transformamos Sonhos em Endereços",
+  tagline: "Transformamos sonhos em endereços",
   description: "A Gomes & Noronha é especialista em vendas em Juiz de Fora.",
   foundedYear: 2024,
   creci: "CRECI PJ 9297",
@@ -222,180 +191,6 @@ export const companyFeatures = [
   }
 ];
 
-// Propriedades/Imóveis
-export const properties: Property[] = [
-  {
-    id: 1,
-    title: "Apartamento de Luxo no Centro",
-    type: "Apartamento",
-    transactionType: "Venda",
-    price: 650000,
-    area: 120,
-    bedrooms: 3,
-    bathrooms: 2,
-    parking: 2,
-    location: "Rua Halfeld, 890",
-    neighborhood: "Centro",
-    city: "Juiz de Fora",
-    state: "MG",
-    zipCode: "36010-000",
-    images: [
-      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&h=600&fit=crop"
-    ],
-    featured: true,
-    new: true,
-    code: "AP001",
-    description: "Apartamento de alto padrão no coração de Juiz de Fora, com acabamento de primeira qualidade e vista privilegiada.",
-    amenities: ["Piscina", "Academia", "Churrasqueira", "Salão de Festas", "Playground", "Portaria 24h"],
-    yearBuilt: 2022,
-    condominiumFee: 850,
-    iptu: 450,
-    virtualTour: "https://matterport.com/example",
-    createdAt: new Date("2024-01-15"),
-    updatedAt: new Date("2024-01-15")
-  },
-  {
-    id: 2,
-    title: "Casa em Condomínio São Mateus",
-    type: "Casa",
-    transactionType: "Venda",
-    price: 890000,
-    area: 250,
-    bedrooms: 4,
-    bathrooms: 3,
-    parking: 3,
-    location: "Condomínio Solar dos Lagos",
-    neighborhood: "São Mateus",
-    city: "Juiz de Fora",
-    state: "MG",
-    images: [
-      "https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1416331108676-a22ccb276e35?w=800&h=600&fit=crop"
-    ],
-    featured: true,
-    code: "CA002",
-    description: "Casa moderna em condomínio fechado com total segurança e lazer completo.",
-    amenities: ["Área Gourmet", "Piscina Privativa", "Jardim", "Suíte Master", "Closet"],
-    yearBuilt: 2021,
-    condominiumFee: 450,
-    iptu: 580,
-    createdAt: new Date("2024-01-20"),
-    updatedAt: new Date("2024-01-20")
-  },
-  {
-    id: 3,
-    title: "Terreno Comercial Alto dos Passos",
-    type: "Terreno",
-    transactionType: "Venda",
-    price: 450000,
-    area: 500,
-    bedrooms: 0,
-    bathrooms: 0,
-    parking: 0,
-    location: "Av. Juiz de Fora",
-    neighborhood: "Alto dos Passos",
-    city: "Juiz de Fora",
-    state: "MG",
-    images: [
-      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=600&fit=crop"
-    ],
-    featured: false,
-    code: "TE003",
-    description: "Terreno comercial em localização estratégica, ideal para construção de prédio comercial ou residencial.",
-    yearBuilt: 0,
-    iptu: 280,
-    createdAt: new Date("2024-02-01"),
-    updatedAt: new Date("2024-02-01")
-  },
-  {
-    id: 4,
-    title: "Apartamento 2 Quartos Granbery",
-    type: "Apartamento",
-    transactionType: "Aluguel",
-    price: 2200,
-    priceLabel: "/mês",
-    area: 75,
-    bedrooms: 2,
-    bathrooms: 1,
-    parking: 1,
-    location: "Rua Oscar Vidal",
-    neighborhood: "Granbery",
-    city: "Juiz de Fora",
-    state: "MG",
-    images: [
-      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop"
-    ],
-    featured: false,
-    code: "AP004",
-    description: "Apartamento bem localizado, próximo a comércios e universidades.",
-    amenities: ["Elevador", "Garagem Coberta", "Área de Serviço"],
-    yearBuilt: 2018,
-    condominiumFee: 350,
-    iptu: 180,
-    createdAt: new Date("2024-02-05"),
-    updatedAt: new Date("2024-02-05")
-  },
-  {
-    id: 5,
-    title: "Sala Comercial Centro",
-    type: "Sala Comercial",
-    transactionType: "Venda/Aluguel",
-    price: 320000,
-    area: 60,
-    bedrooms: 0,
-    bathrooms: 1,
-    parking: 0,
-    location: "Galeria Pio X",
-    neighborhood: "Centro",
-    city: "Juiz de Fora",
-    state: "MG",
-    images: [
-      "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=800&h=600&fit=crop"
-    ],
-    featured: false,
-    code: "SC005",
-    description: "Sala comercial em galeria movimentada no centro da cidade.",
-    amenities: ["Banheiro Privativo", "Ar Condicionado", "Recepção"],
-    yearBuilt: 2010,
-    condominiumFee: 250,
-    iptu: 150,
-    createdAt: new Date("2024-02-10"),
-    updatedAt: new Date("2024-02-10")
-  },
-  {
-    id: 6,
-    title: "Cobertura Duplex Bom Pastor",
-    type: "Apartamento",
-    transactionType: "Venda",
-    price: 1200000,
-    area: 280,
-    bedrooms: 4,
-    bathrooms: 4,
-    parking: 3,
-    location: "Rua São Sebastião",
-    neighborhood: "Bom Pastor",
-    city: "Juiz de Fora",
-    state: "MG",
-    images: [
-      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop"
-    ],
-    featured: true,
-    new: true,
-    code: "CO006",
-    description: "Cobertura duplex com vista panorâmica, acabamento de luxo e terraço gourmet.",
-    amenities: ["Terraço Gourmet", "Jacuzzi", "Sauna", "Home Theater", "Adega"],
-    yearBuilt: 2023,
-    condominiumFee: 1200,
-    iptu: 800,
-    virtualTour: "https://matterport.com/example2",
-    createdAt: new Date("2024-02-15"),
-    updatedAt: new Date("2024-02-15")
-  }
-];
-
 // Equipe
 export const teamMembers: TeamMember[] = [
   {
@@ -502,57 +297,6 @@ export const partners: Partner[] = [
   }
 ];
 
-// Bairros de Juiz de Fora
-export const neighborhoods = [
-  { value: 'todos', label: 'Todos os bairros' },
-  { value: 'alto-dos-passos', label: 'Alto dos Passos' },
-  { value: 'bairu', label: 'Bairú' },
-  { value: 'benfica', label: 'Benfica' },
-  { value: 'bom-pastor', label: 'Bom Pastor' },
-  { value: 'cascatinha', label: 'Cascatinha' },
-  { value: 'centro', label: 'Centro' },
-  { value: 'dom-bosco', label: 'Dom Bosco' },
-  { value: 'granbery', label: 'Granbery' },
-  { value: 'jardim-gloria', label: 'Jardim Glória' },
-  { value: 'manoel-honorio', label: 'Manoel Honório' },
-  { value: 'mariano-procopio', label: 'Mariano Procópio' },
-  { value: 'morro-da-gloria', label: 'Morro da Glória' },
-  { value: 'paineiras', label: 'Paineiras' },
-  { value: 'santa-helena', label: 'Santa Helena' },
-  { value: 'santa-luzia', label: 'Santa Luzia' },
-  { value: 'santa-terezinha', label: 'Santa Terezinha' },
-  { value: 'sao-mateus', label: 'São Mateus' },
-  { value: 'sao-pedro', label: 'São Pedro' },
-  { value: 'teixeiras', label: 'Teixeiras' },
-];
-
-export const negociableTypes = [
-  { value: 'todos', label: 'Todos' },
-  { value: 'venda', label: 'Venda' },
-  { value: 'aluguel', label: 'Aluguel' }
-];
-
-// Tipos de Imóveis
-export const propertyTypes = [
-  { value: 'todos', label: 'Todos os tipos' },
-  { value: 'apartamento', label: 'Apartamento'},
-  { value: 'casa', label: 'Casa' },
-  { value: 'cobertura', label: 'Cobertura' },
-  { value: 'flat', label: 'Flat' },
-  { value: 'galpao', label: 'Galpão' },
-  { value: 'kitnet', label: 'Kitnet/Studio' },
-  { value: 'loja', label: 'Loja' },
-  { value: 'sala-comercial', label: 'Sala Comercial' },
-  { value: 'sitio', label: 'Sítio/Chácara' },
-  { value: 'terreno', label: 'Terreno' }
-];
-
-export const comboSelects = [
-  { id: "negocio", label: "Tipos de Negócio", options: negociableTypes},
-  { id: "imovel", label: "Tipos de Imóvel", options: propertyTypes},
-  { id: "bairro", label: "Bairros", options: neighborhoods},
-];
-
 // Faixas de Preço
 export const priceRanges = [
   { value: '0-150000', label: 'Até R$ 150.000', min: 0, max: 150000 },
@@ -649,57 +393,6 @@ export const seoData = {
 // Funções Auxiliares
 
 /**
- * Busca imóveis em destaque
- */
-export const getFeaturedProperties = (limit: number = 6): Property[] => {
-  return properties
-    .filter(p => p.featured)
-    .slice(0, limit);
-};
-
-/**
- * Busca imóveis novos
- */
-export const getNewProperties = (limit: number = 4): Property[] => {
-  return properties
-    .filter(p => p.new)
-    .slice(0, limit);
-};
-
-/**
- * Busca imóveis por tipo
- */
-export const getPropertiesByType = (type: string): Property[] => {
-  return properties.filter(p => p.type.toLowerCase() === type.toLowerCase());
-};
-
-/**
- * Busca imóveis por bairro
- */
-export const getPropertiesByNeighborhood = (neighborhood: string): Property[] => {
-  return properties.filter(p => 
-    p.neighborhood.toLowerCase().includes(neighborhood.toLowerCase())
-  );
-};
-
-/**
- * Busca imóveis por faixa de preço
- */
-export const getPropertiesByPriceRange = (min: number, max: number | null): Property[] => {
-  return properties.filter(p => {
-    if (max === null) return p.price >= min;
-    return p.price >= min && p.price <= max;
-  });
-};
-
-/**
- * Busca imóvel por código
- */
-export const getPropertyByCode = (code: string): Property | undefined => {
-  return properties.find(p => p.code === code);
-};
-
-/**
  * Formata preço para exibição
  */
 export const formatPrice = (price: number, label?: string): string => {
@@ -740,25 +433,12 @@ export const formatPhone = (phone: string): string => {
 export const getWhatsAppUrl = (phone: string, message?: string): string => {
   const cleanPhone = phone.replace(/\D/g, '');
   const baseUrl = `https://wa.me/55${cleanPhone}`;
-  
+
   if (message) {
     return `${baseUrl}?text=${encodeURIComponent(message)}`;
   }
-  
+
   return baseUrl;
-};
-
-/**
- * Gera mensagem padrão para WhatsApp sobre imóvel
- */
-export const getPropertyWhatsAppMessage = (property: Property): string => {
-  return `Olá! Tenho interesse no imóvel:
-${property.title}
-Código: ${property.code}
-Localização: ${property.neighborhood}, ${property.city}
-Valor: ${formatPrice(property.price, property.priceLabel)}
-
-Gostaria de mais informações.`;
 };
 
 /**
@@ -792,12 +472,9 @@ const MockData = {
   companyStats,
   companyValues,
   companyFeatures,
-  properties,
   teamMembers,
   faqs,
   partners,
-  neighborhoods,
-  propertyTypes,
   priceRanges,
   rentPriceRanges,
   navigationItems,

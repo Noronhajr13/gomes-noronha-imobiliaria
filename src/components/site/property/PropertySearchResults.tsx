@@ -1,42 +1,51 @@
 "use client";
 
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { Icon } from '@/utils/iconMapper';
 import { cn } from '@/utils/helpers';
-import { Property as MockProperty, formatPrice } from '@/data/MockData';
-import { Property as ApiProperty } from '@/services/api';
+import { formatPrice } from '@/data/MockData';
+import { Property, Pagination } from '@/services/api';
 import { toPropertyDisplay } from '@/types/property';
 import PropertyCard from './PropertyCard';
 import PropertyListCard from './PropertyListCard';
 
 interface PropertySearchResultsProps {
-  properties: MockProperty[];
+  properties: Property[];
   isLoading?: boolean;
   totalCount: number;
   className?: string;
+  // Props de paginação do servidor
+  pagination?: Pagination;
+  currentPage?: number;
+  onPageChange?: (page: number) => void;
 }
 
 type ViewMode = 'grid' | 'list';
-
-const ITEMS_PER_PAGE = 12;
 
 const PropertySearchResults: React.FC<PropertySearchResultsProps> = React.memo(({
   properties,
   isLoading = false,
   totalCount,
-  className
+  className,
+  pagination,
+  currentPage: externalCurrentPage,
+  onPageChange
 }) => {
-  const [viewMode, setViewMode] = useState<ViewMode>('grid');
-  const [currentPage, setCurrentPage] = useState(1);
+  const [viewMode, setViewMode] = React.useState<ViewMode>('grid');
 
-  // Conversão de MockProperty para PropertyDisplay usando utilitário centralizado
+  // Usar paginação externa se fornecida, senão usar valores padrão
+  const currentPage = externalCurrentPage || pagination?.page || 1;
+  const totalPages = pagination?.totalPages || Math.ceil(totalCount / 12) || 1;
+  const total = pagination?.total || totalCount;
+
+  // Conversão de Property para PropertyDisplay usando utilitário centralizado
   const convertToPropertyDisplay = useCallback(
-    (mockProperty: MockProperty) => toPropertyDisplay(mockProperty, formatPrice),
+    (mockProperty: Property) => toPropertyDisplay(mockProperty, formatPrice),
     []
   );
 
-  // Conversão de MockProperty para ApiProperty (para PropertyListCard)
-  const convertToApiProperty = useCallback((mockProperty: MockProperty): ApiProperty => {
+  // Conversão de Property para Property (para PropertyListCard)
+  const convertToProperty = useCallback((mockProperty: Property): Property => {
     return {
       id: mockProperty.id,
       code: mockProperty.code,
@@ -59,28 +68,41 @@ const PropertySearchResults: React.FC<PropertySearchResultsProps> = React.memo((
     };
   }, []);
 
-  // Paginação (memoizada)
-  const paginationData = useMemo(() => {
-    const totalPages = Math.ceil(properties.length / ITEMS_PER_PAGE);
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const endIndex = startIndex + ITEMS_PER_PAGE;
-    const currentProperties = properties.slice(startIndex, endIndex);
-    
-    return {
-      totalPages,
-      startIndex,
-      endIndex,
-      currentProperties
-    };
-  }, [properties, currentPage]);
-
-  const { totalPages, currentProperties } = paginationData;
-
   const handlePageChange = useCallback((page: number) => {
-    setCurrentPage(page);
+    if (onPageChange) {
+      onPageChange(page);
+    }
     // Scroll suave para o topo dos resultados
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+  }, [onPageChange]);
+
+  // Gerar números de página para exibição
+  const getPageNumbers = useCallback((): number[] => {
+    const pages: number[] = [];
+    const maxVisible = 5;
+
+    if (totalPages <= maxVisible) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      const halfVisible = Math.floor(maxVisible / 2);
+      let start = Math.max(1, currentPage - halfVisible);
+      let end = Math.min(totalPages, currentPage + halfVisible);
+
+      if (currentPage <= halfVisible) {
+        end = maxVisible;
+      } else if (currentPage >= totalPages - halfVisible) {
+        start = totalPages - maxVisible + 1;
+      }
+
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+    }
+
+    return pages;
+  }, [currentPage, totalPages]);
 
   if (isLoading) {
     return (
@@ -113,11 +135,13 @@ const PropertySearchResults: React.FC<PropertySearchResultsProps> = React.memo((
       <div className="flex flex-col gap-4 mb-6 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">
-            {totalCount} {totalCount === 1 ? 'imóvel encontrado' : 'imóveis encontrados'}
+            {total} {total === 1 ? 'imóvel encontrado' : 'imóveis encontrados'}
           </h2>
-          <p className="text-gray-600">
-            Página {currentPage} de {totalPages}
-          </p>
+          {totalPages > 1 && (
+            <p className="text-gray-600">
+              Página {currentPage} de {totalPages}
+            </p>
+          )}
         </div>
 
         {/* Toggle de visualização */}
@@ -152,7 +176,7 @@ const PropertySearchResults: React.FC<PropertySearchResultsProps> = React.memo((
       {/* Lista/Grade de imóveis */}
       {viewMode === 'grid' ? (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {currentProperties.map((property) => (
+          {properties.map((property) => (
             <PropertyCard
               key={property.id}
               property={convertToPropertyDisplay(property)}
@@ -161,10 +185,10 @@ const PropertySearchResults: React.FC<PropertySearchResultsProps> = React.memo((
         </div>
       ) : (
         <div className="space-y-4">
-          {currentProperties.map((property) => (
+          {properties.map((property) => (
             <PropertyListCard
               key={property.id}
-              property={convertToApiProperty(property)}
+              property={convertToProperty(property)}
               view="list"
             />
           ))}
@@ -173,36 +197,31 @@ const PropertySearchResults: React.FC<PropertySearchResultsProps> = React.memo((
 
       {/* Paginação */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-center mt-8 space-x-2">
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className={cn(
-              "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200",
-              currentPage === 1
-                ? "text-gray-400 cursor-not-allowed"
-                : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
-            )}
-          >
-            <Icon name="ChevronLeft" className="w-4 h-4" />
-            Anterior
-          </button>
+        <div className="flex flex-col items-center gap-4 mt-8">
+          {/* Info de itens */}
+          <p className="text-sm text-gray-500">
+            Mostrando {properties.length} de {total} imóveis
+          </p>
 
-          {/* Páginas */}
-          <div className="flex space-x-1">
-            {Array.from({ length: Math.min(5, totalPages) }, (_, index) => {
-              let pageNumber;
-              if (totalPages <= 5) {
-                pageNumber = index + 1;
-              } else if (currentPage <= 3) {
-                pageNumber = index + 1;
-              } else if (currentPage >= totalPages - 2) {
-                pageNumber = totalPages - 4 + index;
-              } else {
-                pageNumber = currentPage - 2 + index;
-              }
+          {/* Controles de paginação */}
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className={cn(
+                "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200",
+                currentPage === 1
+                  ? "text-gray-400 cursor-not-allowed"
+                  : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+              )}
+            >
+              <Icon name="ChevronLeft" className="w-4 h-4" />
+              Anterior
+            </button>
 
-              return (
+            {/* Páginas */}
+            <div className="flex space-x-1">
+              {getPageNumbers().map((pageNumber) => (
                 <button
                   key={pageNumber}
                   onClick={() => handlePageChange(pageNumber)}
@@ -215,23 +234,23 @@ const PropertySearchResults: React.FC<PropertySearchResultsProps> = React.memo((
                 >
                   {pageNumber}
                 </button>
-              );
-            })}
-          </div>
+              ))}
+            </div>
 
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className={cn(
-              "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200",
-              currentPage === totalPages
-                ? "text-gray-400 cursor-not-allowed"
-                : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
-            )}
-          >
-            Próxima
-            <Icon name="ChevronRight" className="w-4 h-4" />
-          </button>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className={cn(
+                "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200",
+                currentPage === totalPages
+                  ? "text-gray-400 cursor-not-allowed"
+                  : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+              )}
+            >
+              Próxima
+              <Icon name="ChevronRight" className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       )}
     </div>
