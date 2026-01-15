@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Container from '../ui/Container';
 import { Text } from '@/components/site/ui';
@@ -11,6 +11,8 @@ import PropertyFilters from '@/components/site/property/PropertyFilters';
 import PropertyListCard from '@/components/site/property/PropertyListCard';
 import PropertyViewToggle from '@/components/site/property/PropertyViewToggle';
 import NoPropertiesFound from '@/components/site/property/NoPropertiesFound';
+import { Icon } from '@/utils/iconMapper';
+import { cn } from '@/utils/helpers';
 
 const LoadingSpinner: React.FC = () => (
   <div className="flex flex-col items-center justify-center py-16">
@@ -43,6 +45,7 @@ interface BuscarImoveisSectionProps {
 const BuscarImoveisSection: React.FC<BuscarImoveisSectionProps> = ({ initialFilters }) => {
   const router = useRouter();
   const [view, setView] = useState<'grid' | 'list'>('grid');
+  const resultsRef = useRef<HTMLDivElement>(null);
   const {
     filters,
     filteredProperties,
@@ -50,8 +53,46 @@ const BuscarImoveisSection: React.FC<BuscarImoveisSectionProps> = ({ initialFilt
     clearFilters,
     setFiltersFromUrl,
     loading,
-    error
+    error,
+    pagination,
+    currentPage,
+    goToPage,
+    hasNextPage,
+    hasPreviousPage
   } = usePropertyFilters({ initialFiltersFromUrl: initialFilters });
+
+  const handlePageChange = useCallback((page: number) => {
+    goToPage(page);
+    resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [goToPage]);
+
+  const getPageNumbers = useCallback((): number[] => {
+    const pages: number[] = [];
+    const maxVisible = 5;
+    const totalPages = pagination.totalPages;
+
+    if (totalPages <= maxVisible) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      const halfVisible = Math.floor(maxVisible / 2);
+      let start = Math.max(1, currentPage - halfVisible);
+      let end = Math.min(totalPages, currentPage + halfVisible);
+
+      if (currentPage <= halfVisible) {
+        end = maxVisible;
+      } else if (currentPage >= totalPages - halfVisible) {
+        start = totalPages - maxVisible + 1;
+      }
+
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+    }
+
+    return pages;
+  }, [currentPage, pagination.totalPages]);
 
   // Aplicar filtros da URL quando o componente monta
   useEffect(() => {
@@ -79,10 +120,17 @@ const BuscarImoveisSection: React.FC<BuscarImoveisSectionProps> = ({ initialFilt
         />
 
         {/* Toggle de Visualização */}
-        <div className="flex items-center justify-between mb-8">
-          <Text variant="secondary" className="text-sm">
-            {loading ? 'Buscando...' : `${filteredProperties.length} imóveis encontrados`}
-          </Text>
+        <div ref={resultsRef} className="flex items-center justify-between mb-8">
+          <div>
+            <Text variant="secondary" className="text-sm">
+              {loading ? 'Buscando...' : `${pagination.total} imóveis encontrados`}
+            </Text>
+            {!loading && pagination.totalPages > 1 && (
+              <Text variant="secondary" className="text-xs">
+                Página {currentPage} de {pagination.totalPages}
+              </Text>
+            )}
+          </div>
           <PropertyViewToggle
             view={view}
             onViewChange={setView}
@@ -97,20 +145,78 @@ const BuscarImoveisSection: React.FC<BuscarImoveisSectionProps> = ({ initialFilt
 
         {/* Grid de Resultados */}
         {!loading && !error && filteredProperties.length > 0 && (
-          <div className={`grid gap-6 ${
-            view === 'grid'
-              ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
-              : 'grid-cols-1'
-          }`}>
-            {filteredProperties.map(property => (
-              <PropertyListCard
-                key={property.id}
-                property={property}
-                view={view}
-                onViewDetails={handleViewDetails}
-              />
-            ))}
-          </div>
+          <>
+            <div className={`grid gap-6 ${
+              view === 'grid'
+                ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+                : 'grid-cols-1'
+            }`}>
+              {filteredProperties.map(property => (
+                <PropertyListCard
+                  key={property.id}
+                  property={property}
+                  view={view}
+                  onViewDetails={handleViewDetails}
+                />
+              ))}
+            </div>
+
+            {/* Paginação */}
+            {pagination.totalPages > 1 && (
+              <div className="flex flex-col items-center gap-4 mt-8">
+                <p className="text-sm text-gray-500">
+                  Mostrando {filteredProperties.length} de {pagination.total} imóveis
+                </p>
+
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={!hasPreviousPage}
+                    className={cn(
+                      "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200",
+                      !hasPreviousPage
+                        ? "text-gray-400 cursor-not-allowed"
+                        : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                    )}
+                  >
+                    <Icon name="ChevronLeft" className="w-4 h-4" />
+                    Anterior
+                  </button>
+
+                  <div className="flex space-x-1">
+                    {getPageNumbers().map((pageNumber) => (
+                      <button
+                        key={pageNumber}
+                        onClick={() => handlePageChange(pageNumber)}
+                        className={cn(
+                          "w-10 h-10 rounded-md text-sm font-medium transition-colors duration-200",
+                          currentPage === pageNumber
+                            ? "bg-primary text-white"
+                            : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                        )}
+                      >
+                        {pageNumber}
+                      </button>
+                    ))}
+                  </div>
+
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={!hasNextPage}
+                    className={cn(
+                      "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200",
+                      !hasNextPage
+                        ? "text-gray-400 cursor-not-allowed"
+                        : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                    )}
+                  >
+                    Próxima
+                    <Icon name="ChevronRight" className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
         )}
 
         {/* Nenhum Resultado */}
